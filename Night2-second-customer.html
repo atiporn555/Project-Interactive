@@ -1,0 +1,123 @@
+<!DOCTYPE html> 
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>5 คืนสยอง - ลูกค้าคนที่ 2</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Kanit', sans-serif;
+    }
+
+    body {
+      background-color: #111;
+      color: white;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end; /* ข้อความอยู่ล่าง */
+      align-items: center;
+      padding: 20px;
+      overflow: hidden;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .scene-container {
+      width: 100%;
+      max-width: 700px;
+    }
+
+    .text-box {
+      font-size: 1.05rem;
+      min-height: 80px;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+      margin-bottom: 20px;
+      /* จัดกึ่งกลาง */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      white-space: pre-line; /* ถ้ามีขึ้นบรรทัดใหม่ */
+    }
+
+    .note {
+      font-size: 0.9rem;
+      color: #888;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      margin-top: 10px;
+    }
+
+    .note.visible {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body onclick="handleClick()">
+  <div class="scene-container">
+    <div class="text-box" id="text-box"></div>
+    <div class="note" id="note">แตะหน้าจอเพื่อไปยังหน้าถัดไป...</div>
+  </div>
+
+  <script>
+    const textBox = document.getElementById("text-box");
+    const note = document.getElementById("note");
+
+    const texts = [
+      "น้ำฝน: เฮ้ออ หรือว่าฉันจะคิดไปเองจริงๆ?",
+      "น้ำฝน: หืม?",
+      "น้ำฝน: อ้าว สวัสดีค่ะพี่ไทม์",
+      "ไทม์: เป็นไงฝน ทำงานเหนื่อยมั้ย",
+      "น้ำฝน: ไม่เหนื่อยค่ะ วันนี้ลูกค้าไม่ค่อยเยอะฝนเลยมีเวลาพักบ้าง",
+      "ไทม์: ดีแล้วๆ เออแล้วเราได้ข่าวรึยังว่ามีคนตายแถวนี้",
+      "น้ำฝน: คะ?",
+      "ไทม์: ก็ลุงคนนั้นไง ที่ซื้อเครื่องดื่มให้ฝน",
+      "น้ำฝน: อ้าวจริงเหรอพี่!?",
+      "(เดี๋ยวก่อนสิ..เขารู้ได้ยังไงว่าคืนนั้นลุงซื้อเครื่องดื่มให้ฉัน?)",
+      "ไทม์: เห็นว่าโดนรถชนตอนเดินกลับ",
+      "น้ำฝน: อ๋อ...แล้วพี่รู้ได้ยังไงว่าลุงซื้อเครื่องดื่มให้หนู",
+      "ไทม์: ...",
+      "บรรยากาศในร้านตอนนั้นเต็มไปด้วยความเงียบ\nพี่ไทม์นิ่งและมองฉันเขาไม่พูดอะไรเลยสักคำ...\nเขาเอาแต่จ้องมาที่ฉันจนรู้สึกขนลุกไปทั้งตัว",
+      "น้ำฝน: เอ่อ พี่ไทม์?",
+      "ไทม์: ห๊ะ อะไร? อ๋อ พี่รู้ได้ไงน่ะเหรอก็ลุงแกชอบทำแบบนี้เป็นประจำไงพนักงานร้านอื่นก็ได้รับเครื่องดื่มเหมือนกัน",
+      "น้ำฝน: .....",
+      "เขายิ้มให้ฉัน..เป็นรอยยิ้มที่น่าขนลุก\nฉันทำได้แค่ยิ้มตอบและไม่พูดอะไรออกไป\nฉันพยายามไม่คิดอะไรและตั้งใจทำงานต่อ..จนถึงเวลา ตี 3"
+    ];
+
+    let index = 0;
+    let readyToGoNext = false;
+
+    function handleClick() {
+      if (readyToGoNext) {
+        window.location.href = "night2-3a.m.html";
+        return;
+      }
+      showNextText();
+    }
+
+    function showNextText() {
+      textBox.style.opacity = 0;
+
+      setTimeout(() => {
+        if (index < texts.length) {
+          textBox.textContent = texts[index++];
+          textBox.style.opacity = 1;
+
+          if (index === texts.length) {
+            setTimeout(() => {
+              note.classList.add("visible");
+              readyToGoNext = true;
+            }, 800);
+          }
+        }
+      }, 300);
+    }
+
+    window.onload = showNextText;
+  </script>
+</body>
+</html>

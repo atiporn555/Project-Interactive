@@ -1,0 +1,80 @@
+<!DOCTYPE html> 
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>5 คืนสยอง - ฟังเพลง</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Kanit', sans-serif;
+    }
+
+    body {
+      background-color: #111;
+      color: white;
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scene-container {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+      padding: 0 20px;
+    }
+
+    .caption {
+      font-size: 1.1rem;
+      opacity: 0;
+      transition: opacity 1.8s ease-in-out;
+      min-height: 80px;
+    }
+  </style>
+</head>
+<body>
+  <div class="scene-container">
+    <div class="caption" id="caption-text"></div>
+  </div>
+
+  <script>
+    const texts = [
+      "ฉันเลือกที่จะฟังเพลงเพื่อคลายความเหงา",
+      "หรือความจริงแล้วสาเหตุที่ฉันเลือกฟังเพลง...อาจเป็นเพราะว่าฉันกลัวว่าจะได้ยินสิ่งที่ไม่ควรได้ยิน...",
+      "บรรยากาศตอนกลางคืนนี่เงียบจริงๆ จะว่าไปแล้วช่วงนี้ฉันเห็นข่าวโรคจิตชอบแอบตามผู้หญิงอยู่บ่อยๆ",
+      "หวังว่าฉันจะไม่ใช่ผู้หญิงที่โชคร้ายหรอกนะ...แต่จริงๆแล้วถ้าโรคจิตพวกนั้นมันอยากจะทำไม่ว่าผู้หญิงหรือผู้ชาย ก็เสี่ยงเหมือนกัน..",
+      "ใช้เวลาไม่นานฉันก็เดินมาถึงร้านที่ฉันประจำอยู่...ได้เวลาเริ่มงานแล้วล่ะ"
+    ];
+
+    let index = 0;
+    const captionBox = document.getElementById('caption-text');
+
+    function showNextText() {
+      captionBox.style.opacity = 0;
+
+      setTimeout(() => {
+        if (index < texts.length) {
+          captionBox.textContent = texts[index++];
+          captionBox.style.opacity = 1;
+        } else {
+          window.location.href = "Night1-Store.html";
+        }
+      }, 1000);
+    }
+
+    window.onload = () => {
+      captionBox.textContent = texts[index++];
+      captionBox.style.opacity = 1;
+    };
+
+    document.body.addEventListener('click', showNextText);
+  </script>
+</body>
+</html>

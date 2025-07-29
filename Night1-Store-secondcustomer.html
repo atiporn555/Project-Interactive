@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>5 คืนสยอง - ลูกค้าคนที่ 2</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background-color: #111;
+      color: #fff;
+      font-family: 'Prompt', sans-serif;
+      height: 100vh;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      padding: 40px 20px;
+    }
+
+    .scene-container {
+      width: 100%;
+      max-width: 800px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .time-label {
+      font-size: 1.2rem;
+      color: #ccc;
+      margin-bottom: 10px;
+    }
+
+    .text-box {
+      font-size: 1.05rem;
+      margin-bottom: 20px;
+      transition: opacity 0.4s ease-in-out;
+    }
+
+    .choices {
+      display: none; /* ✅ แก้ตรงนี้ให้แสดงแค่เมื่อ JavaScript สั่ง */
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 20px;
+      width: 100%;
+    }
+
+    .choice-button {
+      padding: 16px;
+      font-size: 1rem;
+      background-color: #222;
+      border: 1px solid #555;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      width: 100%;
+      box-sizing: border-box;
+      text-align: center;
+    }
+
+    .choice-button:hover {
+      background-color: #333;
+    }
+
+    #warning {
+      display: none;
+      font-weight: bold;
+      color: yellow;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body onclick="nextText()">
+  <div class="scene-container">
+    <div class="time-label">คืนที่ 1</div>
+    <div id="warning">* ไม่สนับสนุนให้เยาวชนอายุต่ำกว่า 20 ปี สูบบุหรี่ *</div>
+    <div class="text-box" id="text-box">คลิกเพื่อเริ่มเรื่อง...</div>
+
+    <div class="choices" id="choice-box">
+      <button class="choice-button" onclick="event.stopPropagation(); window.location.href='Night1-Store-second-Choice1.html'">1. ยอมขายบุหรี่ให้</button>
+      <button class="choice-button" onclick="event.stopPropagation(); window.location.href='Night1-Store-second-Choice2.html'">2. ไม่ขาย</button>
+      <button class="choice-button" onclick="event.stopPropagation(); window.location.href='Night1-Store-second-Choice3.html'">3. ตอบแบบรำคาญ</button>
+      <button class="choice-button" onclick="event.stopPropagation(); window.location.href='Night1-Store-second-Choice4.html'">4. เรียกเงินเพิ่มขึ้น 2 เท่า</button>
+    </div>
+  </div>
+
+  <script>
+    const textBox = document.getElementById("text-box");
+    const choiceBox = document.getElementById("choice-box");
+    const warning = document.getElementById("warning");
+
+    const texts = [
+      "ลุงคนเมื่อกี้แปลกจัง...เฮ้ออ ขอเจอลูกค้าดีๆบ้างไม่ได้หรือไงนะ",
+      "ลูกค้า: พี่ บุหรี่แดงซองนึงเดะ",
+      "น้ำฝน: อายุเท่าไหร่เนี่ยถึงมาขอซื้อบุหรี่",
+      "ลูกค้า: ไรวะ มีหน้าที่ขายก็ขายจะถามเพื่อ?",
+      "น้ำฝน: พี่ขายให้ไม่ได้ น้องอายุเท่าไหร่คะ",
+      "ลูกค้า: โว้ยยย อายุมันเกี่ยวอะไรวะ! จะเอามั้ยเงินเนี่ย ป้าเจ้าของร้านขายให้ผมประจำ ถ้าไม่ขายให้เดี๋ยวเจอดีแน่"
+    ];
+
+    let index = 0;
+    let isTransitioning = false;
+
+    function nextText() {
+      if (isTransitioning) return;
+      isTransitioning = true;
+
+      if (index < texts.length) {
+        if (index === 1) {
+          warning.style.display = "block";
+        }
+
+        textBox.style.opacity = 0;
+        setTimeout(() => {
+          textBox.textContent = texts[index++];
+          textBox.style.opacity = 1;
+          isTransitioning = false;
+        }, 200);
+      } else {
+        textBox.style.display = "none";
+        choiceBox.style.display = "grid"; // แสดงเมื่อข้อความจบจริง
+        isTransitioning = false;
+      }
+    }
+
+    window.onload = nextText;
+  </script>
+</body>
+</html>

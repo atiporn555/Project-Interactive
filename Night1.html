@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>5 คืนสยอง - เริ่มเดินทาง</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background-color: #111;
+      color: white;
+      font-family: 'Prompt', sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .scene-container {
+      width: 100%;
+      max-width: 600px;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .time-label {
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+      color: #ccc;
+    }
+
+    .caption {
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+      opacity: 1;
+      transition: opacity 2s ease;
+    }
+
+    .choices {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .choice-button {
+      padding: 14px 22px;
+      font-size: 1rem;
+      background-color: #222;
+      border: 1px solid #555;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .choice-button:hover {
+      background-color: #444;
+      transform: scale(1.03);
+    }
+
+    @media screen and (max-width: 640px) {
+      .scene-container {
+        max-width: 95%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="scene-container">
+    <div class="time-label">เวลา 23:40</div>
+    <div class="caption" id="caption-text">
+      ฉันเดินทางไปที่ทำงานโดยการ"เดิน"เพราะมันอยู่ไม่ไกลมากนัก
+    </div>
+
+    <div class="choices" id="choice-box">
+      <button class="choice-button" onclick="goTo('Night1-Choice1.html')">1. ฟังเพลง</button>
+      <button class="choice-button" onclick="goTo('Night1-Choice2.html')">2. เลื่อนฟีด</button>
+      <button class="choice-button" onclick="goTo('Night1-Choice3.html')">3. มองบรรยากาศรอบๆ</button>
+    </div>
+  </div>
+
+  <audio autoplay loop>
+    <source src="night_ambience.mp3" type="audio/mpeg">
+    <!-- เสียงพื้นหลัง: จิ้งหรีด / เดิน -->
+  </audio>
+
+  <script>
+    const caption = document.getElementById('caption-text');
+    const choiceBox = document.getElementById('choice-box');
+
+    setTimeout(() => {
+      caption.style.opacity = 0;
+      setTimeout(() => {
+        caption.style.display = 'none';
+        choiceBox.style.display = 'flex';
+      }, 2000);
+    }, 3500);
+
+    function goTo(link) {
+      window.location.href = link;
+    }
+  </script>
+</body>
+</html>

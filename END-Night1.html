@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>5 คืนสยอง - จบคืนที่ 1</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background-color: #111;
+      color: #fff;
+      font-family: 'Prompt', sans-serif;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      padding: 20px;
+    }
+
+    .scene-container {
+      text-align: center;
+      max-width: 700px;
+      width: 100%;
+      margin-bottom: 40px;
+    }
+
+    .time-label {
+      font-size: 1.2rem;
+      color: #ccc;
+      margin-bottom: 20px;
+    }
+
+    .text-box {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      transition: opacity 0.4s ease-in-out;
+    }
+
+    .continue-note {
+      margin-top: 40px;
+      font-size: 0.95rem;
+      color: #aaa;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    .visible {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body onclick="handleClick()">
+  <div class="scene-container">
+    <div class="time-label">คืนที่ 1 - เวลา 06:00</div>
+    <div class="text-box" id="text-box"></div>
+    <div class="continue-note" id="note">แตะหน้าจอเพื่อเข้าสู่คืนถัดไป...</div>
+  </div>
+
+  <script>
+    const textBox = document.getElementById("text-box");
+    const note = document.getElementById("note");
+
+    const texts = [
+      "การทำงานคืนนี้ผ่านไปได้ด้วยดี",
+      "พอถึงตอนเช้า คุณป้าเจ้าของร้านก็มาเปลี่ยนกะ",
+      "ฉันก็ได้กลับไปพักผ่อนในที่สุด..."
+    ];
+
+    let index = 0;
+    let isTransitioning = false;
+    let isDone = false;
+
+    function handleClick() {
+      if (isDone) {
+        window.location.href = "night(N2)-first-customer.html";
+        return;
+      }
+
+      if (isTransitioning) return;
+      isTransitioning = true;
+
+      if (index < texts.length) {
+        textBox.style.opacity = 0;
+        setTimeout(() => {
+          textBox.textContent = texts[index++];
+          textBox.style.opacity = 1;
+          isTransitioning = false;
+
+          if (index === texts.length) {
+            setTimeout(() => {
+              note.classList.add("visible");
+              isDone = true;
+            }, 800);
+          }
+        }, 200);
+      }
+    }
+
+    window.onload = handleClick;
+  </script>
+</body>
+</html>

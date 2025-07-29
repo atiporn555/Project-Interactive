@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>5 คืนสยอง - ลูกค้าคนที่ 2 (ตอบแบบรำคาญ)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background-color: #111;
+      color: #fff;
+      font-family: 'Prompt', sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .scene-container {
+      width: 100%;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .time-label {
+      font-size: 1.2rem;
+      color: #ccc;
+      margin-bottom: 10px;
+    }
+
+    .text-box {
+      font-size: 1.05rem;
+      margin-bottom: 40px;
+      transition: opacity 0.4s ease-in-out;
+    }
+
+    #warning {
+      font-weight: bold;
+      color: yellow;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body onclick="nextText()">
+  <div class="scene-container">
+    <div class="time-label">คืนที่ 1</div>
+    <div id="warning">* ไม่สนับสนุนให้เยาวชนอายุต่ำกว่า 20 ปี สูบบุหรี่ *</div>
+    <div class="text-box" id="text-box"></div>
+  </div>
+
+  <script>
+    const textBox = document.getElementById("text-box");
+
+    const texts = [
+      "น้ำฝน: ก็บอกว่าไม่ได้ไงฟังไม่รู้เรื่องเหรอ ถ้าไม่ได้สูบคงไม่ขาดใจหรอกค่ะน้อง หรือถ้ามันอดใจไม่ไหวก็เชิญไปร้านอื่นค่ะ ที่นี่ไม่ขาย",
+      "ลูกค้า: มึงกวนตีนกูเหรออีแก่! เดี๋ยวมึงเจอกู!",
+      "น้ำฝน: จ้า น้องก็ระวังจะไม่ได้แก่นะคะ",
+      "(ถ้ายอมขายให้เดี๋ยวก็คงมาอีก ตัดปัญหาไปเลยดีกว่า ฉันไม่ชอบเด็กพวกนี้เลยจริงๆ รถก็เสียงดังแถมยังชอบทำตัวเหมือนมาเฟียอีก...)"
+    ];
+
+    let index = 0;
+    let isTransitioning = false;
+
+    function nextText() {
+      if (isTransitioning) return;
+      isTransitioning = true;
+
+      if (index < texts.length) {
+        textBox.style.opacity = 0;
+        setTimeout(() => {
+          textBox.textContent = texts[index++];
+          textBox.style.opacity = 1;
+          isTransitioning = false;
+        }, 200);
+      } else {
+        window.location.href = "END-Night1.html";
+      }
+    }
+
+    window.onload = nextText;
+  </script>
+</body>
+</html>

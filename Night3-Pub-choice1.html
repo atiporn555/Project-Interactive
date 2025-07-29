@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>5 คืนสยอง - เครื่องดื่มแปลกๆ และฟื้นขึ้นมา</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: 'Kanit', sans-serif;
+    }
+    body {
+      background-color: #111;
+      color: white;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;      /* จัดเนื้อหาเป็นคอลัมน์ */
+      justify-content: flex-end;   /* ดันเนื้อหาลงล่าง */
+      align-items: center;         /* กึ่งกลางแนวนอน */
+      text-align: center;
+      padding: 20px;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .scene-container {
+      width: 100%;
+      max-width: 640px;
+    }
+    /* ซ่อนภาพออกทั้งหมด */
+    .image-placeholder {
+      display: none !important;
+    }
+    .text-box {
+      font-size: 1.05rem;
+      min-height: 80px;
+      opacity: 0;
+      transition: opacity 0.6s ease-in-out;
+      white-space: pre-line;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body onclick="nextText()">
+  <div class="scene-container">
+    <div class="image-placeholder" id="image-box">[ภาพผับ]</div>
+    <div class="text-box" id="text-box"></div>
+  </div>
+
+  <script>
+    const textBox = document.getElementById("text-box");
+    const imageBox = document.getElementById("image-box");
+
+    const texts = [
+      "น้ำฝน: ขอบคุณนะคะ~\n\n(น้ำฝนดื่มจนหมดแก้ว)",
+      "เหมียว: เอ้า แกเอาจริงดิ!? แกไม่รู้จักเขาเลยนะ",
+      "เอมี่: มันแปลกๆปะวะแก?",
+      "น้ำฝน: แก้วเดียวเองไม่เป็นไรหรอก พวกแกคิดมาก",
+      "(15 นาทีต่อมา)",
+      "เหมียว: ฝน แกโอเคปะอะ?",
+      "น้ำฝน: อือ...รู้สึกง่วง ๆ แฮะ เหมือนหัวมันเบา ๆ",
+      "เอมี่: เมื่อกี้ยังดี ๆ อยู่เลยไม่ใช่เหรอ?",
+      "เหมียว: แกหน้าซีดมากอะฝน...",
+      "น้ำฝน: (พึมพำเบา ๆ) ขา...มันเหมือนไม่มีแรงอะ...",
+      "(น้ำฝนพยายามลุกแต่ทรุดนั่งลง)",
+      "เอมี่: ฝน!? เฮ้ย ฝน!",
+      "(รู้สึกไม่มีแรงเลย...ทุกคนพูดอะไรกัน? ฟังไม่ออก....เกิดอะไรขึ้น?)",
+      "เหมียว: แบบนี้ไม่ใช่เมาธรรมดาแล้ว ผู้ชายคนนั้นใส่อะไรลงไปในเครื่องดื่มแน่ๆ!",
+      "เอมี่: รีบพาไปโรงพยาบาลก่อน! ฉันจะไปแจ้งการ์ดว่ามีคนผสมยาลงในเครื่องดื่ม!",
+      "(ฉันเริ่มหายใจช้าลง ภาพตรงหน้าเบลอไปหมด เสียงเพลงกลายเป็นเสียงอื้ออึงในหู)",
+      "ฉันรู้สึกตัวขึ้นมาอีกทีในตอนบ่ายของอีกวัน...\nพอฟื้นขึ้นมาก็พบว่าตัวเองอยู่ที่โรงพยาบาลแล้ว...\n\nฉันจำเหตุการณ์ที่เกิดขึ้นไม่ได้เลย...\nหมอบอกว่าตรวจพบ “ยาอัลปราโซแลม (Alprazolam)” ในร่างกายฉัน...\n\nมันเป็นวัตถุออกฤทธิ์ต่อจิตและประสาทที่ปัจจุบันมักถูกใช้ในทางที่ผิด\nมักถูกนำไปใช้เป็นยานอนหลับอย่างแรงเพื่อล่วงละเมิดทางเพศ\nหรือผสมในสารเสพติด...\n\nโชคดีที่เพื่อนของฉันสังเกตอาการและรีบพาฉันมาที่โรงพยาบาลอย่างรวดเร็ว\n\nฉันตกใจมาก...\nไม่คิดว่าจะเกิดเรื่องแบบนี้ขึ้นกับตัวเอง"
+    ];
+
+    let index = 0;
+    let isTransitioning = false;
+
+    function nextText() {
+      if (isTransitioning) return;
+
+      // ถ้าจบแล้ว ให้เปลี่ยนหน้า
+      if (index >= texts.length) {
+        setTimeout(() => {
+          window.location.href = "Night3-Chatbig-for-Choice1.html";
+        }, 800);
+        return;
+      }
+
+      isTransitioning = true;
+
+      // ไม่ต้องแสดงภาพแล้ว จึงไม่ต้องซ่อน/แสดง
+
+      textBox.style.opacity = 0;
+      setTimeout(() => {
+        textBox.textContent = texts[index++];
+        textBox.style.opacity = 1;
+        isTransitioning = false;
+      }, 400);
+    }
+
+    window.onload = () => {
+      nextText();
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>5 คืนสยอง - ตี 3 (อยู่ในร้านต่อ)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Kanit', sans-serif;
+    }
+
+    body {
+      background-color: #111;
+      color: white;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;  /* ตั้งข้อความให้อยู่ด้านล่าง */
+      align-items: center;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .scene-container {
+      width: 100%;
+      max-width: 640px;
+    }
+
+    .text-box {
+      font-size: 1.05rem;
+      min-height: 80px;
+      opacity: 0;
+      transition: opacity 0.6s ease-in-out;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      white-space: pre-line;
+    }
+
+    .note {
+      font-size: 0.9rem;
+      color: #888;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      margin-bottom: 30px;
+    }
+
+    .note.visible {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body onclick="handleClick()">
+  <div class="scene-container">
+    <div class="text-box" id="text-box"></div>
+    <div class="note" id="note">แตะหน้าจอเพื่อไปยังคืนถัดไป...</div>
+  </div>
+
+  <script>
+    const textBox = document.getElementById("text-box");
+    const note = document.getElementById("note");
+
+    const texts = [
+      "น้ำฝน: เอาเถอะ... อยู่ในร้านต่อดีกว่า",
+      "[เสียงลมหวิวเบา ๆ จากช่องแอร์ / ภาพยังเป็นในร้าน]",
+      "น้ำฝน: ง่วงจัง...",
+      "[เสียงของประตูร้านดังขึ้น ทั้งที่ประตูไม่ขยับ]",
+      "น้ำฝน: ...?",
+      "น้ำฝน: เมื่อกี้...เสียงประตูใช่มั้ย?",
+      "[กล้องมุมชั้นวางของไปยังประตู – ไม่มีใครเลย]",
+      "[เสียงของตกเบา ๆ จากด้านหลัง – กระป๋องกลิ้งช้า ๆ]",
+      "น้ำฝน: (ในใจ) เสียงอะไรน่ะ!?",
+      "น้ำฝน: (ในใจ) หูฝาดอีกแล้วเหรอ...หรือว่ามันไม่ใช่...",
+      "น้ำฝน: เฮ้อ...ขอให้คืนนี้ผ่านไปเร็ว ๆ ด้วยเถอะ"
+    ];
+
+    let index = 0;
+    let finished = false;
+
+    function handleClick() {
+      if (finished) {
+        window.location.href = "END-Night2.html";
+        return;
+      }
+      showNextText();
+    }
+
+    function showNextText() {
+      textBox.style.opacity = 0;
+
+      setTimeout(() => {
+        if (index < texts.length) {
+          const line = texts[index++];
+
+          textBox.textContent = line;
+          textBox.style.opacity = 1;
+
+          if (index === texts.length) {
+            setTimeout(() => {
+              note.classList.add("visible");
+              finished = true;
+            }, 600);
+          }
+        }
+      }, 400);
+    }
+
+    window.onload = showNextText;
+  </script>
+</body>
+</html>

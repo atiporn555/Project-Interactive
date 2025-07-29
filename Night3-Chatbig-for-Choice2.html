@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>5 คืนสยอง - แชทกับบิ๊ก</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background-color: #222;
+      font-family: 'Sarabun', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .phone-frame {
+      width: 360px;
+      height: 640px;
+      border: 16px solid #000;
+      border-radius: 36px;
+      background-color: #ccc;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .top-bar {
+      background-color: #f1f1f1;
+      text-align: center;
+      padding: 10px;
+      font-weight: bold;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    .chat-area {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      background-color: #eee;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .message {
+      max-width: 75%;
+      padding: 10px 14px;
+      border-radius: 18px;
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+
+    .from-friend {
+      align-self: flex-start;
+      background-color: #fff;
+      color: #000;
+    }
+
+    .from-user {
+      align-self: flex-end;
+      background-color: #2196f3;
+      color: #fff;
+    }
+
+    .click-hint {
+      text-align: center;
+      padding: 6px;
+      font-size: 0.85rem;
+      color: #666;
+      background-color: #f1f1f1;
+    }
+
+    .choice-box {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      padding: 10px;
+      background-color: #ddd;
+    }
+
+    .choice-button {
+      padding: 10px;
+      border-radius: 12px;
+      border: none;
+      font-size: 0.95rem;
+      cursor: pointer;
+      background-color: #444;
+      color: white;
+    }
+
+    .choice-button:hover {
+      background-color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="phone-frame" onclick="handleClick()">
+    <div class="top-bar">บิ๊ก 🟢</div>
+    <div class="chat-area" id="chat-box"></div>
+    <div class="choice-box" id="choice-box">
+      <button class="choice-button" onclick="choose(1)">1. ออกไปตอนนี้</button>
+      <button class="choice-button" onclick="choose(2)">2. อยู่ต่ออีกหน่อย</button>
+    </div>
+    <div class="click-hint" id="hint">แตะหน้าจอเพื่ออ่านข้อความถัดไป</div>
+  </div>
+
+  <script>
+    const chatBox = document.getElementById('chat-box');
+    const choiceBox = document.getElementById('choice-box');
+    const hint = document.getElementById('hint');
+    const phoneFrame = document.querySelector('.phone-frame');
+
+    const introMessages = [
+      { text: "อยู่ตรงไหนอะ", from: "friend" },
+      { text: "โต๊ะอยู่แถวหน้าเลย เธอมากับใครอะ?", from: "user" },
+      { text: "คนเดียว มารับฝนกลับเนี่ย", from: "friend" },
+      { text: "เพิ่งมาถึงได้ไม่นานเองนะ จะให้กลับแล้วเหรอ555", from: "user" },
+      { text: "กลับดึกมันอันตราย เดี๋ยวไปต่อบ้านเราดีกว่า อิอิ", from: "friend" },
+      { text: "รู้นะว่าคิดไร", from: "user" },
+      { text: "ถ้ารู้แล้วก็เดินออกมานอกร้าน จะได้ไปบ้านเรา", from: "friend" },
+      { text: "รออยู่รถครับ", from: "friend" }
+    ];
+
+    const option1Messages = [
+      { text: "ก็ได้ๆ ขอบอกเพื่อนก่อนนะ", from: "user" },
+      { text: "เร็วๆนะ คิดถึง", from: "friend" },
+      { text: "เวอร์แล้ว คิดถึงอะไรโทรคุยกันแทบทุกวัน", from: "user" },
+      { text: "ก็ได้แค่คุยอะ ไม่เห็นจะมาเจอกัน", from: "friend" },
+      { text: "ก็ทำงานไง", from: "user" },
+      { text: "บ้างานจริงเธอนี่", from: "friend" },
+      { text: "ก็ถ้าอยู่เฉยๆแล้วมีเงินเข้าบัญชีทุกวันก็ไม่ทำงานหรอก", from: "user" },
+      { text: "ครับๆ รีบมาได้แล้ว", from: "friend" }
+    ];
+
+    const option2Messages = [
+      { text: "รอแปปนึงได้ไหม นานๆทีฝนจะเจอเพื่อนอะ", from: "user" },
+      { text: "แล้วเธอไม่อยากเจอเราเหรอ?", from: "friend" },
+      { text: "เราไม่เจอเธอมาหลายเดือนแล้วนะเพราะเธอเอาแต่ทำงาน", from: "friend" },
+      { text: "เราเข้าใจ แต่วันนี้เราตั้งใจจะมาเจอเพื่อน", from: "user" },
+      { text: "แล้วเธอจะนัดเราออกมาทำไม?", from: "friend" },
+      { text: "ก็กะว่าจะให้มานั่งดื่มด้วยกัน แล้วค่อยกลับพร้อมกันไม่คิดว่าเธอจะรีบขนาดนี้", from: "user" },
+      { text: "เข้ามาในร้านก่อนมั้ย?", from: "user" },
+      { text: "เอาเถอะ เดี๋ยวรออยู่ที่จอดรถนี่แหละ", from: "friend" },
+      { text: "อย่านานก็แล้วกัน ไม่งั้นเราไม่รอแล้วนะ", from: "friend" }
+    ];
+
+    let index = 0;
+    let currentMessages = introMessages;
+    let waitingForChoice = false;
+    let afterChoice = false;
+
+    function handleClick() {
+      if (waitingForChoice) return;
+      if (index < currentMessages.length) {
+        showMessage(currentMessages[index]);
+        index++;
+        if (index === currentMessages.length && !afterChoice) {
+          waitingForChoice = true;
+          choiceBox.style.display = 'flex';
+        }
+      } else if (afterChoice) {
+        hint.textContent = "แตะหน้าจอเพื่อไปหน้าถัดไป...";
+        phoneFrame.onclick = () => {
+          window.location.href = "END-Night3-Chatbig-for-Choice2.html"; // เปลี่ยนตามชื่อหน้าถัดไป
+        };
+      }
+    }
+
+    function choose(option) {
+      choiceBox.style.display = 'none';
+      waitingForChoice = false;
+      afterChoice = true;
+      index = 0;
+      currentMessages = option === 1 ? option1Messages : option2Messages;
+    }
+
+    function showMessage(msgData) {
+      const msg = document.createElement('div');
+      msg.classList.add('message', msgData.from === 'friend' ? 'from-friend' : 'from-user');
+      msg.textContent = msgData.text;
+      chatBox.appendChild(msg);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    window.onload = handleClick;
+  </script>
+</body>
+</html>

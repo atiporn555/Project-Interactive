@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>5 คืนสยอง - คืนที่ 2</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Kanit', sans-serif;
+    }
+
+    body {
+      background-color: #111;
+      color: white;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 20px;
+      overflow: hidden;
+    }
+
+    .scene-container {
+      width: 100%;
+      max-width: 700px;
+      text-align: center;
+    }
+
+    #night-label {
+      font-size: 1.4rem;
+      font-weight: bold;
+      opacity: 0;
+      margin-bottom: 20px;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .text-box {
+      font-size: 1.05rem;
+      opacity: 0;
+      transition: opacity 0.6s ease-in-out;
+      margin-bottom: 20px;
+    }
+
+    .choices {
+      display: none;
+      flex-direction: row; /* เป็นแถว */
+      gap: 20px; /* ช่องว่างระหว่างปุ่ม */
+      justify-content: center; /* จัดกึ่งกลาง */
+      flex-wrap: wrap; /* เวลาหน้าจอเล็กลงจะขึ้นบรรทัดใหม่ */
+      padding: 0;
+      background-color: transparent;
+      border-radius: 0;
+    }
+
+    .choice-button {
+      padding: 12px 20px;
+      font-size: 1rem;
+      background-color: #222;
+      border: 1px solid #555;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-width: 240px; /* ขนาดปุ่มเท่ากัน */
+      text-align: center;
+      white-space: nowrap;
+      margin: 0;
+    }
+
+    .choice-button:hover {
+      background-color: #444;
+      transform: scale(1.03);
+    }
+  </style>
+</head>
+<body onclick="nextText()">
+  <div class="scene-container">
+    <div id="night-label">คืนที่ 2</div>
+    <div class="text-box" id="text-box"></div>
+    <div class="choices" id="choice-box">
+      <button class="choice-button" onclick="selectChoice(1)">1. กลัว</button>
+      <button class="choice-button" onclick="selectChoice(2)">2. ไม่กลัว</button>
+    </div>
+  </div>
+
+  <script>
+    const textBox = document.getElementById("text-box");
+    const choiceBox = document.getElementById("choice-box");
+    const nightLabel = document.getElementById("night-label");
+
+    const texts = [
+      "น้ำฝน: เฮ้อออ...วันนี้ลูกค้าน้อยจัง",
+      "น้ำฝน: ไปเอาของมาเติมดีกว่า",
+      "(มีเสียงเดินดังขึ้นระหว่างที่ฉันกำลังเติมของ...)",
+      "น้ำฝน: (หืม? ลูกค้ามาเหรอ)",
+      "ฉันมั่นใจว่านั่นคือเสียงเดินแน่ๆ แต่พอกวาดสายตาไปรอบๆร้านกลับไม่เห็นใครเลย...",
+      "น้ำฝน: แปลกจัง หรือว่าฉันหูฝาดนะ",
+      "ลูกค้า: แม่หนู...",
+      "น้ำฝน: ว๊ายย!! คะ คุณยาย!?",
+      "ลูกค้า: ตายแล้ว..ขอโทษที่ทำให้ตกใจนะแม่หนู",
+      "น้ำฝน: มะ ไม่เป็นไรค่ะคุณยาย",
+      "ฉันเหงื่อตกคุณยายที่ดูชรามากเขายืนอยู่ด้านหลังของฉัน แต่สิ่งที่น่าแปลกใจยิ่งกว่าคือเธอเดินมาโดยที่ฉันไม่เห็นได้ยังไง....",
+      "ลูกค้า: ที่นี่เงียบจังเลยนะ อยู่คนเดียวไม่กลัวผีเหรอ?"
+    ];
+
+    let index = 0;
+    let isTransitioning = false;
+    let hasShownNightTitle = false;
+
+    function nextText() {
+      if (isTransitioning) return;
+      isTransitioning = true;
+
+      if (!hasShownNightTitle) {
+        nightLabel.style.opacity = 1;
+        setTimeout(() => {
+          nightLabel.style.opacity = 0;
+          hasShownNightTitle = true;
+          isTransitioning = false;
+        }, 1500);
+        return;
+      }
+
+      if (index < texts.length) {
+        textBox.style.opacity = 0;
+        setTimeout(() => {
+          textBox.textContent = texts[index++];
+          textBox.style.opacity = 1;
+          isTransitioning = false;
+        }, 400);
+      } else {
+        textBox.style.display = "none";
+        choiceBox.style.display = "flex";
+        isTransitioning = false;
+      }
+    }
+
+    window.onload = () => {
+      nightLabel.style.opacity = 1;
+    };
+
+    function selectChoice(choice) {
+      if (choice === 1) {
+        window.location.href = "N2-Choice1.html";
+      } else {
+        window.location.href = "N2-Choice2.html";
+      }
+    }
+  </script>
+</body>
+</html>

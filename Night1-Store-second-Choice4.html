@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>5 คืนสยอง - ลูกค้าคนที่ 2 (เรียกเงินเพิ่ม)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background-color: #111;
+      color: #fff;
+      font-family: 'Prompt', sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .scene-container {
+      width: 100%;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .time-label {
+      font-size: 1.2rem;
+      color: #ccc;
+      margin-bottom: 10px;
+    }
+
+    .text-box {
+      font-size: 1.05rem;
+      margin-bottom: 40px;
+      transition: opacity 0.4s ease-in-out;
+    }
+
+    #warning {
+      font-weight: bold;
+      color: yellow;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body onclick="nextText()">
+  <div class="scene-container">
+    <div class="time-label">คืนที่ 1</div>
+    <div id="warning">* ไม่สนับสนุนให้เยาวชนอายุต่ำกว่า 20 ปี สูบบุหรี่ *</div>
+    <div class="text-box" id="text-box"></div>
+  </div>
+
+  <script>
+    const textBox = document.getElementById("text-box");
+
+    const texts = [
+      "น้ำฝน: ขายก็ได้แต่จ่ายพี่มา 2 เท่าจะเอาปะ?",
+      "ลูกค้า: บ้าปะ! หน้าเงินเหรอวะ?",
+      "น้ำฝน: จะเอาไม่เอา? อยากสูบมากไม่ใช่เหรอก็จ่ายมาสิ",
+      "ลูกค้า: เออๆ แม่งวันเxยไรของกูวะ เจอแต่คนประสาท",
+      "(นี่เขายอมจ่ายจริงเหรอเนี่ย อยากสูบขนาดนั้นเลยเหรอ?)"
+    ];
+
+    let index = 0;
+    let isTransitioning = false;
+
+    function nextText() {
+      if (isTransitioning) return;
+      isTransitioning = true;
+
+      if (index < texts.length) {
+        textBox.style.opacity = 0;
+        setTimeout(() => {
+          textBox.textContent = texts[index++];
+          textBox.style.opacity = 1;
+          isTransitioning = false;
+        }, 200);
+      } else {
+        // ไปยังหน้าถัดไป
+        window.location.href = "END-Night1.html";
+      }
+    }
+
+    window.onload = nextText;
+  </script>
+</body>
+</html>

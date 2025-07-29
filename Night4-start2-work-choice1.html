@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>5 คืนสยอง - ตัวเลือกที่ 1</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Prompt', sans-serif;
+    }
+
+    body {
+      background-color: #111;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end; /* เน้นให้อยู่ด้านล่าง */
+      height: 100vh;
+      padding: 40px 20px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .scene-container {
+      max-width: 700px;
+      width: 100%;
+    }
+
+    .time-label {
+      font-size: 1.3rem;
+      color: #ccc;
+      margin-bottom: 20px;
+    }
+
+    .caption {
+      font-size: 1.1rem;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      white-space: pre-line;
+      margin-bottom: 20px;
+      min-height: 90px;
+    }
+
+    .choices {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .choice-button {
+      padding: 14px 22px;
+      font-size: 1rem;
+      background-color: #222;
+      border: 1px solid #555;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .choice-button:hover {
+      background-color: #444;
+      transform: scale(1.03);
+    }
+
+    @media screen and (max-width: 640px) {
+      .scene-container {
+        max-width: 95%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="scene-container">
+    <div class="caption" id="caption-text"></div>
+
+    <div class="choices" id="choice-box">
+      <button class="choice-button" onclick="goTo('Night4-big-come-for-choice-start2.html')">โกหกว่าแฟนจะมารับ</button>
+    </div>
+  </div>
+
+  <script>
+    const captions = [
+      "น้ำฝน: ลูกค้าคะ...ถ้าไม่ได้จะซื้ออะไร รบกวนรอที่หน้าร้านก่อนนะคะ ด้านหลังมีคนต่อแถวรออยู่ค่ะ...",
+      "(หญิงคนนั้นยืนนิ่ง ไม่สบตา น้ำเสียงแผ่วเบา)",
+      "ลูกค้า: ฉัน...แค่กำลังหาทางกลับไปที่ห้อง...",
+      "น้ำฝน: ห้อง...? ที่นี่เป็นร้านสะดวกซื้อค่ะ ไม่มีห้องพักนะคะ...",
+      "ลูกค้า: แต่ที่นี่เคยมี...ฉันเคยมานอนที่นี่...",
+      "น้ำฝน: ขอโทษนะคะ...คุณหมายถึงอะไรกันแน่คะ?",
+      "ลูกค้า: ชั้นสาม...ห้องริม...",
+      "น้ำฝน: เอ่อ...ขอโทษนะคะ ฉันคงช่วยอะไรไม่ได้จริง ๆ รบกวนลูกค้าออกไปก่อนนะคะ...",
+      "(หญิงคนนั้นเงียบ...ก่อนเดินถอยหลังออกจากเคาน์เตอร์ช้า ๆ และจ้องมองมาที่ฉันอย่างไม่ละสายตา)",
+      "ฝน: (...)",
+      "(เสียงประตูเลื่อนเปิด...พร้อมร่างของคนคุ้นหน้าเดินเข้ามาเงียบ ๆ)",
+      "ไทม์: มีอะไรหรือเปล่า? เห็นเธอทำหน้าตึง ๆ อยู่ตรงเคาน์เตอร์",
+      "น้ำฝน: อ๊ะ พี่ไทม์...ไม่มีอะไรหรอกค่ะ แค่มีลูกค้าคนนึงเข้ามาถามหาโรงแรมอะไรสักอย่าง...แต่เขาดูแปลก ๆ หน่อยน่ะค่ะ",
+      "ไทม์: อืม...ช่วงนี้คนแบบนั้นเยอะนะ เธอก็ระวังตัวหน่อยแล้วกัน ว่าแต่...ทำไมเมื่อคืนไม่เปิดร้านล่ะ?",
+      "น้ำฝน: อ๋อ..ฝนลางานหนึ่งคืน ป้าก็เลยปิดร้านไปเลยอ่ะ...",
+      "ไทม์: แปลกจัง...พี่มารออยู่นานเลยนะ คิดว่าเธอแค่เข้าห้องน้ำหรือไปหลังร้านเสียอีก...",
+      "น้ำฝน: เอ๋...? พี่...มารอฝนเหรอคะ?",
+      "ไทม์: ตอนกลางวัน...ใครมาส่งเธอเหรอ?",
+      "น้ำฝน: ... (เขาเห็นเหรอ? แล้วทำไมต้องถามแบบนั้น?)",
+      "น้ำฝน: เอ่อ...ว่าแต่วันนี้พี่ไม่ซื้อขนมหรือน้ำอัดลมหรอคะ? ปกติซื้อต้องซื้ออะไรสักอย่างนี่ ฮ่า ๆ (ฉันพยายามเบนประเด็น แต่บรรยากาศกลับอึดอัดขึ้นเรื่อย ๆ)",
+      "ไทม์: ฮะ...ดูเหมือนเธอจะจำได้นะ ว่าพี่ชอบกินอะไร เธอสังเกตพี่อยู่ใช่มั้ย?",
+      "น้ำฝน: เปล่าหรอกค่ะ แค่เห็นพี่ซื้อของเดิม ๆ เลยจำได้เฉย ๆ ค่ะ ฮะ ๆ",
+      "ไทม์: งั้นวันนี้...เลิกงานเร็วกว่าปกติสักหน่อยดีมั้ย? เดี๋ยวพี่ไปส่งถึงหอเลย",
+      "น้ำฝน: เอ่อ...ฝนว่า...คงไม่ได้หรอกค่ะ...",
+      "ไทม์: ทำไมล่ะ? เมื่อคืนก็เกือบโดนเรื่องไม่ดีมาไม่ใช่เหรอ? ให้พี่ไปส่งเถอะ จะได้ปลอดภัยดีกว่าไปกับผู้ชายที่ไม่รู้หัวนอนปลายเท้านะ",
+      "(เขารู้เรื่องเมื่อคืนได้ยังไง!?)",
+      "น้ำฝน: ...."
+    ];
+
+    const captionElem = document.getElementById('caption-text');
+    const choiceBox = document.getElementById('choice-box');
+
+    let index = 0;
+
+    function showNextCaption() {
+      if (index < captions.length) {
+        captionElem.style.opacity = 0;
+        setTimeout(() => {
+          captionElem.textContent = captions[index];
+          captionElem.style.opacity = 1;
+          index++;
+        }, 500);
+      } else {
+        captionElem.style.opacity = 0;
+        setTimeout(() => {
+          captionElem.style.display = 'none';
+          choiceBox.style.display = 'flex';
+        }, 500);
+      }
+    }
+
+    window.onload = () => {
+      showNextCaption();
+    };
+
+    document.body.onclick = () => {
+      if (choiceBox.style.display === 'flex') return;
+      showNextCaption();
+    };
+
+    function goTo(link) {
+      window.location.href = link;
+    }
+  </script>
+</body>
+</html>

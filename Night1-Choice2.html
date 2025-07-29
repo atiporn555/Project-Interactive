@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>5 คืนสยอง - เลื่อนฟีด</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background-color: #111;
+      color: white;
+      font-family: 'Kanit', sans-serif;
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .text-box {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 700px;
+      width: 90%;
+      font-size: 1.05rem;
+      text-align: center;
+      opacity: 1;
+      transition: opacity 1s ease;
+      white-space: pre-line;
+      line-height: 1.6;
+      padding: 0 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="text-box" class="text-box"></div>
+
+  <script>
+    const texts = [
+      `⚠ เตือนภัยสำหรับผู้ที่กลับบ้านตอนกลางคืน ⚠\n\nเมื่อคืนเวลา 01:25 น. มีนักศึกษาหญิงจากมหาวิทยาลัยแห่งหนึ่งเข้าแจ้งความกับตำรวจว่าเธอถูกชายแปลกหน้าเดินตามเข้าซอย\n\nชายคนนั้นสวมฮู้ดสีแดง ท่าทางน่าสงสัย พยายามขอเบอร์โทรศัพท์จากเธอ แต่เมื่อเธอปฏิเสธ เขาได้หยิบ "ค้อน" ขึ้นมาและพยายามทำร้าย\n\nโชคดีที่มีพลเมืองดีสองคนอยู่ใกล้ๆ และเข้าช่วยเหลือได้ทันเวลา ก่อนจะพาเธอส่งโรงพยาบาลใกล้เคียงได้อย่างปลอดภัย`,
+      `น่ากลัวจัง... คนสมัยนี้เป็นอะไรกันไปหมด คิดจะฆ่าแกงกันง่ายๆ แบบนี้เลยเหรอ?\n\nหวังว่าตำรวจจะจับคนร้ายได้เร็วๆ นี้ทีเถอะ...`,
+      `เอ๊ะ... ภาพที่เห็นในข่าว มันดูคุ้นๆ แฮะ คล้ายกับซอยที่ฉันกำลังเดินอยู่เลย...`,
+      `แต่ก็คงไม่ใช่หรอก ฉันคงคิดมากไปเอง เฮ้อ... รีบเดินดีกว่า อยากถึงร้านจะแย่แล้ว`,
+      `ใช้เวลาไม่นาน ฉันก็เดินมาถึงร้านที่ฉันทำงานประจำอยู่... ได้เวลาเริ่มงานแล้วล่ะ`
+    ];
+
+    const box = document.getElementById('text-box');
+    let index = 0;
+
+    function showNextText() {
+      if (index < texts.length) {
+        box.style.opacity = 0;
+        setTimeout(() => {
+          box.textContent = texts[index++];
+          box.style.opacity = 1;
+        }, 600);
+      } else {
+        window.location.href = "Night1-Store.html"; // ไปหน้าร้าน
+      }
+    }
+
+    window.onload = showNextText;
+    document.body.addEventListener('click', showNextText);
+  </script>
+</body>
+</html>

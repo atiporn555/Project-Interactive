@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>เรื่องเล่าฝน - หลังใช้น้ำหอม</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      background: #111;
+      color: white;
+      font-family: 'Prompt', sans-serif;
+      margin: 0;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      height: 100vh;
+      box-sizing: border-box;
+      user-select: none;
+      cursor: pointer;
+    }
+
+    .scene-container {
+      width: 100%;
+      max-width: 600px;
+      text-align: center;
+      font-size: 1.15rem;
+      line-height: 1.6;
+      white-space: pre-line;
+      min-height: 180px;
+    }
+
+    .caption-line {
+      margin: 1em 0;
+    }
+
+    .narration {
+      font-style: italic;
+      color: #ccc;
+    }
+
+    .speaker {
+      font-weight: 600;
+      margin-right: 0.4em;
+    }
+
+    .fon { color: #66ccff; }       /* สีฟ้าสำหรับฝน */
+    .time { color: #ff6666; }      /* สีแดงสำหรับไทม์ */
+    .teen { color: #90ee90; }      /* สีเขียวอ่อนสำหรับวัยรุ่น */
+
+    /* Fade-in animation */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.6s ease-out both;
+    }
+  </style>
+</head>
+<body onclick="nextLine()">
+  <div class="scene-container">
+    <div id="caption-text"></div>
+  </div>
+
+  <script>
+    const lines = [
+      'และในที่สุดโชคก็เข้าข้างฉัน แสงจากมอเตอร์ไซต์คันหนึ่งสาดเข้ามาในความมืด ฉันเห็นโอกาสจึงรีบเปล่งเสียงร้องขอความช่วยเหลือ',
+      'ฝน: ช่วยด้วย! จอดรถก่อนค่ะ!',
+      'วัยรุ่น: ?',
+      'ฝน: (นี่มันเด็กที่เคยมาซื้อบุหรี่ที่ร้านนี่!?)',
+      'ฝน: น้อง! ช่วยพี่ด้วยนะ! มีคนจะข่มขืนพี่!',
+      'วัยรุ่น: ห๊ะ? เดี๋ยวๆพี่ใจเย็น',
+      'ฝน: ช่วยด้วยนะน้อง พี่กลัว',
+      'หลังจากนั้นฉันก็ขอให้เด็กคนนั้นไปส่งที่โรงพัก ส่วนไทม์..ฉันไม่รู้ว่าเขาหายไปไหนแต่ดูเหมือนการใช้น้ำหอมฉีดใส่ตาเขาดูเหมือนจะได้ผล',
+      'ฉันยังคงตัวสั่น น้ำตาไหลด้วยความหวาดกลัว เด็กคนนั้นดูไม่เชื่อเพราะเขาไม่เห็นเหตุการณ์กับตาตัวเอง แต่เขาก็ยอมไปส่งที่โรงพัก',
+      'เมื่อเรื่องถึงโรงพัก คนรอบตัวฉันต่างตกใจมาก บิ๊กรีบมาหาทันทีที่รู้ข่าว และเพื่อนคนอื่นก็ตามมาสมทบในเวลาไม่นาน',
+      'ฉันให้การอย่างละเอียดเกี่ยวกับรูปพรรณของคนร้าย ในตอนแรกตำรวจไม่เชื่อสิ่งที่ฉันพูด พวกเขาจึงค้นข้อมูลย้อนหลัง — และนั่นทำให้ฉันช็อกอีกครั้ง…',
+      'พี่ไทม์คือโรคจิตที่เคยก่อเหตุในลักษณะนี้มาแล้วหลายครั้ง',
+      'และสิ่งที่น่าตกใจยิ่งกว่านั้นคือ เขาคือลูกชายของเจ้าของร้านที่ฉันทำงานอยู่!',
+      'ตำรวจโทรแจ้งคุณป้าเจ้าของร้านเพื่อเล่าเรื่องที่เกิดขึ้น คำพูดของเธอทำให้ฉันแทบลุกไม่ขึ้น...',
+      '“ก็รู้ว่าลูกชายเป็นแบบนี้มานานแล้ว แต่ไม่รู้จะทำยังไง เลยไม่อยากยุ่ง”',
+      '“แต่มีหลักฐานมั้ยว่าลูกชายฉันเป็นคนทำร้ายเด็กคนนั้น ถ้าไม่มีก็อย่ามากล่าวหากันสิ?”',
+      'หลังจากนั้นตำรวจเริ่มรวบรวมหลักฐาน พยายามติดต่อเหยื่อคนอื่น ๆ ที่เคยถูก “ไทม์” ทำร้าย เพื่อเรียกมาสอบปากคำให้คดีมีน้ำหนักมากพอ',
+      'ส่วนฉัน…',
+      'ฉันยื่นคำร้องขอความคุ้มครองจากตำรวจ เพราะรู้ดีว่าฉันอาจไม่ปลอดภัยอีกต่อไป',
+      'มันสอนให้ฉันรู้ว่า...',
+      'เหตุการณ์เลวร้ายแบบนี้ ไม่ใช่เรื่องไกลตัวเลย',
+      'มันสามารถเกิดขึ้นกับใครก็ได้ — แม้แต่คุณที่กำลังฟังเรื่องของฉันในตอนนี้...'
+    ];
+
+    const captionEl = document.getElementById('caption-text');
+    let index = 0;
+
+    function nextLine() {
+      if (index >= lines.length) return;
+
+      const text = lines[index];
+      let html = '';
+
+      if (text.includes(':')) {
+        const speaker = text.split(':')[0].trim();
+        const content = text.split(':').slice(1).join(':').trim();
+        let className = '';
+
+        if (speaker === 'ฝน') className = 'fon';
+        else if (speaker === 'ไทม์') className = 'time';
+        else if (speaker === 'วัยรุ่น') className = 'teen';
+        else className = 'speaker';
+
+        html = `<div class="caption-line"><span class="speaker ${className}">${speaker}:</span> ${content}</div>`;
+      } else {
+        html = `<div class="caption-line narration">${text.replace(/\n/g, "<br>")}</div>`;
+      }
+
+      captionEl.innerHTML = '';
+      const wrapper = document.createElement('div');
+      wrapper.className = 'fade-in';
+      wrapper.innerHTML = html;
+      captionEl.appendChild(wrapper);
+
+      index++;
+    }
+
+    window.onload = () => {
+      nextLine();
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>5 คืนสยอง - ตัวเลือกที่ 1</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background-color: #111;
+      color: #fff;
+      font-family: 'Prompt', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end; /* อยู่ล่าง */
+      height: 100vh;
+      padding-bottom: 40px;
+    }
+
+    .scene-container {
+      width: 100%;
+      max-width: 800px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .time-label {
+      font-size: 1.2rem;
+      color: #ccc;
+      margin-bottom: 10px;
+      position: absolute;
+      top: 20px;
+    }
+
+    #warning {
+      font-weight: bold;
+      color: yellow;
+      margin-bottom: 10px;
+    }
+
+    .text-box {
+      font-size: 1.1rem;
+      transition: opacity 0.4s ease-in-out;
+    }
+  </style>
+</head>
+<body onclick="nextLine()">
+  <div class="scene-container">
+    <div class="time-label">คืนที่ 1</div>
+    <div id="warning">* ไม่สนับสนุนให้เยาวชนอายุต่ำกว่า 20 ปี สูบบุหรี่ *</div>
+    <div class="text-box" id="text-box"></div>
+  </div>
+
+  <script>
+    const lines = [
+      "น้ำฝน: (เฮ้ออ...ยอมขายให้ดีกว่าไม่อยากมีปัญหากับเด็กพวกนี้)",
+      "ลูกค้า: เออก็แค่นี้ลีลาฉิXหาย"
+    ];
+
+    const textBox = document.getElementById("text-box");
+    let index = 0;
+    let isTransitioning = false;
+
+    function nextLine() {
+      if (isTransitioning) return;
+      isTransitioning = true;
+
+      if (index < lines.length) {
+        textBox.style.opacity = 0;
+        setTimeout(() => {
+          textBox.textContent = lines[index++];
+          textBox.style.opacity = 1;
+          isTransitioning = false;
+        }, 200);
+      } else {
+        window.location.href = "END-Night1.html";
+      }
+    }
+
+    window.onload = nextLine;
+  </script>
+</body>
+</html>

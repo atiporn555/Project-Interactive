@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>5 คืนสยอง - คืนที่ 4</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Kanit', sans-serif;
+    }
+
+    body {
+      background-color: #111;
+      color: white;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 20px;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .scene-container {
+      width: 100%;
+      max-width: 700px;
+    }
+
+    .text-box {
+      font-size: 1.05rem;
+      min-height: 60px;
+      opacity: 0;
+      transition: opacity 0.6s ease-in-out;
+      margin-bottom: 20px;
+    }
+
+    .name {
+      color: #80d0ff;
+      font-weight: bold;
+    }
+
+    .inner-thought {
+      font-style: italic;
+      color: #ccc;
+    }
+
+    .danger {
+      color: #ff6464;
+    }
+
+    .choice-box {
+      margin-top: 20px;
+    }
+
+    .choice-button {
+      display: block;
+      background-color: #444;
+      color: white;
+      padding: 18px 24px;
+      margin: 16px auto;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.1s ease;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .choice-button:hover {
+      background-color: #666;
+      transform: scale(1.02);
+    }
+  </style>
+</head>
+<body onclick="nextText()">
+  <div class="scene-container">
+    <div class="text-box" id="text-box"></div>
+    <div class="choice-box" id="choice-box" style="display: none;">
+      <button class="choice-button" onclick="choose(1)">กุญแจห้องใช้แทงไปที่คอ</button>
+      <button class="choice-button" onclick="choose(2)">น้ำหอมที่มีแอลกอฮอลผสม</button>
+      <button class="choice-button" onclick="choose(3)">ใช้ปากกัดมือของไทม์</button>
+    </div>
+  </div>
+
+  <script>
+    const textBox = document.getElementById("text-box");
+    const choiceBox = document.getElementById("choice-box");
+
+    const texts = [
+      '<span class="name">น้ำฝน:</span> "ไม่เป็นไรค่ะ…หนูเดินเองได้ เดี๋ยวก็ถึงแล้ว"',
+      '<span class="inner-thought">(ฉันพยายามรักษาน้ำเสียงให้เป็นปกติ แม้ในใจจะเริ่มตื่นกลัว)</span>',
+      '<span class="name">ไทม์:</span> "แต่พี่ไม่ให้ไปคนเดียวนะ มันอันตรายตอนดึก ๆ แบบนี้"',
+      '<span class="inner-thought">(เขาก้าวมาขวางหน้า ใกล้จนได้กลิ่นบุหรี่กับกลิ่นเหงื่อผสมกัน เหมือนกับจงใจแช่ในอากาศ)</span>',
+      '<span class="name">น้ำฝน:</span> "ขอโทษนะคะ หนูขอทางหน่อย"',
+      '<span class="name">ไทม์:</span> "เดินผ่านป่านี้คนเดียวมันไม่ดีหรอกฝน…รู้มั้ยว่าผู้หญิงหายไปแถวนี้ตั้งกี่คน" <span class="inner-thought">(ยิ้มแปลก ๆ ปากกระตุกเหมือนคนข่มอะไรบางอย่าง)</span>',
+      '<span class="name">ไทม์:</span> "แต่ไม่ต้องห่วง…พี่อยู่ตรงนี้แล้วนี่ไง…พี่จะดูแลเอง"',
+      '<span class="inner-thought">(มือเขาเอื้อมมาจับไหล่ฉัน แล้วค่อย ๆ ลูบลงมาช้า ๆ)</span>',
+      '<span class="name">น้ำฝน:</span> (เสียงสั่น) "พี่…อย่าทำแบบนี้เลย…หนูจะไปแล้ว"',
+      '<span class="inner-thought">(ฉันเบี่ยงตัวออก แต่เขากลับคว้าแขนฉันแน่นจนเจ็บ)</span>',
+      '<span class="name">ไทม์:</span> "ไม่เอาน่า…ฝนก็สวยดีออก อยู่กับพี่แป๊บเดียว…ไม่มีใครเห็นหรอก"',
+      '<span class="inner-thought">(จากนั้นเขาพยายามลากฉันไปทางข้างทางที่มีแต่ต้นไม้ ไม่มีไฟ ไม่มีตึก ไม่มีคนเลย — พงหญ้าและกลิ่นดินชื้นเริ่มใกล้ขึ้นเรื่อย ๆ)</span>',
+      '<span class="name">น้ำฝน:</span> "พี่อย่า!!! ปล่อยหนูไปเถอะนะ!!!"',
+      '<span class="inner-thought">(ฉันร้องลั่นทั้งน้ำตา ดิ้นเต็มแรง สะบัดแขนและพยายามหาของที่สามารถใช้เป็นอาวุธได้ในกระเป๋า)</span>',
+      '<strong>คุณจะใช้อะไรในการเอาตัวรอด?</strong>'
+    ];
+
+    let index = 0;
+    let isTransitioning = false;
+
+    function nextText() {
+      if (isTransitioning || choiceBox.style.display === "block") return;
+      isTransitioning = true;
+
+      textBox.style.opacity = 0;
+      setTimeout(() => {
+        if (index < texts.length) {
+          textBox.innerHTML = texts[index++];
+          textBox.style.opacity = 1;
+          isTransitioning = false;
+        } else {
+          textBox.style.display = "none";
+          choiceBox.style.display = "block";
+          isTransitioning = false;
+        }
+      }, 500);
+    }
+
+    function choose(option) {
+      if (option === 1) {
+        window.location.href = "Night4-use-key-start1.html";
+      } else if (option === 2) {
+        window.location.href = "Night4-use-perfume-start1.html";
+      } else if (option === 3) {
+        window.location.href = "Night4-use-bite.html";
+      }
+    }
+
+    window.onload = nextText;
+  </script>
+</body>
+</html>

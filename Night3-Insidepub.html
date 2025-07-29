@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>5 คืนสยอง - ผับยามค่ำคืน</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Kanit', sans-serif;
+    }
+    body {
+      background-color: #111;
+      color: white;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;       /* แก้ตรงนี้ */
+      justify-content: flex-end;    /* ดันเนื้อหาลงล่าง */
+      align-items: center;          /* กึ่งกลางแนวนอน */
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .scene-container {
+      width: 100%;
+      max-width: 640px;
+    }
+    .text-box {
+      font-size: 1.1rem;
+      min-height: 60px; /* คงตำแหน่งข้อความ */
+      opacity: 0;
+      transition: opacity 0.6s ease-in-out;
+      margin-bottom: 20px;
+    }
+    .choices {
+      display: none;
+      flex-direction: row;      /* เรียงปุ่มแนวนอน */
+      gap: 20px;                /* ช่องว่างระหว่างปุ่ม */
+      justify-content: center;  /* จัดกึ่งกลาง */
+      flex-wrap: wrap;          /* เวลาหน้าจอเล็กลงขึ้นบรรทัดใหม่ */
+      margin-top: 30px;
+    }
+    .choice-button {
+      padding: 12px 20px;
+      font-size: 1rem;
+      background-color: #222;
+      border: 1px solid #555;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-width: 240px;         /* ขนาดปุ่มเท่ากัน */
+      text-align: center;
+      white-space: nowrap;
+      margin: 0;
+    }
+    .choice-button:hover {
+      background-color: #333;
+      transform: scale(1.03);
+    }
+  </style>
+</head>
+<body onclick="nextText()">
+  <div class="scene-container">
+    <div class="text-box" id="text-box"></div>
+    <div class="choices" id="choice-box">
+      <button class="choice-button" onclick="event.stopPropagation(); selectChoice(1)">1. รับเครื่องดื่ม</button>
+      <button class="choice-button" onclick="event.stopPropagation(); selectChoice(2)">2. ปฏิเสธ</button>
+    </div>
+  </div>
+
+  <script>
+    const textBox = document.getElementById("text-box");
+    const choiceBox = document.getElementById("choice-box");
+
+    const texts = [
+      "[เสียงดนตรีเบา ๆ ฉากในผับที่มีไฟกระพริบ เงาคนเต้นไปมา น้ำฝน เหมียว และเอมี่นั่งโต๊ะใกล้บาร์หัวเราะกัน]",
+      "เอมี่: โอ้ยยย... คืนนี่ฉันขอเมาให้ลืมโลกเลยนะ!",
+      "เหมียว: เอมี่ เบาๆหน่อย เดี๋ยวหลุดไปเต้นบนโต๊ะอีก...",
+      "น้ำฝน: ฮ่าๆๆ อย่าเมาจนลืมกลับบ้านก็แล้วกันล่ะ",
+      "[ชายแปลกหน้าคนหนึ่งเดินเข้ามาที่โต๊ะ พร้อมเครื่องดื่ม 3 แก้ว]",
+      "ชายแปลกหน้า: สวัสดีครับสาว ๆ มากัน 3 คนเหรอครับ...สนใจมาดื่มด้วยกันมั้ยครับ?",
+      "[เขายื่นแก้วให้สาว ๆ]"
+    ];
+
+    let index = 0;
+    let isTransitioning = false;
+
+    function nextText() {
+      if (isTransitioning || index >= texts.length) return;
+      isTransitioning = true;
+
+      textBox.style.opacity = 0;
+      setTimeout(() => {
+        textBox.textContent = texts[index++];
+        textBox.style.opacity = 1;
+        isTransitioning = false;
+
+        if (index === texts.length) {
+          setTimeout(() => {
+            choiceBox.style.display = "flex";
+          }, 700);
+        }
+      }, 500);
+    }
+
+    function selectChoice(choice) {
+      if (choice === 1) {
+        window.location.href = "night3-Choice1.html";
+      } else {
+        window.location.href = "night3-Choice2.html";
+      }
+    }
+
+    window.onload = nextText;
+  </script>
+</body>
+</html>

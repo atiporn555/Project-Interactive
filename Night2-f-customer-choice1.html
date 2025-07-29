@@ -1,0 +1,88 @@
+<!DOCTYPE html> 
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>5 คืนสยอง - คืนที่ 2 (กลัว)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Kanit', sans-serif;
+    }
+
+    body {
+      background-color: #111;
+      color: white;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end; /* ดันข้อความลงล่าง */
+      align-items: center;
+      padding: 20px;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .scene-container {
+      width: 100%;
+      max-width: 700px;
+    }
+
+    .text-box {
+      font-size: 1.05rem;
+      min-height: 60px;
+      opacity: 0;
+      transition: opacity 0.6s ease-in-out;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body onclick="nextText()">
+  <div class="scene-container">
+    <div class="text-box" id="text-box"></div>
+  </div>
+
+  <script>
+    const textBox = document.getElementById("text-box");
+
+    const texts = [
+      "น้ำฝน: เอ่ออ...ก็กลัวอยู่นะคะ",
+      "คุณยาย: ฮ่าๆ ผีไม่น่ากลัวเท่าคนหรอกนะหนู",
+      "น้ำฝน: ก็คงงั้นมั้งคะ... (แปลกจังทำไมฉันได้กลิ่นแปลกๆมาจากตัวคุณยาย..กลิ่นมันเหม็นมาก)",
+      "น้ำฝน: คุณยายจะซื้อะไรมั้ยคะ ให้หนูช่วยหาของให้มั้ย",
+      "คุณยาย: ใจดีจัง...ยายหิว ไม่มีใครให้ยายกินข้าวมาหลายวันแล้ว",
+      "น้ำฝน: (สงสัยลูกหลานที่บ้านไม่ดูแล..น่าสงสารจัง)",
+      "น้ำฝน: งั้นคุณยายรอก่อนนะคะ หนูจะไปเอาข้าวที่ซื้อมาไว้ให้ค่ะอย่าพึ่งไปไหนนะคะ",
+      "คุณยาย: โอ้..ขอบคุณมากๆเลยนะ",
+      "(ฉันเดินไปหยิบข้าวที่ซื้อมาไว้กินตอนที่รู้สึกหิวใช้เวลาไม่ถึง 1 นาทีด้วยซ้ำในการเดินไปหยิบแต่เมื่อฉันเดินกลับมา...)",
+      "น้ำฝน: อ่าว..คุณยาย? ไปไหนแล้วนะ",
+      "(ยายคนนั้นหายตัวไปเหลือไว้แค่เพียงธูปหนึ่งดอกที่วางอยู่บนเคาน์เตอร์)",
+      "น้ำฝน: ธูป? เดี๋ยวสิ...ทำไมมันถึง..."
+    ];
+
+    let index = 0;
+    let isTransitioning = false;
+
+    function nextText() {
+      if (isTransitioning) return;
+      isTransitioning = true;
+
+      textBox.style.opacity = 0;
+      setTimeout(() => {
+        if (index < texts.length) {
+          textBox.textContent = texts[index++];
+          textBox.style.opacity = 1;
+          isTransitioning = false;
+        } else {
+          // จบบท เปลี่ยนหน้าแชท
+          window.location.href = "Night2-chat.html";
+        }
+      }, 500);
+    }
+
+    window.onload = nextText;
+  </script>
+</body>
+</html>

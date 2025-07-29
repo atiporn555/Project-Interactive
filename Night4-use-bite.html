@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>เรื่องเล่าฝน - ใช้ปากกัดมือไทม์</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Kanit', sans-serif;
+    }
+
+    body {
+      background-color: #111;
+      color: white;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 20px;
+      overflow: hidden;
+      text-align: center;
+      user-select: none;
+      cursor: pointer;
+    }
+
+    .scene-container {
+      width: 100%;
+      max-width: 700px;
+    }
+
+    .text-box {
+      font-size: 1.05rem;
+      min-height: 60px;
+      opacity: 0;
+      transition: opacity 0.6s ease-in-out;
+      margin-bottom: 20px;
+      line-height: 1.6;
+      white-space: pre-line;
+    }
+
+    .name {
+      font-weight: 600;
+      margin-right: 0.4em;
+    }
+
+    .fon {
+      color: #66ccff;
+    }
+
+    .time {
+      color: #ff6666;
+    }
+
+    .narration {
+      font-style: italic;
+      color: #ccc;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.6s ease-out both;
+    }
+  </style>
+</head>
+<body onclick="nextLine()">
+  <div class="scene-container">
+    <div class="text-box" id="caption-text"></div>
+  </div>
+
+  <script>
+    const lines = [
+      'ไทม์: คิดว่ากัดกูแล้วมึงจะรอดหรอ!!!?',
+      'ฝน: พี่…ปล่อยฝนไปเถอะ ขอร้องนะ… ฝนกลัว…',
+      'แต่มันไม่ได้ผล... เขาโกรธจัด ราวกับสัตว์ป่าที่ถูกขัดขืน เขากระชากตัวฉันกลับมาอย่างแรง แล้วเหวี่ยงฉันลงกับพื้น',
+      'หมัดหนัก ๆ กระแทกเข้าที่หลังและท้องซ้ำแล้วซ้ำเล่า —',
+      'แรงเจ็บแสบทุกจุด เหมือนร่างจะแตกเป็นเสี่ยง',
+      'ฉันพยายามดิ้น แต่เรี่ยวแรงในร่างค่อย ๆ หายไป สายตาเริ่มพร่ามัว เสียงรอบตัวกลายเป็นเหมือนเสียงในน้ำ',
+      'เจ็บ...กลัว...เหนื่อย...',
+      'ฉันได้ยินเสียงตัวเองพูดออกมาเบา ๆ ราวกับกระซิบ'
+    ];
+
+    const captionEl = document.getElementById('caption-text');
+    let index = 0;
+    let isTransitioning = false;
+
+    function nextLine() {
+      if (isTransitioning) return;
+
+      if (index >= lines.length) {
+        window.location.href = 'Die.html';  // ไปหน้าต่อไปเมื่อจบ
+        return;
+      }
+
+      isTransitioning = true;
+
+      const text = lines[index];
+      let html = '';
+
+      if (text.includes(':')) {
+        const speaker = text.split(':')[0].trim();
+        const content = text.split(':').slice(1).join(':').trim();
+        let className = '';
+
+        if (speaker === 'ฝน') className = 'fon';
+        else if (speaker === 'ไทม์') className = 'time';
+        else className = 'name';
+
+        html = `<span class="name ${className}">${speaker}:</span> ${content}`;
+      } else {
+        html = `<span class="narration">${text}</span>`;
+      }
+
+      captionEl.style.opacity = 0;
+      setTimeout(() => {
+        captionEl.innerHTML = `<div class="fade-in">${html}</div>`;
+        captionEl.style.opacity = 1;
+        index++;
+        isTransitioning = false;
+      }, 300);
+    }
+
+    window.onload = nextLine;
+  </script>
+</body>
+</html>

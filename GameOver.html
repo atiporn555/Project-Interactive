@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>Game Over - 5 คืนสยอง</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: black;
+      font-family: 'Sarabun', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      background-image: url('https://i.imgur.com/BztLl2x.gif'); /* พื้นหลังจอเสียแบบ gif */
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 0;
+    }
+
+    .content {
+      z-index: 1;
+      text-align: center;
+      color: white;
+      /* animation: glitch 1s infinite;  <-- ลบ animation นี้ออก */
+    }
+
+    h1 {
+      font-size: 5rem;
+      color: red;
+      text-shadow: 2px 2px 5px black;
+    }
+
+    p {
+      font-size: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .btn {
+      margin-top: 2rem;
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+      background: darkred;
+    }
+
+    /* ถ้าต้องการเก็บไว้ในอนาคตก็ได้ แต่ตอนนี้ไม่ใช้ */
+    @keyframes glitch {
+      0% { transform: translate(0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(2px, -2px); }
+      60% { transform: translate(-2px, -2px); }
+      80% { transform: translate(2px, 2px); }
+      100% { transform: translate(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay"></div>
+  <div class="content">
+    <h1>GAME OVER</h1>
+    <p>น้ำฝนหายตัวไปอย่างไร้ร่องรอย...</p>
+    <button class="btn" onclick="location.href='Home-pasge.html'">กลับหน้าแรก</button>
+  </div>
+</body>
+</html>

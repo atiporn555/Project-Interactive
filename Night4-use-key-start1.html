@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>5 คืนสยอง - ใช้กุญแจแทง</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Kanit', sans-serif;
+    }
+
+    body {
+      background-color: #111;
+      color: white;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 20px;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .scene-container {
+      width: 100%;
+      max-width: 700px;
+    }
+
+    .text-box {
+      font-size: 1.05rem;
+      min-height: 60px;
+      opacity: 0;
+      transition: opacity 0.6s ease-in-out;
+      margin-bottom: 20px;
+    }
+
+    .name {
+      color: #ff7777;
+      font-weight: bold;
+    }
+
+    .inner-thought {
+      font-style: italic;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body onclick="nextText()">
+  <div class="scene-container">
+    <div class="text-box" id="text-box"></div>
+  </div>
+
+  <script>
+    const textBox = document.getElementById("text-box");
+
+    const texts = [
+      '<span class="name">ไทม์:</span> "โอ้ยยย!! แม่งเอ้ย อีฝน!!"',
+      '<span class="inner-thought">(ในระหว่างที่เขาถอยไปเพราะความเจ็บปวด ฉันก็รีบวิ่งหนีอย่างสุดชีวิต ณ ตอนนั้นฉันภาวนาขอให้มีใครขับรถผ่านมาสักคน)</span>',
+      '<span class="name">ไทม์:</span> "มึงจะหนีไปไหน!!"',
+      '<span class="name">ฝน:</span> "ช่วยด้วยค่ะ!!"',
+      '<span class="inner-thought">(ฉันวิ่งหนีด้วยความสั่นกลัว พยายามร้องขอความช่วยเหลือระหว่างที่วิ่ง)</span>'
+    ];
+
+    let index = 0;
+    let isTransitioning = false;
+
+    function nextText() {
+      if (isTransitioning) return;
+      isTransitioning = true;
+
+      textBox.style.opacity = 0;
+      setTimeout(() => {
+        if (index < texts.length) {
+          textBox.innerHTML = texts[index++];
+          textBox.style.opacity = 1;
+          isTransitioning = false;
+        } else {
+          // สามารถเชื่อมไปหน้าเนื้อเรื่องถัดไปได้ที่นี่
+          window.location.href = "Night4-chat-choice-key.html";
+        }
+      }, 500);
+    }
+
+    window.onload = nextText;
+  </script>
+</body>
+</html>

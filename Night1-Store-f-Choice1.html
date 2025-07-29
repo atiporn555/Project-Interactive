@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>5 คืนสยอง - ร้านสะดวกซื้อ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background-color: #111;
+      color: #fff;
+      font-family: 'Prompt', sans-serif;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end; /* จัดให้อยู่ล่างสุดของหน้าจอ */
+    }
+
+    .scene-container {
+      width: 100%;
+      text-align: center;
+    }
+
+    .time-label {
+      font-size: 1.2rem;
+      color: #ccc;
+      margin-bottom: 10px;
+    }
+
+    .text-box {
+      font-size: 1.05rem;
+      margin-bottom: 40px;
+      transition: opacity 1s ease-in-out;
+    }
+  </style>
+</head>
+<body>
+  <div class="scene-container">
+    <div class="time-label">คืนที่ 1</div>
+    <div class="text-box" id="text"></div>
+  </div>
+
+  <script>
+    const texts = [
+      "น้ำฝน: ขอบคุณมากค่า คุณลุงใจดีจังเลยนะคะ",
+      "คุณลุง: เฮ้ออ ลุงสงสารเด็กจบใหม่แบบหนู ควรไปทำงานดีๆสิ เอาเป็นว่าสู้ๆละกัน",
+      "น้ำฝน: (แล้วงานที่ฉันทำอยู่ตอนนี้มันผิดกฎหมายรึไง?) ทั้งหมด 65 บาทค่ะ"
+    ];
+
+    const textBox = document.getElementById("text");
+    let index = 0;
+
+    function showNextText() {
+      if (index < texts.length) {
+        textBox.style.opacity = 0;
+        setTimeout(() => {
+          textBox.textContent = texts[index++];
+          textBox.style.opacity = 1;
+        }, 400);
+      } else {
+        window.location.href = 'Night1-Store-secondcustomer.html';
+      }
+    }
+
+    window.onload = showNextText;
+    document.body.addEventListener('click', showNextText);
+  </script>
+</body>
+</html>

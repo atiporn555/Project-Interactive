@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>5 คืนสยอง - คืนที่ 4</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Kanit', sans-serif;
+    }
+
+    body {
+      background-color: #111;
+      color: white;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      text-align: center;
+      padding: 40px 20px;
+      cursor: pointer;
+    }
+
+    .scene-container {
+      max-width: 700px;
+      width: 100%;
+    }
+
+    #night-label {
+      font-size: 1.4rem;
+      font-weight: bold;
+      opacity: 0;
+      margin-bottom: 20px;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .text-box {
+      font-size: 1.05rem;
+      white-space: pre-line;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+      margin-bottom: 20px;
+    }
+
+    .next-hint {
+      font-size: 0.9rem;
+      color: #888;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .next-hint.visible {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body onclick="nextText()">
+  <div class="scene-container">
+    <div id="night-label">คืนที่ 4</div>
+    <div class="text-box" id="text-box"></div>
+    <div class="next-hint" id="next-hint">แตะหน้าจอเพื่อไปหน้าถัดไป...</div>
+  </div>
+
+  <script>
+    const texts = [
+      "วันนี้ฉันกลับมาทำงานตามปกติ...\nทั้งที่ร่างกายยังเหนื่อยล้าแทบจะขยับไม่ไหว",
+      "ฉันได้แต่หวังว่า...คืนนี้จะไม่มีอะไรแปลก ๆ เกิดขึ้นอีก\nเพราะตอนนี้ ฉันเหนื่อยเกินกว่าจะรับมือกับอะไรได้อีกแล้ว..."
+    ];
+
+    const nightLabel = document.getElementById("night-label");
+    const textBox = document.getElementById("text-box");
+    const nextHint = document.getElementById("next-hint");
+
+    let index = 0;
+    let hasShownTitle = false;
+    let finished = false;
+    let isTransitioning = false;
+
+    function nextText() {
+      if (isTransitioning) return;
+      isTransitioning = true;
+
+      if (!hasShownTitle) {
+        nightLabel.style.opacity = 1;
+        setTimeout(() => {
+          nightLabel.style.opacity = 0;
+          hasShownTitle = true;
+          isTransitioning = false;
+        }, 1500);
+        return;
+      }
+
+      if (index < texts.length) {
+        textBox.style.opacity = 0;
+        setTimeout(() => {
+          textBox.textContent = texts[index++];
+          textBox.style.opacity = 1;
+          isTransitioning = false;
+
+          if (index === texts.length) {
+            nextHint.classList.add("visible");
+            finished = true;
+          }
+        }, 400);
+      } else {
+        window.location.href = "Night4-start2-work-have-choice.html";
+      }
+    }
+
+    window.onload = () => {
+      nightLabel.style.opacity = 1;
+    };
+  </script>
+</body>
+</html>

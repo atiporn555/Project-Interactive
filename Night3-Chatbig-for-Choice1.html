@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>5 คืนสยอง - แชทกับบิ๊ก</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background-color: #222;
+      font-family: 'Sarabun', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      cursor: pointer;
+    }
+
+    .phone-frame {
+      width: 360px;
+      height: 640px;
+      border: 16px solid #000;
+      border-radius: 36px;
+      background-color: #ccc;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .top-bar {
+      background-color: #f1f1f1;
+      text-align: center;
+      padding: 10px;
+      font-weight: bold;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    .chat-area {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      background-color: #eee;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .message {
+      max-width: 75%;
+      padding: 10px 14px;
+      border-radius: 18px;
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+
+    .from-friend {
+      align-self: flex-start;
+      background-color: #fff;
+      color: #000;
+    }
+
+    .from-user {
+      align-self: flex-end;
+      background-color: #2196f3;
+      color: #fff;
+    }
+
+    .click-hint {
+      text-align: center;
+      padding: 6px;
+      font-size: 0.85rem;
+      color: #666;
+      background-color: #f1f1f1;
+    }
+  </style>
+</head>
+<body onclick="showNextMessage()">
+  <div class="phone-frame">
+    <div class="top-bar">บิ๊ก 🟢</div>
+    <div class="chat-area" id="chat-box"></div>
+    <div class="click-hint">แตะหน้าจอเพื่ออ่านข้อความถัดไป</div>
+  </div>
+
+  <script>
+    const chatMessages = [
+      { text: "เธอหายไปไหนเนี่ย?", from: "friend" },
+      { text: "จะตอบแชทได้ยัง?", from: "friend" },
+      { text: "ไหนบอกให้ไปเจอกัน โทรไปก็ไม่รับตั้งแต่เมื่อคืนแล้วนะ", from: "friend" },
+      { text: "ขอโทษ เมื่อคืนมีเรื่องอะ TT", from: "user" },
+      { text: "เราเพิ่งกลับมาบ้าน", from: "user" },
+      { text: "?", from: "friend" },
+      { text: "มีเรื่องอะไร?", from: "friend" },
+      { text: "เมื่อคืนดื่มแก้วที่โต๊ะข้างๆเอามาให้ แต่ในแก้วดันมียาอยู่อะ", from: "user" },
+      { text: "ห๊ะ? เธอบ้าปะเนี่ยทำไมถึงรับแก้วจากคนไม่รู้จัก", from: "friend" },
+      { text: "ก็ไม่คิดว่ามันจะเป็นแบบนี้", from: "user" },
+      { text: "เฮ้ออ แล้วตอนนี้อาการเป็นไงให้ไปหามั้ย", from: "friend" },
+      { text: "ดีขึ้นแล้ว ไม่ต้องมาหรอก", from: "user" },
+      { text: "ไม่อยากรบกวนเวลางานเธอ", from: "user" },
+      { text: "งั้นเลิกงานแล้วเดี๋ยวไปหาอยู่ร้าน", from: "friend" },
+      { text: "ไม่ต้องห้ามนะ เพราะยังไงก็จะไปหา", from: "friend" }
+    ];
+
+    let index = 0;
+    const chatBox = document.getElementById('chat-box');
+
+    function showNextMessage() {
+      if (index < chatMessages.length) {
+        const msg = document.createElement('div');
+        msg.classList.add('message');
+        msg.classList.add(chatMessages[index].from === 'friend' ? 'from-friend' : 'from-user');
+        msg.textContent = chatMessages[index].text;
+        chatBox.appendChild(msg);
+        chatBox.scrollTop = chatBox.scrollHeight;
+        index++;
+      } else {
+        // จบแชท → ไปหน้าถัดไป (เช่น night4-start.html)
+        setTimeout(() => {
+          window.location.href = "END-Night3-Chatbig-for-Choice1.html";
+        }, 1000);
+      }
+    }
+
+    window.onload = showNextMessage;
+  </script>
+</body>
+</html>

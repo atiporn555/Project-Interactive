@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>5 คืนสยอง - คืนที่ 1 (ปฏิเสธเครื่องดื่ม)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background-color: #111;
+      color: #fff;
+      font-family: 'Prompt', sans-serif;
+      height: 100vh;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      padding-bottom: 40px;
+    }
+
+    .scene-container {
+      width: 100%;
+      text-align: center;
+    }
+
+    .time-label {
+      font-size: 1.2rem;
+      color: #ccc;
+      margin-bottom: 10px;
+    }
+
+    .text-box {
+      font-size: 1.05rem;
+      margin-bottom: 10px;
+      transition: opacity 1s ease-in-out;
+    }
+  </style>
+</head>
+<body>
+  <div class="scene-container">
+    <div class="time-label">คืนที่ 1</div>
+    <div class="text-box" id="text">คลิกที่หน้าจอเพื่อดำเนินเรื่อง...</div>
+  </div>
+
+  <script>
+    const texts = [
+      "น้ำฝน: ไม่เป็นไรค่ะ หนูดื่มกาแฟมาแล้ว ขอบคุณนะคะ",
+      "คุณลุง: เออๆ เอาไปเหอะ ลุงหวังดี เอานี่เงินไม่ต้องทอนล่ะ เอาไว้ไปซื้อข้าวกินนะหนู",
+      "น้ำฝน: เอ่อ...มันเกินมาเยอะเลยนะคะ",
+      "(ฉันก็ดีใจอยู่หรอกที่เขาให้ทิป... แต่ทำไมต้องมองฉันแบบนั้นด้วยนะ....)"
+    ];
+
+    const textBox = document.getElementById("text");
+    let index = 0;
+    let finished = false;
+
+    function showNext() {
+      if (index < texts.length) {
+        textBox.style.opacity = 0;
+        setTimeout(() => {
+          textBox.textContent = texts[index++];
+          textBox.style.opacity = 1;
+        }, 400);
+      } else if (!finished) {
+        finished = true;
+      } else {
+        window.location.href = 'Night1-Store-secondcustomer.html';
+      }
+    }
+
+    document.body.addEventListener("click", showNext);
+    window.onload = showNext;
+  </script>
+</body>
+</html>

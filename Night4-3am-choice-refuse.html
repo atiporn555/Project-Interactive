@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>5 คืนสยอง - คืนที่ 2</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Kanit', sans-serif;
+    }
+
+    body {
+      background-color: #111;
+      color: white;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 20px;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .scene-container {
+      width: 100%;
+      max-width: 700px;
+    }
+
+    .text-box {
+      font-size: 1.05rem;
+      min-height: 60px;
+      opacity: 0;
+      transition: opacity 0.6s ease-in-out;
+      margin-bottom: 20px;
+    }
+
+    .name {
+      color: #80d0ff;
+      font-weight: bold;
+    }
+
+    .inner-thought {
+      font-style: italic;
+      color: #ccc;
+    }
+
+    .danger {
+      color: #ff6464;
+    }
+
+    .choice-box {
+      margin-top: 20px;
+    }
+
+    .choice-button {
+      display: block;
+      background-color: #444;
+      color: white;
+      padding: 18px 24px;
+      margin: 16px auto;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.1s ease;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .choice-button:hover {
+      background-color: #666;
+      transform: scale(1.02);
+    }
+  </style>
+</head>
+<body onclick="nextText()">
+  <div class="scene-container">
+    <div class="text-box" id="text-box"></div>
+    <div class="choice-box" id="choice-box" style="display: none;">
+      <button class="choice-button" onclick="choose(1)">ปฏิเสธและรีบเดินต่อ</button>
+    </div>
+  </div>
+
+  <script>
+    const textBox = document.getElementById("text-box");
+    const choiceBox = document.getElementById("choice-box");
+
+    const texts = [
+      "<strong class='danger'>[เตือนภัย]</strong> ขณะนี้มีโรคจิตที่ชอบล่วงละเมิดกำลังหลบหนีการจับกุมอยู่ ตำรวจคาดว่าผู้ต้องสงสัยอยู่บริเวณย่าน <strong>xxx</strong>",
+      "<span class='name'>น้ำฝน:</span> โรคจิตเหรอ? แล้วทำไมต้องเบลอหน้าคนร้ายด้วยเนี่ย แบบนี้ฉันจะรู้ได้ยังไงว่าหน้าตาไอบ้านี่เป็นแบบไหน",
+      "<span class='inner-thought'>เดี๋ยวนะ...ทำไมเหมือนคนที่อยู่ด้านหลังเดินไวขึ้นนะ?</span>",
+      "<span class='danger'>ชายฮูทดำ:</span> คนสวย ดึกๆ แบบนี้จะไปไหนเหรอ",
+      "<span class='inner-thought'>นี่เขาถามฉันเหรอ?</span>",
+      "<span class='danger'>ชายฮูทดำ:</span> ไม่เคยเห็นหน้าเลยนะเนี่ย เป็นคนแถวนี้เหรอ? ให้พี่ไปส่งมั้ยจ๊ะ",
+      "<span class='inner-thought'>ตอนนั้นฉันตัดสินใจวิ่งให้เร็วที่สุดเพราะรู้สึกไม่ปลอดภัย...แต่เหมือนฉันจะหนีเสือปะจรเข้ 'พี่ไทม์' เขายืนอยู่ด้านหน้าฉัน</span>",
+      "<span class='name'>ไทม์:</span> อ่าวฝน",
+      "<span class='name'>น้ำฝน:</span> พี่ไทม์? <span class='inner-thought'>(ทำไมเขามาอยู่ที่นี่?)</span>",
+      "<span class='name'>ไทม์:</span> หืออ? ตอนนี้ยังไม่เช้าเลยทำไมกลับบ้านก่อนแล้วล่ะ ไหนบอกว่าจะไม่เลิกงานก่อนเวลาไง",
+      "<span class='inner-thought'>ไม่รู้ทำไมแต่ตอนนั้นฉันรู้สึกกลัวเขามากๆ มันเหมือนกับเขามาดักรอฉัน</span>",
+      "<span class='name'>ไทม์:</span> เงียบทำไมล่ะ เป็นอะไรไปเหรอ?",
+      "<span class='name'>น้ำฝน:</span> พะ พี่มาทำอะไรตรงนี้?",
+      "<span class='name'>ไทม์:</span> อ่าว ก็บ้านพี่อยู่แถวนี้ อะไรของเราเนี่ย ทำงานจนเบลอแล้วเหรอ ดึกๆแบบนี้กลับบ้านคนเดียวไม่ปลอดภัยนะ เดี๋ยวพี่เดินไปส่ง",
+      "<span class='inner-thought'>บ้าน? จะบ้ารึไง ตรงนี้มีบ้านคนที่ไหนกัน!</span>",
+      "<span class='name'>น้ำฝน:</span> มะ ไม่เป็นไร ฝนกลับเองดีกว่า",
+      "<span class='name'>ไทม์:</span> ไม่ต้องเกรงใจหรอกนะ",
+      "<span class='inner-thought'>ณ ตอนนั้นฉันทำอะไรไม่ถูก หากเดินย้อนกลับไปก็คงต้องเจอกับผู้ชายแปลกๆตรงนั้น แต่ถ้าเดินต่อไปพี่ไทม์คงไม่ปล่อยให้ฉันไปคนเดียวแน่...สถานการณ์แบบนี้ฉันควรจะทำยังไง!?</span>"
+    ];
+
+    let index = 0;
+    let isTransitioning = false;
+
+    function nextText() {
+      if (isTransitioning || choiceBox.style.display === "block") return;
+      isTransitioning = true;
+
+      textBox.style.opacity = 0;
+      setTimeout(() => {
+        if (index < texts.length) {
+          textBox.innerHTML = texts[index++];
+          textBox.style.opacity = 1;
+          isTransitioning = false;
+        } else {
+          // จบข้อความทั้งหมด -> แสดงตัวเลือก
+          textBox.style.display = "none";
+          choiceBox.style.display = "block";
+          isTransitioning = false;
+        }
+      }, 500);
+    }
+
+    function choose(option) {
+      if (option === 1) {
+        window.location.href = "Night4-3am-choice-protect-yourself.html";
+      }
+    }
+
+    window.onload = nextText;
+  </script>
+</body>
+</html>

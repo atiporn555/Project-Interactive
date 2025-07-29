@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>5 คืนสยอง - ตัวเลือก: บอกแฟนจะมารับ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      background-color: #111;
+      color: white;
+      font-family: 'Prompt', sans-serif;
+      height: 100vh;
+      user-select: none;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end; /* ข้อความอยู่ด้านล่าง */
+      padding: 40px 20px;
+      box-sizing: border-box;
+    }
+
+    .scene-container {
+      width: 100%;
+      max-width: 600px;
+      text-align: center;
+    }
+
+    .caption {
+      font-size: 1.1rem;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+      line-height: 1.6;
+      white-space: pre-line;
+    }
+  </style>
+</head>
+<body onclick="nextCaption()">
+  <div class="scene-container">
+    <div class="caption" id="caption-text"></div>
+  </div>
+
+  <script>
+    const captions = [
+      "ฝน: เอ่อ...คือแฟนจะมารับน่ะค่ะ เดี๋ยวเลิกงานแล้วฝนกลับกับเขาดีกว่า...",
+      "(จู่ ๆ พี่ไทม์เงียบไป สีหน้ายิ้ม ๆ เมื่อครู่ก็หายไปทันที)",
+      "ไทม์: แฟนเหรอ?",
+      "ฝน: ....",
+      "ไทม์: ฝนไว้ใจเขาเหรอ...? ไว้ใจมากกว่าพี่อีกเหรอ?",
+      "ฝน: เอ่อ...พี่ไทม์...วันนี้ดูแปลก ๆ ไปนะคะ มีอะไรหรือเปล่า?",
+      "ไทม์: เปล่า...พี่แค่รู้สึกเสียใจนิดหน่อย ที่ฝนเลือกคนอื่น แทนที่จะเป็นพี่...",
+      "(ฉันเริ่มรู้สึกได้ถึงบางอย่างที่ผิดปกติ...บรรยากาศรอบตัวเริ่มอึดอัดขึ้นเรื่อย ๆ)",
+      "(แล้วเสียงหนึ่งก็ดังขึ้นจากทางหน้าประตู)",
+      "บิ๊ก: ฝน",
+      "ฝน: อ๊ะ บิ๊ก! (ขอบคุณพระเจ้า มาทันเวลาพอดี!)",
+      "บิ๊ก: ขอโทษทีนะ ไม่คิดว่าจะยังมีลูกค้าอยู่",
+      "ฝน: ไม่เป็นไรเลย เอ่อ...นี่ไงคะแฟนฝน (ได้โปรด บิ๊ก ช่วยเล่นตามน้ำด้วย...)",
+      "บิ๊ก: หวัดดีครับ",
+      "(พี่ไทม์เงียบ ไม่ตอบรับ...ดวงตาเขามองบิ๊กด้วยสายตานิ่ง ๆ ราวกับไม่พอใจ)",
+      "ฝน: (สีหน้าของพี่ไทม์ตอนนี้...มันไม่ใช่รอยยิ้มแบบเดิมอีกแล้ว มันคืออะไรบางอย่าง...ที่ทำให้ฉันรู้สึกกลัว)",
+      "(พี่ไทม์เดินออกจากร้านไปโดยไม่พูดอะไร)",
+      "บิ๊ก: คนรู้จักเหรอ?",
+      "ฝน: อืม แต่วันนี้พี่เขาดูแปลกๆน่ะ เฮ้อออ",
+      "บิ๊ก: วันนี้กลับไวหน่อยมั้ย ไปพักหน่อยเถอะ เจ้าของร้านไม่ว่าอะไรหรอก",
+      "ฝน: อืม..สงสัยคงต้องเลิกงานก่อนเวลาแล้ว รู้สึกไม่ดีเลยแฮะ",
+      "(ฉันเล่าเรื่องเหตุการณ์เมื่อคืนให้บิ๊กฟังด้วยความลังเล เขาดูโกรธเล็กน้อยที่ฉันไม่ระมัดระวังตัว แต่เขาก็ไม่ได้ตำหนิอะไร เพราะมันเป็นเรื่องที่ไม่มีใครคาดคิดว่าจะเกิดขึ้น... เราคุยกันอยู่พักใหญ่ บรรยากาศการพูดคุยที่จริงใจและห่วงใยของเขาทำให้ฉันรู้สึกเบาใจขึ้นอย่างมาก)",
+      "(หลังจากนั้น บิ๊กต้องรีบกลับเพราะมีงานแต่เช้า ฉันจึงตัดสินใจโทรหาเจ้าของร้านเพื่อขอเลิกงานก่อนเวลา โดยให้เหตุผลว่ารู้สึกไม่ค่อยสบาย โชคดีที่คุณป้าเข้าใจและอนุญาตให้ฉันกลับไปพักผ่อนในคืนนั้นได้)"
+    ];
+
+    const captionText = document.getElementById('caption-text');
+    let currentIndex = 0;
+
+    function nextCaption() {
+      if (currentIndex < captions.length) {
+        captionText.style.opacity = 0;
+        setTimeout(() => {
+          captionText.textContent = captions[currentIndex];
+          captionText.style.opacity = 1;
+          currentIndex++;
+
+          if (currentIndex === captions.length) {
+            setTimeout(() => {
+              window.location.href = 'Night4-3am-for-start1-2.html';
+            }, 1000);
+          }
+        }, 400);
+      }
+    }
+
+    window.onload = () => {
+      nextCaption();
+    };
+  </script>
+</body>
+</html>

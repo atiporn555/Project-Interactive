@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>5 คืนสยอง - ความรู้สึกของเหยื่อ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Kanit', sans-serif;
+    }
+
+    body {
+      background-color: #111;
+      color: white;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      overflow: hidden;
+      text-align: center;
+      cursor: pointer; /* เพิ่ม cursor pointer ให้รู้ว่าคลิกได้ */
+    }
+
+    .scene-container {
+      width: 100%;
+      max-width: 700px;
+      position: relative;
+    }
+
+    .text-box {
+      font-size: 1.1rem;
+      min-height: 120px;
+      opacity: 0;
+      transition: opacity 0.6s ease-in-out;
+      margin-bottom: 20px;
+      line-height: 1.6;
+      white-space: pre-line;
+    }
+
+    .inner-thought {
+      font-style: italic;
+      color: #ccc;
+    }
+
+    #btn-home {
+      display: none;
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #ff7777;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      z-index: 10;
+      position: relative;
+    }
+
+    #btn-home:hover {
+      background-color: #ff4444;
+    }
+  </style>
+</head>
+<body onclick="nextText()">
+  <div class="scene-container">
+    <div class="text-box inner-thought" id="text-box"></div>
+    <button id="btn-home" onclick="goHome(event)">กลับไปหน้าแรก</button>
+  </div>
+
+  <script>
+    const textBox = document.getElementById("text-box");
+    const btnHome = document.getElementById("btn-home");
+
+    const texts = [
+      `“บางคนคิดว่า…พอเรื่องเลวร้ายผ่านไป ทุกอย่างก็น่าจะกลับมาเหมือนเดิมได้”`,
+      `“แต่สำหรับเหยื่อ…มันไม่มีวันเหมือนเดิมอีกเลย”`,
+      `“ความกลัวในวันนั้น มันไม่จางหายไปพร้อมกับเวลา แต่มันฝังแน่น…อยู่ในใจเหมือนเงาดำที่เกาะติดไม่ยอมปล่อย”`,
+      `“แค่เดินคนเดียวในตอนกลางคืน…แค่เสียงฝีเท้าเบา ๆ ข้างหลัง หรือแม้แต่แสงไฟที่กระพริบในซอยว่างเปล่า ก็ทำให้หัวใจเต้นแรง…เหมือนกำลังจะเกิดอะไรขึ้นอีกครั้ง”`,
+      `“คนที่ไม่เคยเจอ อาจไม่มีวันเข้าใจว่าความรู้สึกเหล่านี้มันจริงแค่ไหน…แต่นี่คือชีวิตของเหยื่อ ที่ต้องใช้ทุกวันต่อสู้กับความรู้สึกเดิม ๆ ที่ไม่เคยจากไป”`,
+      `“มันไม่ใช่แค่ความกลัว แต่มันคือความเจ็บปวด ความสับสน ความอับอาย และความรู้สึกผิด…ทั้งที่เราไม่ควรต้องรู้สึกผิดเลยด้วยซ้ำ”`,
+      `“เราแค่อยากให้ทุกคนรู้…ว่าสิ่งที่เกิดขึ้น มันพรากบางอย่างในตัวเราไปตลอดกาล และเราก็ไม่อยากเห็นใครต้องเจอกับความรู้สึกแบบนี้อีกเลย…”`
+    ];
+
+    let index = 0;
+    let isTransitioning = false;
+
+    function nextText() {
+      if (isTransitioning) return;
+      isTransitioning = true;
+
+      textBox.style.opacity = 0;
+      setTimeout(() => {
+        if (index < texts.length) {
+          textBox.textContent = texts[index++];
+          textBox.style.opacity = 1;
+          isTransitioning = false;
+        } else {
+          // แสดงปุ่มเมื่อจบข้อความทั้งหมด
+          textBox.style.opacity = 0;
+          setTimeout(() => {
+            textBox.style.display = 'none';
+            btnHome.style.display = 'inline-block';
+            isTransitioning = false;
+          }, 300);
+        }
+      }, 500);
+    }
+
+    function goHome(event) {
+      event.stopPropagation(); // ป้องกันไม่ให้คลิกปุ่มแล้วไป trigger nextText()
+      window.location.href = "index.html";
+    }
+
+    window.onload = nextText;
+  </script>
+</body>
+</html>

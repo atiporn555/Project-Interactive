@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>5 คืนสยอง - แชทมือถือ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background-color: #222;
+      font-family: 'Sarabun', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .phone-frame {
+      width: 360px;
+      height: 640px;
+      border: 16px solid #000;
+      border-radius: 36px;
+      background-color: #ccc;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .top-bar {
+      background-color: #f1f1f1;
+      text-align: center;
+      padding: 10px;
+      font-weight: bold;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    .chat-area {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      background-color: #eee;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .message {
+      max-width: 75%;
+      padding: 10px 14px;
+      border-radius: 18px;
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+
+    .from-friend {
+      align-self: flex-start;
+      background-color: #fff;
+      color: #000;
+    }
+
+    .from-user {
+      align-self: flex-end;
+      background-color: #2196f3;
+      color: #fff;
+    }
+
+    .click-hint {
+      text-align: center;
+      padding: 6px;
+      font-size: 0.85rem;
+      color: #666;
+      background-color: #f1f1f1;
+    }
+  </style>
+</head>
+<body>
+  <div class="phone-frame">
+    <div class="top-bar">เหมียว 🟢</div>
+    <div class="chat-area" id="chat-box"></div>
+    <div class="click-hint">แตะหน้าจอเพื่ออ่านข้อความถัดไป</div>
+  </div>
+
+  <script>
+    const chatMessages = [
+      { text: "ฝน แกได้งานยังวะ", from: "friend" },
+      { text: "จบไปหลายเดือนแล้วนะมีอะไรให้ฉันช่วยปะ", from: "friend" },
+      { text: "ไม่เป็นไรเหมียว ฉันยื่นสมัครงานไปหลายที่แล้วรออีกสักหน่อยเดี๋ยวก็ได้งานเอง", from: "user" },
+      { text: "ฉันเห็นแกบอกรออีกสักหน่อยมา 3 รอบแล้ว", from: "friend" },
+      { text: "แล้วนี่แกทำอะไรอยู่ที่ต่างจังหวัดอะ", from: "friend" },
+      { text: "มาสมัครงานเป็นพนักงานในร้านสะดวกซื้อแถวบ้าน งานชิลๆ", from: "user" },
+      { text: "555 ชิลกี่โมง", from: "friend" },
+      { text: "เออ วันที่ 13 เพื่อนนัดรวมตัวกินเลี้ยงกันแกมามั้ย? มาเถอะนะ", from: "friend" },
+      { text: "พวกแกชอบนัดดึกกันอะ ฉันไปไม่ได้ต้องทำงาน", from: "user" },
+      { text: "ทำงานดึกขนาดนั้นเลยเหรอ? อันตรายนะฝน", from: "friend" },
+      { text: "ออกไปกับพวกแกก็อันตรายเหมือนกัน 555 ขอคิดก่อนละกันแต่ตอนนี้ต้องไปทำงานแล้วจ้า", from: "user" }
+    ];
+
+    let index = 0;
+    const chatBox = document.getElementById('chat-box');
+
+    function showNextMessage() {
+      if (index < chatMessages.length) {
+        const msg = document.createElement('div');
+        msg.classList.add('message');
+        msg.classList.add(chatMessages[index].from === 'friend' ? 'from-friend' : 'from-user');
+        msg.textContent = chatMessages[index].text;
+        chatBox.appendChild(msg);
+        chatBox.scrollTop = chatBox.scrollHeight;
+        index++;
+      } else {
+        setTimeout(() => window.location.href = "Night1.html", 1500);
+      }
+    }
+
+    window.addEventListener('click', showNextMessage);
+    window.onload = showNextMessage;
+  </script>
+</body>
+</html>

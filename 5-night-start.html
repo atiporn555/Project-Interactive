@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>5 คืนสยอง</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Sarabun', sans-serif;
+    }
+
+    body {
+      background-color: #000;
+      color: white;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    #text-box {
+      font-size: 1.5rem;
+      max-width: 80%;
+      text-align: center;
+      line-height: 2;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+      min-height: 100px;
+    }
+
+    #click-hint {
+      margin-top: 30px;
+      font-size: 1rem;
+      color: #ccc;
+      background: none;
+      border: none;
+      cursor: pointer;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="text-box"></div>
+  <div id="click-hint">คลิกเพื่อไปต่อ</div>
+
+  <script>
+    const texts = [
+      "สวัสดีค่ะ... ฉันชื่อน้ำฝน เป็นนักศึกษาจบใหม่ที่ยังไม่มีงานทำ...",
+      "ความกดดันของเด็กจบใหม่อย่างฉันคือการที่ไม่มีงานทำในช่วงเวลาที่เศรษฐกิจย่ำแย่แบบนี้",
+      "ฉันไม่รู้ว่าฉันมีความสามารถมากพอที่จะทำงานในบริษัทใหญ่ได้หรือเปล่า...",
+      "ระหว่างที่รอการตอบกลับของบริษัทต่าง ๆ ฉันได้ไปสมัครงานที่ร้านสะดวกซื้อแถวบ้าน...",
+      "ในตอนแรกฉันชอบงานนี้มาก... จนกระทั่งเกิดเหตุการณ์บางอย่างขึ้น...",
+      "และมันทำให้ฉันตัดสินใจลาออก และไม่คิดจะกลับไปที่นั่นอีกเลย..."
+    ];
+
+    let index = 0;
+    const textBox = document.getElementById('text-box');
+
+    function showNextText() {
+      // เริ่มจากทำให้ข้อความหาย
+      textBox.style.opacity = 0;
+
+      setTimeout(() => {
+        if (index < texts.length) {
+          textBox.textContent = texts[index++];
+          textBox.style.opacity = 1;
+        } else {
+          window.location.href = "chat-start.html"; // เปลี่ยนหน้า
+        }
+      }, 500); // รอให้ข้อความหายก่อนแสดงใหม่
+    }
+
+    // เมื่อโหลดหน้าเว็บ
+    window.onload = () => {
+      textBox.textContent = texts[index++];
+      textBox.style.opacity = 1;
+    };
+
+    // เมื่อคลิกทั้งหน้า
+    document.body.addEventListener('click', showNextText);
+  </script>
+
+</body>
+</html>

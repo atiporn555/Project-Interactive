@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>5 คืนสยอง - บ้านของบิ๊ก</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Kanit', sans-serif;
+    }
+
+    body {
+      background-color: #111;
+      color: white;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;   /* ดันเนื้อหาลงล่าง */
+      align-items: center;         /* กึ่งกลางแนวนอน */
+      text-align: center;
+      padding: 30px 20px;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .text-box {
+      font-size: 1.1rem;
+      max-width: 600px;
+      min-height: 80px;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      margin-bottom: 20px;
+      white-space: pre-line;
+    }
+
+    .next-hint {
+      font-size: 0.9rem;
+      color: #888;
+      margin-bottom: 10px;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .next-hint.visible {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body onclick="handleClick()">
+  <div class="text-box" id="text-box"></div>
+  <div class="next-hint" id="next-hint">แตะหน้าจอเพื่อไปหน้าถัดไป...</div>
+
+  <script>
+    const texts = [
+      "คืนนั้นบิ๊กรับฉันกลับไปที่บ้านของเขา…\nฉันเคยไปที่นั่นอยู่บ้าง สองสามครั้งเห็นจะได้",
+      "แม้เราจะยังไม่ได้ตกลงคบกันเป็นแฟน\nแต่ครอบครัวของเขาก็ให้การต้อนรับฉันอย่างดีเสมอ",
+      "เรานั่งดื่มกันต่อที่บ้านเขา...\nฉันดื่มเยอะกว่าที่คิดไว้มาก จนแทบไม่เหลือความทรงจำอะไรเลยในคืนนั้น",
+      "ภาพสุดท้ายที่ยังจำได้...\nฉันนอนอยู่บนเตียง และเห็นบิ๊กกำลังทำอะไรบางอย่างอยู่ใกล้ ๆ",
+      "เช้าวันต่อมาเขาขับรถไปส่งฉันที่หอ\nเขาดูแปลก ๆ เหมือนมีอะไรในใจที่อยากจะพูด…\nแต่สุดท้ายฉันก็เลือกที่จะไม่ถามอะไรออกไปเลย"
+    ];
+
+    const textBox = document.getElementById("text-box");
+    const nextHint = document.getElementById("next-hint");
+    let index = 0;
+    let finished = false;
+
+    function handleClick() {
+      if (finished) {
+        window.location.href = "Night4-Start-2.html"; // ลิงก์หน้าถัดไป
+        return;
+      }
+
+      textBox.style.opacity = 0;
+
+      setTimeout(() => {
+        textBox.textContent = texts[index++];
+        textBox.style.opacity = 1;
+
+        if (index === texts.length) {
+          nextHint.classList.add("visible");
+          finished = true;
+        }
+      }, 300);
+    }
+
+    window.onload = handleClick;
+  </script>
+</body>
+</html>

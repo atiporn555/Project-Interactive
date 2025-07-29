@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>5 คืนสยอง - มองบรรยากาศรอบๆ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background-color: #111;
+      color: white;
+      font-family: 'Kanit', sans-serif;
+      height: 100vh;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end; /* จัดข้อความไว้ล่างสุด */
+    }
+
+    .caption {
+      font-size: 1.1rem;
+      opacity: 0;
+      transition: opacity 1s ease;
+      white-space: pre-line;
+      line-height: 1.6;
+      padding: 10px 20px;
+      max-width: 700px;
+      text-align: center;
+      margin-bottom: 40px; /* เพิ่มระยะห่างจากขอบล่าง */
+    }
+  </style>
+</head>
+<body>
+  <div class="caption" id="caption-text"></div>
+
+  <script>
+    const captions = [
+      "ฉันเลือกที่จะดื่มด่ำกับบรรยากาศคืนนี้...แทนที่จะหยิบมือถือขึ้นมาเล่น",
+      "ไม่ว่าจะมองกี่ครั้งซอยนี้ก็ยังคงน่ากลัว...ไฟน้อย แถมด้านในเป็นซอยตันอีก",
+      "ถนนตรงนี้ก็ไม่ดีเลยแฮะ เมื่อไหร่พวกเขาจะมาซ่อมกันนะ...\nเดี๋ยวนะ นี่ฉันหวังอะไรอยู่เนี่ย?",
+      "ที่นี่ไม่ใช่ในกรุงนะ...พวกเขาจะสนใจทำไมล่ะ?\nร้องเรียนไปกี่ครั้งก็คงจะเหมือนเดิมสินะ\nพวกเขาลืมไปแล้วเหรอว่าจังหวัดเล็ก ๆ ของเราก็อยู่ในประเทศเหมือนกันน่ะ",
+      "แมวดำ?",
+      "น่ารักจังเลย แกเองก็ออกมาหากินเหมือนกันสินะ\nบ้านแกอยู่ไหนเนี่ย",
+      "ครั้งหน้าฉันจะเอาอาหารมาให้นะ...\nตอนนี้ฉันต้องรีบเดินไปทำงานแล้ว",
+      "ใช้เวลาไม่นานฉันก็เดินมาถึงร้านที่ฉันประจำอยู่...\nได้เวลาเริ่มงานแล้วล่ะ"
+    ];
+
+    const captionBox = document.getElementById('caption-text');
+    let index = 0;
+
+    function showNextCaption() {
+      captionBox.style.opacity = 0;
+
+      setTimeout(() => {
+        if (index < captions.length) {
+          captionBox.textContent = captions[index++];
+          captionBox.style.opacity = 1;
+        } else {
+          window.location.href = "Night1-Store.html";
+        }
+      }, 600);
+    }
+
+    window.onload = showNextCaption;
+    document.body.addEventListener('click', showNextCaption);
+  </script>
+</body>
+</html>

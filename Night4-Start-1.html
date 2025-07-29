@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>5 คืนสยอง - คืนที่ 4</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Kanit', sans-serif;
+    }
+
+    body {
+      background-color: #111;
+      color: white;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 20px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .scene-container {
+      width: 100%;
+      max-width: 700px;
+      text-align: center;
+    }
+
+    #night-label {
+      font-size: 1.4rem;
+      font-weight: bold;
+      opacity: 0;
+      margin-bottom: 20px;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .text-box {
+      font-size: 1.05rem;
+      opacity: 0;
+      transition: opacity 0.6s ease-in-out;
+      margin-bottom: 20px;
+      white-space: pre-line;
+    }
+
+    .next-hint {
+      font-size: 0.9rem;
+      color: #888;
+      margin-bottom: 10px;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .next-hint.visible {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body onclick="handleClick()">
+  <div class="scene-container">
+    <div id="night-label">คืนที่ 4</div>
+    <div class="text-box" id="text-box"></div>
+    <div class="next-hint" id="next-hint">แตะหน้าจอเพื่อไปหน้าถัดไป...</div>
+  </div>
+
+  <script>
+    const texts = [
+      "วันนี้ฉันกลับมาทำงานเหมือนเดิม...ทั้งที่ร่างกายยังรู้สึกเหนื่อยและอ่อนล้าเหลือเกิน",
+      "บิ๊กบอกว่าจะมาหาฉันที่ร้าน...ก็ดีเหมือนกันล่ะนะ ถ้าได้เจอหน้าเขาบ้าง...",
+      "ฉันหวังว่า..เราทั้งสองจะไม่ทะเลาะกันเพราะเรื่องที่เกิดขึ้นกับฉันเมื่อคืน..."
+    ];
+
+    const textBox = document.getElementById("text-box");
+    const nightLabel = document.getElementById("night-label");
+    const nextHint = document.getElementById("next-hint");
+
+    let index = 0;
+    let hasShownTitle = false;
+    let finished = false;
+    let isTransitioning = false;
+
+    function handleClick() {
+      if (isTransitioning) return;
+      isTransitioning = true;
+
+      if (!hasShownTitle) {
+        nightLabel.style.opacity = 1;
+        setTimeout(() => {
+          nightLabel.style.opacity = 0;
+          hasShownTitle = true;
+          isTransitioning = false;
+        }, 1500);
+        return;
+      }
+
+      if (index < texts.length) {
+        textBox.style.opacity = 0;
+        setTimeout(() => {
+          textBox.textContent = texts[index++];
+          textBox.style.opacity = 1;
+          isTransitioning = false;
+
+          if (index === texts.length) {
+            nextHint.classList.add("visible");
+            finished = true;
+          }
+        }, 400);
+      } else {
+        // เปลี่ยนหน้าถัดไป
+        window.location.href = "Night4-start1-work-choice1.html";
+      }
+    }
+
+    window.onload = () => {
+      nightLabel.style.opacity = 1;
+    };
+  </script>
+</body>
+</html>

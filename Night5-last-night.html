@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>5 คืนสยอง - คืนที่ 5</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Kanit', sans-serif;
+    }
+
+    body {
+      background-color: #111;
+      color: white;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 20px;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .scene-container {
+      width: 100%;
+      max-width: 700px;
+    }
+
+    .text-box {
+      font-size: 1.05rem;
+      min-height: 60px;
+      opacity: 0;
+      transition: opacity 0.6s ease-in-out;
+      margin-bottom: 20px;
+    }
+
+    .inner-thought {
+      font-style: italic;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body onclick="nextText()">
+  <div class="scene-container">
+    <div class="text-box" id="text-box"></div>
+  </div>
+
+  <script>
+    const textBox = document.getElementById("text-box");
+
+    const texts = [
+      '<span class="inner-thought">“ตั้งแต่คืนนั้น... ฉันก็ไม่เคยหลับตาลงอย่างสบายใจได้อีกเลย<br>พอหลับตาเมื่อไหร่…ภาพตอนนั้นมันก็ย้อนกลับมาเต็มหัว เสียงฝีเท้าที่ใกล้เข้ามาเรื่อย ๆ… เสียงลมหายใจหนัก ๆ อยู่ด้านหลัง… ทุกอย่างมันยังชัดเหมือนเพิ่งเกิดขึ้นเมื่อวาน”</span>',
+      '<span class="inner-thought">“ฉันมักจะสะดุ้งตื่นกลางดึก เหงื่อออกจนตัวเปียก หัวใจเต้นแรงแทบจะหลุดออกจากอก พยายามบอกตัวเองว่า ‘มันจบไปแล้ว’ แต่ในหัวมันไม่เคยจบเลย มันยังวนเวียนอยู่ในนั้น...ไม่เคยหายไป”</span>',
+      '<span class="inner-thought">“แค่ได้ยินเสียงฝีเท้าจากข้างหลัง หรือเห็นแสงไฟกระพริบบนถนน ฉันก็เผลอตกใจจนขาแข็งไปหมด สมองมันตื้อ มือเย็นไปทั้งสองข้าง เหมือนร่างกายเตรียมจะหนีทันที ทั้ง ๆ ที่ไม่มีอะไรเกิดขึ้นเลยจริง ๆ”</span>',
+      '<span class="inner-thought">“มันเหมือนฉันยังติดอยู่ในคืนนั้น... ไม่ว่าจะผ่านมากี่วัน มันก็ยังตามฉันอยู่เสมอ”</span>'
+    ];
+
+    let index = 0;
+    let isTransitioning = false;
+
+    function nextText() {
+      if (isTransitioning) return;
+      isTransitioning = true;
+
+      textBox.style.opacity = 0;
+      setTimeout(() => {
+        if (index < texts.length) {
+          textBox.innerHTML = texts[index++];
+          textBox.style.opacity = 1;
+          isTransitioning = false;
+        } else {
+          // เมื่อจบบท อาจเปลี่ยนหน้า หรือแสดงปุ่มได้ที่นี่
+          window.location.href = "END-night5.html";
+        }
+      }, 500);
+    }
+
+    window.onload = nextText;
+  </script>
+</body>
+</html>

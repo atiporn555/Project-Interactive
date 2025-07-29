@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>5 คืนสยอง - คืนที่ 4</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Kanit', sans-serif;
+    }
+
+    body {
+      background-color: #111;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end; /* ชิดด้านล่าง */
+      height: 100vh;
+      padding: 40px 20px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .scene-container {
+      max-width: 700px;
+      width: 100%;
+    }
+
+    .time-label {
+      font-size: 1.3rem;
+      color: #ccc;
+      margin-bottom: 20px;
+    }
+
+    .caption {
+      font-size: 1.05rem;
+      opacity: 0;
+      transition: opacity 0.6s ease-in-out;
+      white-space: pre-line;
+      margin-bottom: 20px;
+      min-height: 80px;
+    }
+
+    .choices {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .choice-button {
+      padding: 14px 22px;
+      font-size: 1rem;
+      background-color: #222;
+      border: 1px solid #555;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .choice-button:hover {
+      background-color: #444;
+      transform: scale(1.03);
+    }
+
+    @media screen and (max-width: 640px) {
+      .scene-container {
+        max-width: 95%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="scene-container">
+    <div class="time-label">เวลา 00:00</div>
+    <div class="caption" id="caption-text"></div>
+
+    <div class="choices" id="choice-box">
+      <button class="choice-button" onclick="goTo('Night4-start1-work-choice1.html')">ขอให้ออกไปดีๆ</button>
+    </div>
+  </div>
+
+  <script>
+    const captions = [
+      "น้ำฝน: วันนี้ลูกค้าเยอะจังแฮะ...เป็นเพราะปิดไปหนึ่งวันหรือเปล่านะ",
+      "ลูกค้า: .....",
+      "น้ำฝน: (หือ? อะไรของเขาน่ะ ทำไมมายืนแล้วไม่พูดอะไรเลยล่ะ)",
+      "น้ำฝน: เอ่อ..ลูกค้าคะ กำลังหาอะไรอยู่หรือเปล่าคะ?",
+      "ลูกค้า: โรงแรม...หาโรงแรม",
+      "น้ำฝน: คะ?",
+      "ลูกค้า: โรงแรม XXX อยากกลับไป..",
+      "น้ำฝน: (คนสติไม่ดีรึเปล่าเนี่ย?)",
+      "น้ำฝน: ขอโทษนะคะ ฉันไม่รู้จักโรงแรมที่คุณพูดถึงเลย..เอาแบบนี้มั้ยคะ",
+      "น้ำฝน: ลองค้นหาชื่อโรงแรมในเน็ตดูมั้ยคะ?",
+      "ลูกค้า: ไม่ ไม่มี",
+      "ลูกค้าอีกคน: เฮ้ยย คิดตังนานจังวะ!",
+      "น้ำฝน: (คงต้องขอให้เขาออกไปแล้วล่ะ)"
+    ];
+
+    const captionElem = document.getElementById('caption-text');
+    const choiceBox = document.getElementById('choice-box');
+
+    let index = 0;
+
+    function showNextCaption() {
+      if (index < captions.length) {
+        captionElem.style.opacity = 0;
+        setTimeout(() => {
+          captionElem.textContent = captions[index];
+          captionElem.style.opacity = 1;
+          index++;
+        }, 400);
+      } else {
+        captionElem.style.opacity = 0;
+        setTimeout(() => {
+          captionElem.style.display = 'none';
+          choiceBox.style.display = 'flex';
+        }, 400);
+      }
+    }
+
+    window.onload = () => {
+      showNextCaption();
+    };
+
+    document.body.onclick = () => {
+      if (choiceBox.style.display === 'flex') return;
+      showNextCaption();
+    };
+
+    function goTo(link) {
+      window.location.href = link;
+    }
+  </script>
+</body>
+</html>

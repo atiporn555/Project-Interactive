@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>5 คืนสยอง - จบคืนที่ 2</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Kanit', sans-serif;
+    }
+
+    body {
+      background-color: #111;
+      color: white;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 40px 20px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .container {
+      max-width: 640px;
+      width: 100%;
+    }
+
+    .title {
+      font-size: 1.6rem;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .time {
+      font-size: 1.1rem;
+      color: #aaa;
+      margin-bottom: 24px;
+    }
+
+    .text {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      opacity: 0;
+      transition: opacity 0.8s ease-in-out;
+      margin-bottom: 30px;
+    }
+
+    .fade-in {
+      opacity: 1;
+    }
+
+    .instruction {
+      font-size: 0.95rem;
+      color: #888;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body onclick="goToNext()">
+  <div class="container">
+    <div class="title">คืนที่ 2</div>
+    <div class="time">เวลา 06:00 น.</div>
+    <div class="text" id="text-box">...</div>
+    <div class="instruction">(แตะที่หน้าจอเพื่อดำเนินเรื่องราวต่อ...)</div>
+  </div>
+
+  <script>
+    const text = `คืนนี้ฉันรู้สึกแปลก ๆ...<br>
+    มีบางอย่างผิดปกติ เหมือนกับว่าฉันกำลังถูกจ้องมองอยู่<br>
+    ฉันหวังว่า...ทุกอย่างจะไม่เลวร้ายไปกว่านี้...`;
+
+    function revealText() {
+      const box = document.getElementById("text-box");
+      setTimeout(() => {
+        box.innerHTML = text;
+        box.classList.add("fade-in");
+      }, 1000);
+    }
+
+    function goToNext() {
+      window.location.href = "night3-PUB.html"; // แก้ชื่อให้ตรงกับไฟล์ของคืนที่ 3
+    }
+
+    window.onload = revealText;
+  </script>
+</body>
+</html>

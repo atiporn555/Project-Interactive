@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>5 คืนสยอง - แชทกับเหมียว</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background-color: #222;
+      font-family: 'Sarabun', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .phone-frame {
+      width: 360px;
+      height: 640px;
+      border: 16px solid #000;
+      border-radius: 36px;
+      background-color: #ccc;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .top-bar {
+      background-color: #f1f1f1;
+      text-align: center;
+      padding: 10px;
+      font-weight: bold;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    .chat-area {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      background-color: #eee;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .message {
+      max-width: 75%;
+      padding: 10px 14px;
+      border-radius: 18px;
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+
+    .from-friend {
+      align-self: flex-start;
+      background-color: #fff;
+      color: #000;
+    }
+
+    .from-user {
+      align-self: flex-end;
+      background-color: #2196f3;
+      color: #fff;
+    }
+
+    .click-hint {
+      text-align: center;
+      padding: 6px;
+      font-size: 0.85rem;
+      color: #666;
+      background-color: #f1f1f1;
+    }
+  </style>
+</head>
+<body>
+  <div class="phone-frame">
+    <div class="top-bar">เหมียว 🟢</div>
+    <div class="chat-area" id="chat-box"></div>
+    <div class="click-hint">แตะหน้าจอเพื่ออ่านข้อความถัดไป</div>
+  </div>
+
+  <script>
+    const chatMessages = [
+      { text: "เหมียวฉันคืนี้ฉันเจออะไรแปลกๆด้วยอะ", from: "user" },
+      { text: "น่ากลัวมากฉันว่าฉันโดนผีหลอก", from: "user" },
+      { text: "ผี?", from: "friend" },
+      { text: "จริงปะแก แบบนี้ก็ต้อง...เรื่องมันเป็นงี้ค่ะพี่แจ็ค", from: "friend" },
+      { text: "เฮ้ย ไม่เล่น ฉันกลัวจริงนะ", from: "user" },
+      { text: "โอ้ย แกคิดมากไปปะเนี่ย ไหนลองเล่ามาสิ เจออะไร", from: "friend" },
+      { text: "ก็วันนี้ตอนฉันกำลังจัดของอยู่ ฉันมั่นใจว่ามีคนเดินเข้าร้านมาแน่ๆ แต่พอมองไปที่ประตูฉันไม่เห็นใครเลยนะ", from: "user" },
+      { text: "หูฝาด แกจิตปรุงแต่ง", from: "friend" },
+      { text: "ไม่ใช่ แล้วพอสักพักก็มียายคนนึงโผล่มาคือไม่มีทางที่ฉันจะไม่เห็นอะ แล้วยายแกมาขอกินข้าว ฉันเดินไปหยิบแค่แป๊ปเดียวจริงๆนะ พอกลับมายายก็หายไปแล้ว", from: "user" },
+      { text: "ยายสปีดเหรอ?", from: "friend" },
+      { text: "เหมียว แกเลิกติดเล่นได้ปะ ฉันจริงจัง", from: "user" },
+      { text: "โอเครๆ บางทีแกอาจจะหลอนก็ได้ ทำงานดึกๆ แบบนี้ก็ต้องมีบ้างเป็นธรรมดา", from: "friend" },
+      { text: "ถ้ามีอะไรอีก ก็โทรมาหาฉันละกัน", from: "friend" }
+    ];
+
+    let index = 0;
+    const chatBox = document.getElementById('chat-box');
+
+    function showNextMessage() {
+      if (index < chatMessages.length) {
+        const msg = document.createElement('div');
+        msg.classList.add('message');
+        msg.classList.add(chatMessages[index].from === 'friend' ? 'from-friend' : 'from-user');
+        msg.textContent = chatMessages[index].text;
+        chatBox.appendChild(msg);
+        chatBox.scrollTop = chatBox.scrollHeight;
+        index++;
+      } else {
+        setTimeout(() => window.location.href = "Night2-second-customer.html", 1500);
+      }
+    }
+
+    window.addEventListener('click', showNextMessage);
+    window.onload = showNextMessage;
+  </script>
+</body>
+</html>

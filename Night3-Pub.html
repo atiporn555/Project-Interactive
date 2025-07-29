@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>5 คืนสยอง - คืนที่ 3</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Kanit', sans-serif;
+    }
+
+    body {
+      background-color: #111;
+      color: white;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      padding: 40px 20px;
+      cursor: pointer;
+    }
+
+    .scene-container {
+      width: 100%;
+      max-width: 640px;
+      text-align: center;
+    }
+
+    .night-label {
+      font-size: 1.6rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    .text-box {
+      font-size: 1.2rem;
+      min-height: 60px;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+  </style>
+</head>
+<body onclick="nextText()">
+  <div class="scene-container">
+    <div class="night-label" id="night-label">คืนที่ 3</div>
+    <div class="text-box" id="text-box"></div>
+  </div>
+
+  <script>
+    const texts = [
+      "“คืนนี้...ฉันลางานจากร้านสะดวกซื้อ”",
+      "“ไม่ได้มีเหตุผลพิเศษอะไรหรอก แค่...อยากออกไปเจอเพื่อน ๆ บ้าง”",
+      "“มันนานมากแล้ว — ที่ฉันไม่ได้หัวเราะเสียงดัง ๆ หรือปล่อยตัวให้สนุกแบบนี้”",
+      "“บางที...ฉันก็แค่อยากลืมความรู้สึกแปลก ๆ ที่เกิดขึ้นในสองคืนก่อนให้หมดไป”",
+      "\"คืนนี้...ฉันแค่จะสนุกให้เต็มที่ ไม่ต้องคิดอะไรแล้ว\""
+    ];
+
+    let index = 0;
+    const textBox = document.getElementById("text-box");
+    const nightLabel = document.getElementById("night-label");
+
+    function nextText() {
+      if (index === 0) {
+        nightLabel.style.opacity = 1;
+      }
+
+      if (index < texts.length) {
+        textBox.style.opacity = 0;
+        setTimeout(() => {
+          textBox.textContent = texts[index];
+          textBox.style.opacity = 1;
+          index++;
+        }, 500);
+      } else if (index === texts.length) {
+        setTimeout(() => {
+          window.location.href = "N-3-InsidePub.html";
+        }, 1000);
+      }
+    }
+
+    window.onload = () => {
+      nextText();
+    };
+  </script>
+</body>
+</html>

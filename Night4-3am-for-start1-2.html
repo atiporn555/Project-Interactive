@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>5 คืนสยอง - คืนที่ 2</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Kanit', sans-serif;
+    }
+
+    body {
+      background-color: #111;
+      color: white;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 20px;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .scene-container {
+      width: 100%;
+      max-width: 700px;
+    }
+
+    #night-label {
+      font-size: 1.4rem;
+      font-weight: bold;
+      opacity: 0;
+      margin-bottom: 20px;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .text-box {
+      font-size: 1.1rem;
+      opacity: 0;
+      transition: opacity 0.6s ease-in-out;
+      margin-bottom: 30px;
+      white-space: pre-line;
+    }
+  </style>
+</head>
+<body onclick="nextText()">
+  <div class="scene-container">
+    <div id="night-label">03:00 a.m</div>
+    <div class="text-box" id="text-box"></div>
+  </div>
+
+  <script>
+    const textBox = document.getElementById("text-box");
+    const nightLabel = document.getElementById("night-label");
+
+    const texts = [
+      "น้ำฝน: เฮ้ออ... วันนี้พอแค่นี้ดีกว่า เหนื่อยจนอยากกลับไปพักเต็มที",
+      "(ฉันปิดร้านให้เรียบร้อย แล้วรีบออกมาโดยไม่รอช้า)",
+      "ซอยที่ฉันใช้กลับบ้านประจำกำลังซ่อมแซมอยู่ ทำให้ต้องอ้อมไปทางลัดที่ไม่ค่อยอยากใช้เท่าไหร่",
+      "ทางนั้นทั้งเปลี่ยว ทั้งมืด แถมมักจะมีคนเมาเดินผ่านไปมาเป็นประจำ",
+      "ระหว่างเดิน...",
+      "น้ำฝน: แปลกดีนะ... ฉันแทบไม่เคยผ่านทางนี้เลย มันดูอึมครึมยังไงไม่รู้",
+      "น้ำฝน: กลิ่นบุหรี่ก็ลอยฟุ้งไปทั่วอีกต่างหาก...",
+      "รอบตัวฉันมืดสนิท มีเพียงแสงไฟสลัวจากเสาไฟบางต้นที่ยังใช้งานได้",
+      "น้ำฝน: หือ...? รู้สึกเหมือนมีใครเดินตามมา...",
+      "(ฉันหันกลับไปมองอย่างระแวง...)",
+      "น้ำฝน: ...?",
+      "ชายแปลกหน้าสวมฮู้ดสีดำกำลังเดินตามมาอยู่ห่าง ๆ",
+      "น้ำฝน: (เขาเป็นคนแถวนี้เหรอ...? หรือว่าเพิ่งเลิกงานเหมือนฉัน?)",
+      "(ฉันพยายามไม่คิดมาก แล้วรีบเร่งฝีเท้าต่อไป)"
+    ];
+
+    let index = 0;
+    let isTransitioning = false;
+    let hasShownNightTitle = false;
+
+    function nextText() {
+      if (isTransitioning) return;
+      isTransitioning = true;
+
+      if (!hasShownNightTitle) {
+        nightLabel.style.opacity = 1;
+        setTimeout(() => {
+          nightLabel.style.opacity = 0;
+          hasShownNightTitle = true;
+          isTransitioning = false;
+        }, 1500);
+        return;
+      }
+
+      if (index < texts.length) {
+        textBox.style.opacity = 0;
+        setTimeout(() => {
+          textBox.textContent = texts[index++];
+          textBox.style.opacity = 1;
+          isTransitioning = false;
+        }, 400);
+      } else {
+        // ถ้าหมดแล้ว จะเปลี่ยนหน้า หรือทำอย่างอื่นตรงนี้
+        window.location.href = "Night4-3am-lockscreen.html"; // เปลี่ยน path ได้ตามต้องการ
+      }
+    }
+
+    window.onload = () => {
+      nightLabel.style.opacity = 1;
+    };
+  </script>
+</body>
+</html>

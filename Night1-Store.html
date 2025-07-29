@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>5 คืนสยอง - คืนที่ 1</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background-color: #111;
+      color: #fff;
+      font-family: 'Prompt', sans-serif;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      padding: 20px;
+    }
+
+    .scene-container {
+      text-align: center;
+      max-width: 700px;
+      width: 100%;
+      margin-bottom: 40px;
+    }
+
+    .time-label {
+      font-size: 1.2rem;
+      color: #ccc;
+      margin-bottom: 10px;
+    }
+
+    .text-box {
+      font-size: 1.05rem;
+      margin-bottom: 30px;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .choices {
+      display: none;
+      flex-direction: row; /* เปลี่ยนจาก column เป็น row */
+      gap: 20px;
+      justify-content: center; /* ให้ปุ่มอยู่ตรงกลาง */
+      flex-wrap: wrap;
+    }
+
+    .choice-button {
+      padding: 12px 20px;
+      font-size: 1rem;
+      background-color: #222;
+      border: 1px solid #555;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-width: 240px; /* ให้ปุ่มกว้างเท่ากัน */
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .choice-button:hover {
+      background-color: #444;
+      transform: scale(1.03);
+    }
+  </style>
+</head>
+<body>
+  <div class="scene-container">
+    <div class="time-label">คืนที่ 1</div>
+    <div class="text-box" id="text"></div>
+
+    <div class="choices" id="choice-box">
+      <button class="choice-button" onclick="goTo('Night1-Store-f-Choice1.html')">1. รับเครื่องดื่มมาและขอบคุณ</button>
+      <button class="choice-button" onclick="goTo('Night1-Store-f-Choice2.html')">2. ปฏิเสธอย่างสุภาพ</button>
+    </div>
+  </div>
+
+  <script>
+    const texts = [
+      "ฉันประจำที่เคาน์เตอร์และรอลูกค้ามา ไม่นานลูกค้าคนแรกของคืนนี้ก็มาที่นี่..",
+      "น้ำฝน: สวัสดีค่ะ ยินดีต้อนรับค่าา",
+      "คุณลุง: หนูคิดเงินให้ลุงหน่อย",
+      "น้ำฝน: รอสักครู่นะคะคุณลุง",
+      "คุณลุง: ทำงานดึกๆแบบนี้ไม่ง่วงเหรอ?",
+      "น้ำฝน: ก็...มีบ้างค่ะ (ฉันตอบพร้อมกับยิ้ม)",
+      "คุณลุง: อะ นี่ลุงซื้อให้เอาไปกินนะจะได้มีแรงทำงาน",
+      "(นี่เขาซื้อเครื่องดื่มให้ฉันเหรอ?)"
+    ];
+
+    const textBox = document.getElementById("text");
+    const choiceBox = document.getElementById("choice-box");
+    let index = 0;
+
+    function showNextText() {
+      if (index < texts.length) {
+        textBox.style.opacity = 0;
+        setTimeout(() => {
+          textBox.textContent = texts[index++];
+          textBox.style.opacity = 1;
+        }, 500);
+      } else {
+        textBox.style.opacity = 0;
+        setTimeout(() => {
+          textBox.style.display = 'none';
+          choiceBox.style.display = 'flex';
+        }, 500);
+      }
+    }
+
+    function goTo(link) {
+      window.location.href = link;
+    }
+
+    window.onload = showNextText;
+    document.body.addEventListener('click', showNextText);
+  </script>
+</body>
+</html>

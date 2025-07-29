@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>5 คืนสยอง - ปฏิเสธเครื่องดื่ม</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Kanit', sans-serif;
+    }
+    body {
+      background-color: #111;
+      color: white;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;      /* จัดเนื้อหาเป็นคอลัมน์ */
+      justify-content: flex-end;   /* ดันเนื้อหาลงล่าง */
+      align-items: center;         /* กึ่งกลางแนวนอน */
+      text-align: center;
+      padding: 20px;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .scene-container {
+      max-width: 640px;
+      width: 100%;
+    }
+    /* ซ่อนรูปออก */
+    .image-placeholder {
+      display: none !important;
+    }
+    .text-box {
+      font-size: 1.05rem;
+      min-height: 60px;
+      opacity: 0;
+      transition: opacity 0.6s ease-in-out;
+      margin-bottom: 20px;
+      white-space: pre-line;
+    }
+  </style>
+</head>
+<body onclick="nextText()">
+  <div class="scene-container">
+    <div class="image-placeholder" id="image-box">[ภาพในผับ]</div>
+    <div class="text-box" id="text-box"></div>
+  </div>
+
+  <script>
+    const textBox = document.getElementById("text-box");
+    const imageBox = document.getElementById("image-box");
+
+    const texts = [
+      // ช่วงมีภาพ (ซ่อนภาพหมดแล้ว)
+      "ชายแปลกหน้า: ดื่มด้วยกันหน่อยมั้ยครับ?",
+      "น้ำฝน: ขอบคุณนะคะ แต่ฉันไม่ดื่มจากแก้วที่ไม่ได้สั่งเองค่ะ",
+      "ชายแปลกหน้า: แหม...ไม่ต้องระแวงขนาดนั้นก็ได้มั้ง",
+      "น้ำฝน: ก็แค่ระวังตัวไว้ก่อนน่ะค่ะ",
+      "(ชายแปลกหน้าชักสีหน้าเล็กน้อยก่อนจะเดินจากไป)",
+      "เอมี่: แกไม่เอาเหรอ? เขาก็ดูโอเคดีนะ",
+      "น้ำฝน: ก็ไม่รู้จักเขาอะ...เดี๋ยวนี้ไว้ใจใครยากจะตาย",
+      "เหมียว: จริง แกทำถูกแล้ว...ฉันยังไม่กล้าดื่มเลย",
+      "เอมี่: ก็จริงเนอะ เดี๋ยวนี้ข่าวเยอะมากเลยอะเรื่องโดนวางยา",
+      "น้ำฝน: หืม?",
+
+      // ช่วงไม่มีภาพ
+      "[ตืดด! เสียงแจ้งเตือนจากมือถือดังขึ้นเบา ๆ]",
+      "ฉันเผลอมองหน้าจอ...แล้วถึงนึกขึ้นได้",
+      "วันนี้ฉันนัดกับ 'บิ๊ก' — คนที่ฉันกำลังคุยอยู่ตอนนี้"
+    ];
+
+    let index = 0;
+    let isTransitioning = false;
+
+    function nextText() {
+      if (isTransitioning) return;
+      isTransitioning = true;
+
+      // ไม่มีการแสดงภาพแล้ว ไม่ต้องซ่อนหรือแสดง
+
+      textBox.style.opacity = 0;
+      setTimeout(() => {
+        if (index < texts.length) {
+          textBox.textContent = texts[index++];
+          textBox.style.opacity = 1;
+          isTransitioning = false;
+        } else {
+          // เมื่อจบข้อความทั้งหมด ให้เปลี่ยนหน้า
+          window.location.href = "night3-Chat-BIG.html";
+        }
+      }, 500);
+    }
+
+    window.onload = nextText;
+  </script>
+</body>
+</html>

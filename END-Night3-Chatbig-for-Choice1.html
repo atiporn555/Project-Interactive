@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>5 คืนสยอง - แชทมือถือ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background-color: #222;
+      font-family: 'Sarabun', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .phone-frame {
+      width: 360px;
+      height: 640px;
+      border: 16px solid #000;
+      border-radius: 36px;
+      background-color: #ccc;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .top-bar {
+      background-color: #f1f1f1;
+      text-align: center;
+      padding: 10px;
+      font-weight: bold;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    .chat-area {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      background-color: #eee;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .message {
+      max-width: 75%;
+      padding: 10px 14px;
+      border-radius: 18px;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      position: relative;
+    }
+
+    .from-friend {
+      align-self: flex-start;
+      background-color: #fff;
+      color: #000;
+    }
+
+    .from-user {
+      align-self: flex-end;
+      background-color: #2196f3;
+      color: #fff;
+    }
+
+    .sender-name {
+      font-size: 0.75rem;
+      font-weight: bold;
+      margin-bottom: 2px;
+      color: #555;
+    }
+
+    .click-hint {
+      text-align: center;
+      padding: 6px;
+      font-size: 0.85rem;
+      color: #666;
+      background-color: #f1f1f1;
+    }
+  </style>
+</head>
+<body>
+  <div class="phone-frame">
+    <div class="top-bar">3 สาว 🟢</div>
+    <div class="chat-area" id="chat-box"></div>
+    <div class="click-hint">แตะหน้าจอเพื่ออ่านข้อความถัดไป</div>
+  </div>
+
+  <script>
+    const chatMessages = [
+      { sender: "เหมียว", from: "friend", text: "ฝนเป็นไงบ้าง ฉันมีงานเช้าเลยไม่ได้อยู่เฝ้าแกอะ" },
+      { sender: "น้ำฝน", from: "user", text: "ดีขึ้นแล้ว แต่ตกใจมากเลยตอนหมอบอกว่าโดนวางยา" },
+      { sender: "เหมียว", from: "friend", text: "เฮ้ออ โคตรตกใจเลย" },
+      { sender: "เหมียว", from: "friend", text: "ตอนนั้นแกพูดไม่รู้เรื่องแล้วก็ไม่มีสติเลย" },
+      { sender: "เอมี่", from: "friend", text: "ขอโทษนะฝน ฉันไม่น่าชวนพวกแกไปเลยอะ" },
+      { sender: "น้ำฝน", from: "user", text: "ไม่เป็นไร ไม่ใช่ความผิดพวกแกหรอก ฉันไม่ระวังตัวเองอะ" },
+      { sender: "เอมี่", from: "friend", text: "ตอนแรกก็นึกว่าแกแค่เมา แต่พอเห็นเริ่มพูดไม่รู้เรื่องนี่แบบ...เฮ้ยไม่โอเคละ" },
+      { sender: "น้ำฝน", from: "user", text: "ดีนะที่ไปกันหลายคนอะ ถ้าไปคนเดียวคงแย่แน่ ๆ" },
+      { sender: "เหมียว", from: "friend", text: "จริง แล้วคือมันเร็วมาก แกดื่มไปแป๊บเดียวเองอะ" },
+      { sender: "เอมี่", from: "friend", text: "แล้วตอนนี้เป็นไงบ้าง ยังเวียนหัวอยู่ปะ" },
+      { sender: "น้ำฝน", from: "user", text: "ก็ดีขึ้นแล้ว แค่ยังเหนื่อยนิด ๆ" },
+      { sender: "เหมียว", from: "friend", text: "แล้วไปทำงานไหวมั้ย?" },
+      { sender: "น้ำฝน", from: "user", text: "ไม่ไหวก็ต้องไหวอะ เมื่อคืนลาไปแล้วคุณป้าปิดร้านเพราะไม่มีใครอยู่เฝ้าฉันรู้สึกผิดอะ" },
+      { sender: "เอมี่", from: "friend", text: "ถ้าร่างกายรู้สึกแปลกๆอีกก็บอกพวกฉันนะ" },
+      { sender: "น้ำฝน", from: "user", text: "อื้ม" }
+    ];
+
+    let index = 0;
+    const chatBox = document.getElementById('chat-box');
+
+    function showNextMessage() {
+      if (index < chatMessages.length) {
+        const msgData = chatMessages[index];
+        const msg = document.createElement('div');
+        msg.classList.add('message');
+        msg.classList.add(msgData.from === 'friend' ? 'from-friend' : 'from-user');
+
+        const name = document.createElement('div');
+        name.className = 'sender-name';
+        name.textContent = msgData.sender;
+
+        const content = document.createElement('div');
+        content.textContent = msgData.text;
+
+        msg.appendChild(name);
+        msg.appendChild(content);
+        chatBox.appendChild(msg);
+        chatBox.scrollTop = chatBox.scrollHeight;
+        index++;
+      } else {
+        setTimeout(() => window.location.href = "Night4-Start-1.html", 1500);
+      }
+    }
+
+    window.addEventListener('click', showNextMessage);
+    window.onload = showNextMessage;
+  </script>
+</body>
+</html>

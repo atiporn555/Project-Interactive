@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>5 คืนสยอง - แชทช่วยฝน</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      background-color: #222;
+      font-family: 'Sarabun', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .phone-frame {
+      width: 360px;
+      height: 640px;
+      border: 16px solid #000;
+      border-radius: 36px;
+      background-color: #ccc;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .top-bar {
+      background-color: #f1f1f1;
+      text-align: center;
+      padding: 10px;
+      font-weight: bold;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    .chat-area {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      background-color: #eee;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .message {
+      max-width: 75%;
+      padding: 10px 14px;
+      border-radius: 18px;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      word-break: break-word;
+      position: relative;
+      clear: both;
+    }
+
+    .from-user {
+      align-self: flex-end;
+      background-color: #2196f3;
+      color: #fff;
+      text-align: left;
+    }
+
+    .from-meaw {
+      align-self: flex-start;
+      background-color: #fff;
+      color: #000;
+      text-align: left;
+    }
+
+    .from-amy {
+      align-self: flex-start;
+      background-color: #fff;
+      color: #000;
+      text-align: left;
+    }
+
+    .sender-name {
+      font-weight: bold;
+      margin-bottom: 4px;
+      font-size: 0.85rem;
+      user-select: none;
+    }
+
+    .click-hint {
+      text-align: center;
+      padding: 6px;
+      font-size: 0.85rem;
+      color: #666;
+      background-color: #f1f1f1;
+    }
+  </style>
+</head>
+<body>
+  <div class="phone-frame">
+    <div class="top-bar">3 สาว 🟢</div>
+    <div class="chat-area" id="chat-box"></div>
+    <div class="click-hint">แตะหน้าจอเพื่ออ่านข้อความถัดไป</div>
+  </div>
+
+  <script>
+    const chatMessages = [
+      { text: "ช่วยด้วย พวกแกฉันโดนโรคจิตทำร้าย", from: "user" },
+      { text: "ห๊ะ?", from: "meaw" },
+      { text: "แกอยู่ไหนฝน", from: "meaw" },
+      { text: "เดี๋ยวๆ เรื่องจริงหรอ? ฝนแกอยู๋ไหน", from: "amy" },
+      { text: "(ส่งโลเคชั่น)", from: "user" },
+      { text: "ฉันวิ่งหนีมันอยู่ พวกแกแจ้งตำรวจให้ที!", from: "user" },
+      { text: "แกรีบวิ่งไปที่สว่างๆ และพยายามหาบ้านคนแถวนั้นก่อนนะ", from: "amy" },
+      { text: "ฉันจะแจ้งตำรวจและรีบไป", from: "amy" },
+      { text: "ฝนยังอยู่มั้ย?", from: "meaw" },
+      { text: "ฝน?", from: "meaw" }
+    ];
+
+    const senderNames = {
+      user: "ฝน",
+      meaw: "เหมียว",
+      amy: "เอมี่"
+    };
+
+    let index = 0;
+    const chatBox = document.getElementById('chat-box');
+
+    function showNextMessage() {
+      if (index < chatMessages.length) {
+        const msgData = chatMessages[index];
+        const msg = document.createElement('div');
+        msg.classList.add('message');
+        switch (msgData.from) {
+          case "user":
+            msg.classList.add('from-user');
+            break;
+          case "meaw":
+            msg.classList.add('from-meaw');
+            break;
+          case "amy":
+            msg.classList.add('from-amy');
+            break;
+        }
+        // ใส่ชื่อผู้ส่ง
+        const nameElem = document.createElement('div');
+        nameElem.classList.add('sender-name');
+        nameElem.textContent = senderNames[msgData.from];
+        msg.appendChild(nameElem);
+
+        // ข้อความ
+        const textElem = document.createElement('div');
+        textElem.textContent = msgData.text;
+        msg.appendChild(textElem);
+
+        chatBox.appendChild(msg);
+        chatBox.scrollTop = chatBox.scrollHeight;
+        index++;
+      } else {
+        // สามารถเพิ่ม logic ไปหน้าถัดไปได้ เช่น
+        window.location.href = "Night4-choice-perfume-after-start1.html";
+      }
+    }
+
+    window.addEventListener('click', showNextMessage);
+    window.onload = showNextMessage;
+  </script>
+</body>
+</html>

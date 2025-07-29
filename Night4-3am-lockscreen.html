@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ล็อกหน้าจอ - ข้อความเข้า</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Sarabun', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background-color: #111;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      cursor: pointer; /* แสดงว่าคลิกได้ */
+    }
+
+    .iphone {
+      width: 360px;
+      height: 700px;
+      border: 14px solid #000;
+      border-radius: 50px;
+      background: linear-gradient(145deg, #1a237e, #4a148c, #880e4f);
+      background-size: cover;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 30px rgba(0,0,0,0.6);
+    }
+
+    .lock-time {
+      position: absolute;
+      top: 60px;
+      width: 100%;
+      text-align: center;
+      color: white;
+    }
+
+    .lock-time .time {
+      font-size: 48px;
+      font-weight: 300;
+    }
+
+    .lock-time .date {
+      font-size: 16px;
+      opacity: 0.85;
+      margin-top: 4px;
+    }
+
+    .notification {
+      position: absolute;
+      top: 160px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(30, 30, 30, 0.8);
+      color: white;
+      border-radius: 16px;
+      padding: 12px 16px;
+      width: 90%;
+      max-width: 300px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      animation: slideDown 1s ease-out;
+    }
+
+    .notification .sender {
+      font-weight: bold;
+      font-size: 1.05rem;
+      margin-bottom: 4px;
+    }
+
+    .notification .message {
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+
+    .notification .message a {
+      color:#4FC3F7;
+      text-decoration: none;
+    }
+
+    @keyframes slideDown {
+      from {
+        top: 60px;
+        opacity: 0;
+      }
+      to {
+        top: 160px;
+        opacity: 1;
+      }
+    }
+
+    .swipe-hint {
+      position: absolute;
+      bottom: 30px;
+      width: 100%;
+      text-align: center;
+      color: white;
+      font-size: 0.85rem;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body onclick="goNext()">
+  <div class="iphone" >
+    <div class="lock-time">
+      <div class="time">03:05</div>
+      <div class="date">วันจันทร์ที่ 29 กรกฎาคม</div>
+    </div>
+
+    <div class="notification">
+      <div class="sender">เหมียว</div>
+      <div class="message">
+        ฝน แกเห็นข่าวนี้ยัง?<br />
+        นี่มันตรงกับที่แกพักอยู่ใช่ปะ<br />
+        <a href="#" onclick="event.stopPropagation();">ลิงก์</a>
+      </div>
+    </div>
+
+    <div class="swipe-hint">กดเพื่อไปต่อ</div>
+  </div>
+
+  <audio id="ping" autoplay>
+    <source src="https://www.myinstants.com/media/sounds/message-notification.mp3" type="audio/mpeg" />
+  </audio>
+
+  <script>
+    function goNext() {
+      window.location.href = 'Night4-3am-choice-refuse.html';
+    }
+  </script>
+</body>
+</html>
