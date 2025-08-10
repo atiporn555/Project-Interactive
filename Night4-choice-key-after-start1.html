@@ -44,11 +44,10 @@
       margin-right: 0.4em;
     }
 
-    .fon { color: #66ccff; }       /* สีฟ้าสำหรับฝน */
-    .time { color: #ff6666; }      /* สีแดงสำหรับไทม์ */
-    .teen { color: #90ee90; }      /* สีเขียวอ่อนสำหรับวัยรุ่น */
+    .fon { color: #66ccff; }   /* สีฟ้าสำหรับฝน */
+    .time { color: #ff6666; }  /* สีแดงสำหรับไทม์ */
+    .teen { color: #90ee90; }  /* สีเขียวอ่อนสำหรับบิ๊ก */
 
-    /* Fade-in animation */
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
@@ -98,7 +97,10 @@
     let index = 0;
 
     function nextLine() {
-      if (index >= lines.length) return;
+      if (index >= lines.length) {
+        window.location.href = "Night5-last-night.html"; // ไปหน้าต่อ
+        return;
+      }
 
       const text = lines[index];
       let html = '';
@@ -110,7 +112,7 @@
 
         if (speaker === 'ฝน') className = 'fon';
         else if (speaker === 'ไทม์') className = 'time';
-        else if (speaker === 'วัยรุ่น') className = 'teen';
+        else if (speaker === 'บิ๊ก') className = 'teen';
         else className = 'speaker';
 
         html = `<div class="caption-line"><span class="speaker ${className}">${speaker}:</span> ${content}</div>`;

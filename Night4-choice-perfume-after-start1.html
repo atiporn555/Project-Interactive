@@ -94,7 +94,11 @@
     let index = 0;
 
     function nextLine() {
-      if (index >= lines.length) return;
+      if (index >= lines.length) {
+        // เมื่อจบเนื้อเรื่อง ให้ไปหน้า Night5-last-night.html
+        window.location.href = "Night5-last-night.html";
+        return;
+      }
 
       const text = lines[index];
       let html = '';
