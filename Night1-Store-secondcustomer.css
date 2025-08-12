@@ -1,0 +1,76 @@
+body {
+  margin: 0;
+  background-image: url('images/sigh.png'); /* ใส่ภาพพื้นหลังเริ่มต้น */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: background-image 1s ease-in-out;
+  height: 100vh;
+  color: #fff;
+  font-family: 'Prompt', sans-serif;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.scene-container {
+  position: fixed;
+  bottom: 40px; /* ปรับระยะห่างจากล่างตามต้องการ */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 800px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.time-label {
+  font-size: 1.1rem;
+  color: #ccc;
+  margin-bottom: 10px;
+  user-select: none;
+}
+
+#warning {
+  font-weight: bold;
+  color: yellow;
+  margin-bottom: 12px;
+  display: none;
+  user-select: none;
+}
+
+.text-box {
+  font-size: 1rem;
+  margin-bottom: 20px;
+  transition: opacity 0.4s ease-in-out;
+  overflow-wrap: break-word;
+  max-height: 60vh;
+  user-select: none;
+}
+
+.choices {
+  display: none; /* แสดงเมื่อ JavaScript สั่ง */
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.choice-button {
+  padding: 14px;
+  font-size: 1rem;
+  background-color: #222;
+  border: 1px solid #555;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  text-align: center;
+  user-select: none;
+}
+
+.choice-button:hover {
+  background-color: #333;
+}

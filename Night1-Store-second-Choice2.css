@@ -1,0 +1,51 @@
+/* Night1-Store-second-Choice1.css */
+
+body {
+  margin: 0;
+  background-image: url('images/Not-sale.png'); /* เปลี่ยนเป็นภาพพื้นหลังที่ต้องการ */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+
+  font-family: 'Prompt', sans-serif;
+  color: #fff;
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-end; /* ให้อยู่ล่าง */
+  padding-bottom: 40px;
+  overflow: hidden;
+}
+
+.scene-container {
+  width: 100%;
+  max-width: 800px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.time-label {
+  font-size: 1.2rem;
+  color: #ccc;
+  margin-bottom: 10px;
+  user-select: none;
+}
+
+#warning {
+  font-weight: bold;
+  color: yellow;
+  margin-bottom: 10px;
+  user-select: none;
+}
+
+.text-box {
+  font-size: 1.1rem;
+  transition: opacity 0.4s ease-in-out;
+  user-select: none;
+  max-width: 100%;
+  word-wrap: break-word;
+}

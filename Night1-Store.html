@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>5 คืนสยอง - คืนที่ 1</title>
-  <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="Night1-Store.css" /> <!-- เชื่อม CSS -->
   <style>
     body {
       margin: 0;
@@ -15,6 +16,13 @@
       justify-content: center;
       align-items: flex-end;
       padding: 20px;
+
+      /* กำหนดภาพพื้นหลังเริ่มต้น */
+      background-image: url('images/In-store.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      transition: background-image 1s ease-in-out;
     }
 
     .scene-container {
@@ -70,12 +78,17 @@
     <div class="text-box" id="text"></div>
 
     <div class="choices" id="choice-box">
-      <button class="choice-button" onclick="goTo('Night1-Store-f-Choice1.html')">1. รับเครื่องดื่มมาและขอบคุณ</button>
-      <button class="choice-button" onclick="goTo('Night1-Store-f-Choice2.html')">2. ปฏิเสธอย่างสุภาพ</button>
+      <button class="choice-button" onclick="goTo('Night1-Store-f-Choice1.html')">รับเครื่องดื่มมาและขอบคุณ</button>
+      <button class="choice-button" onclick="goTo('Night1-Store-f-Choice2.html')">ปฏิเสธอย่างสุภาพ</button>
     </div>
   </div>
 
   <script>
+    // สลับภาพพื้นหลังหลัง 5 วินาที
+    setTimeout(() => {
+      document.body.style.backgroundImage = "url('images/First-customer.png')";
+    }, 5000);
+
     const texts = [
       "ฉันประจำที่เคาน์เตอร์และรอลูกค้ามา ไม่นานลูกค้าคนแรกของคืนนี้ก็มาที่นี่..",
       "น้ำฝน: สวัสดีค่ะ ยินดีต้อนรับค่าา",
@@ -101,8 +114,8 @@
       } else {
         textBox.style.opacity = 0;
         setTimeout(() => {
-          textBox.style.display = 'none';
-          choiceBox.style.display = 'flex';
+          textBox.style.display = "none";
+          choiceBox.style.display = "flex";
         }, 500);
       }
     }
@@ -112,7 +125,7 @@
     }
 
     window.onload = showNextText;
-    document.body.addEventListener('click', showNextText);
+    document.body.addEventListener("click", showNextText);
   </script>
 </body>
 </html>

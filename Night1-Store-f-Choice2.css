@@ -1,0 +1,41 @@
+body {
+  font-family: 'Sarabun', sans-serif;
+  background-color: #111;
+  background-image: url('images/smile.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  color: #fff;
+  line-height: 1.6;
+
+  /* เปลี่ยน flex เป็น block ปกติ */
+  display: block;
+  height: 100vh;
+  padding: 0 20px 20px;
+  overflow: hidden;
+  z-index: 0;
+  position: relative;
+}
+
+/* Overlay */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: -1;
+}
+
+.container {
+  max-width: 800px;
+  width: 100%;
+  padding: 20px 0;
+  position: absolute;    /* เปลี่ยนจาก relative เป็น absolute */
+  bottom: 20px;          /* กำหนดให้อยู่ติดขอบล่าง */
+  left: 50%;             /* ย้ายไปกึ่งกลางหน้าจอแนวนอน */
+  transform: translateX(-50%); /* เลื่อนกลับมาให้กึ่งกลางเป๊ะ */
+  z-index: 1;
+  text-align: center;
+}

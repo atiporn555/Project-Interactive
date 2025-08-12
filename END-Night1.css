@@ -1,0 +1,56 @@
+/* END-Night1.css */
+
+body {
+  margin: 0;
+  background-image: url('images/Early-morning-road.png'); /* เปลี่ยนเป็นภาพพื้นหลังที่ต้องการ */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  font-family: 'Prompt', sans-serif;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 20px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.scene-container {
+  text-align: center;
+  max-width: 700px;
+  width: 100%;
+  margin-bottom: 40px;
+  user-select: none;
+  /*background-color: rgba(0, 0, 0, 0.5); /* เพิ่มพื้นหลังโปร่งแสง เพื่อให้อ่านง่าย */
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.time-label {
+  font-size: 1.2rem;
+  color: #ccc;
+  margin-bottom: 20px;
+  user-select: none;
+}
+
+.text-box {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  transition: opacity 0.4s ease-in-out;
+  user-select: none;
+}
+
+.continue-note {
+  margin-top: 40px;
+  font-size: 0.95rem;
+  color: #aaa;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  user-select: none;
+}
+
+.visible {
+  opacity: 1;
+}
