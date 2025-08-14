@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>5 คืนสยอง - คืนที่ 2 (ไม่กลัว)</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="Night2-f-customer-choice1.css"> <!-- เชื่อม CSS -->
   <style>
     * {
       margin: 0;
@@ -18,7 +19,7 @@
       height: 100vh;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end; /* ดันข้อความลงล่าง */
+      justify-content: flex-end;
       align-items: center;
       padding: 20px;
       overflow: hidden;
@@ -53,7 +54,7 @@
       "น้ำฝน: ก็พอจะดูหนังผีมาก็หลายเรื่องละค่ะ จนชินไปแล้ว",
       "คุณยาย: หนัง กับ ของจริง มันไม่เหมือนกันหรอกนะ...",
       "น้ำฝน: อ่า...ก็จริงค่ะ แต่หนูยังไม่เคยเจอผีจริงๆ สักที",
-      "คุณยาย: บางครั้ง...สิ่งที่เราไม่เห็น...ก็อาจจะยืนอยู่ข้างหลังเรา",
+      "คุณยาย: บางครั้ง...สิ่งที่เราไม่เห็น...ก็ไม่ใช่ว่าไม่มี..",
       "น้ำฝน: ...",
       "น้ำฝน: คุณยายจะซื้ออะไรมั้ยคะ? หนูช่วยหาของให้ได้นะ",
       "คุณยาย: ใจดีจัง...ยายหิว ไม่มีใครให้ยายกินข้าวมาหลายวันแล้ว",
@@ -86,7 +87,16 @@
       }, 500);
     }
 
-    window.onload = nextText;
+    window.onload = () => {
+      nextText();
+
+      // เปลี่ยนภาพพื้นหลังหลังจาก 12 วินาที
+      setTimeout(() => {
+        document.body.style.backgroundImage = "url('images/old-woman-bg.png')";
+        document.body.style.backgroundSize = "cover";
+        document.body.style.backgroundPosition = "center";
+      }, 15000); // 12 วินาที = 12000 ms
+    };
   </script>
 </body>
 </html>

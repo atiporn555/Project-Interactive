@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>5 คืนสยอง - คืนที่ 2</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="Night2-Start-f-customer.css"> <!-- เชื่อม CSS -->
   <style>
     * {
       margin: 0;
@@ -13,7 +14,10 @@
     }
 
     body {
-      background-color: #111;
+      background-image: url('images/bored-face.png'); /* ภาพเริ่มต้น */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
       color: white;
       height: 100vh;
       display: flex;
@@ -22,6 +26,10 @@
       align-items: center;
       padding: 20px;
       overflow: hidden;
+      cursor: pointer;
+
+      /* เพิ่ม transition สำหรับเปลี่ยนภาพ */
+      transition: background-image 1s ease-in-out;
     }
 
     .scene-container {
@@ -47,10 +55,10 @@
 
     .choices {
       display: none;
-      flex-direction: row; /* เป็นแถว */
-      gap: 20px; /* ช่องว่างระหว่างปุ่ม */
-      justify-content: center; /* จัดกึ่งกลาง */
-      flex-wrap: wrap; /* เวลาหน้าจอเล็กลงจะขึ้นบรรทัดใหม่ */
+      flex-direction: row;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
       padding: 0;
       background-color: transparent;
       border-radius: 0;
@@ -65,7 +73,7 @@
       color: white;
       cursor: pointer;
       transition: all 0.3s ease;
-      min-width: 240px; /* ขนาดปุ่มเท่ากัน */
+      min-width: 240px;
       text-align: center;
       white-space: nowrap;
       margin: 0;
@@ -82,8 +90,8 @@
     <div id="night-label">คืนที่ 2</div>
     <div class="text-box" id="text-box"></div>
     <div class="choices" id="choice-box">
-      <button class="choice-button" onclick="selectChoice(1)">1. กลัว</button>
-      <button class="choice-button" onclick="selectChoice(2)">2. ไม่กลัว</button>
+      <button class="choice-button" onclick="selectChoice(1)">กลัว</button>
+      <button class="choice-button" onclick="selectChoice(2)">ไม่กลัว</button>
     </div>
   </div>
 
@@ -141,6 +149,11 @@
 
     window.onload = () => {
       nightLabel.style.opacity = 1;
+
+      // เปลี่ยนภาพพื้นหลังหลัง 6 วินาที
+      setTimeout(() => {
+        document.body.style.backgroundImage = "url('images/old-woman.png')";
+      }, 10000);
     };
 
     function selectChoice(choice) {

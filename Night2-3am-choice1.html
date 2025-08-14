@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>5 คืนสยอง - ออกไปดู</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="Night2-3am-choice1.css"> <!-- เชื่อม CSS -->
   <style>
     * {
       margin: 0;
@@ -23,6 +24,10 @@
       padding: 20px;
       text-align: center;
       cursor: pointer;
+      background-image: url('images/car_cleanup-bg.png'); /* ภาพเริ่มต้น */
+      background-size: cover;
+      background-position: center;
+      transition: background-image 1.5s ease-in-out; /* เพิ่ม transition */
     }
 
     .scene-container {
@@ -67,16 +72,11 @@
 
     const texts = [
       "น้ำฝน: อืม...ขอออกไปดูให้แน่ใจก็แล้วกัน",
-      "เปลี่ยนภาพเป็นหน้าร้านยามดึก – ไม่มีรถอยู่",
       "น้ำฝน: อ้าว...ไม่มีรถเลย?",
       "ฉันมั่นใจนะว่าฉันเห็นไฟรถสะท้อนบนประตูเมื่อกี้ แต่ตอนนี้ลานจอดว่างเปล่า ไม่มีแม้แต่เสียงเครื่องยนต์",
-      "เสียงลมพัดเบา ๆ, เอฟเฟกต์เสียงพื้นกรวดเบา ๆ ขณะเดิน",
       "น้ำฝน: หรือฉันจะตาฝาด...",
-      "ภาพภายในร้าน – มองจากในร้านออกไป แต่น้ำฝนไม่อยู่",
-      "เสียงประตู: *แกร๊ก*",
-      "ภาพน้ำฝนกลับเข้าร้าน สีหน้าเหมือนใจลอย",
       "น้ำฝน: ...",
-      "(ในใจ) ฉันรู้สึกหนาวสั่นแปลก ๆ เหมือนมีบางอย่างจ้องมองมาจากความมืด แต่ฉันไม่เห็นอะไรเลย",
+      "ฉันรู้สึกหนาวสั่นแปลก ๆ เหมือนมีบางอย่างจ้องมองมาจากความมืด แต่ฉันไม่เห็นอะไรเลย",
       "น้ำฝน: กลับมาทำงานต่อดีกว่า..."
     ];
 
@@ -88,7 +88,6 @@
         window.location.href = "END-Night2.html";
         return;
       }
-
       showNextText();
     }
 
@@ -97,8 +96,7 @@
 
       setTimeout(() => {
         if (index < texts.length) {
-          const current = texts[index++];
-          textBox.textContent = current;
+          textBox.textContent = texts[index++];
           textBox.style.opacity = 1;
 
           if (index === texts.length) {
@@ -111,7 +109,14 @@
       }, 400);
     }
 
-    window.onload = showNextText;
+    window.onload = () => {
+      showNextText();
+
+      // เปลี่ยนพื้นหลังหลังจาก 5 วินาที
+      setTimeout(() => {
+        document.body.style.backgroundImage = "url('images/store-bg.png')"; // ภาพใหม่
+      }, 5000);
+    };
   </script>
 </body>
 </html>

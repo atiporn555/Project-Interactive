@@ -1,0 +1,54 @@
+/* Night2-3am-choice2.css */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Kanit', sans-serif;
+}
+
+body {
+  background-color: #111;
+  background-image: url('images/bored-face.png'); /* ภาพพื้นหลัง */
+  background-size: cover;
+  background-position: center;
+  transition: background-image 1.5s ease-in-out; /* ให้การเปลี่ยนภาพนุ่ม */
+  color: white;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;  /* ตั้งข้อความให้อยู่ด้านล่าง */
+  align-items: center;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.scene-container {
+  width: 100%;
+  max-width: 640px;
+}
+
+.text-box {
+  font-size: 1.05rem;
+  min-height: 80px;
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: pre-line;
+}
+
+.note {
+  font-size: 0.9rem;
+  color: #888;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  margin-bottom: 30px;
+}
+
+.note.visible {
+  opacity: 1;
+}

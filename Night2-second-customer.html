@@ -1,73 +1,19 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>5 คืนสยอง - ลูกค้าคนที่ 2</title>
-  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Kanit', sans-serif;
-    }
-
-    body {
-      background-color: #111;
-      color: white;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end; /* ข้อความอยู่ล่าง */
-      align-items: center;
-      padding: 20px;
-      overflow: hidden;
-      text-align: center;
-      cursor: pointer;
-    }
-
-    .scene-container {
-      width: 100%;
-      max-width: 700px;
-    }
-
-    .text-box {
-      font-size: 1.05rem;
-      min-height: 80px;
-      opacity: 0;
-      transition: opacity 0.5s ease-in-out;
-      margin-bottom: 20px;
-      /* จัดกึ่งกลาง */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      white-space: pre-line; /* ถ้ามีขึ้นบรรทัดใหม่ */
-    }
-
-    .note {
-      font-size: 0.9rem;
-      color: #888;
-      opacity: 0;
-      transition: opacity 0.5s ease;
-      margin-top: 10px;
-    }
-
-    .note.visible {
-      opacity: 1;
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="Night2-second-customer.css">
 </head>
-<body onclick="handleClick()">
+<body>
   <div class="scene-container">
-    <div class="text-box" id="text-box"></div>
+    <div class="caption" id="caption-text"></div>
     <div class="note" id="note">แตะหน้าจอเพื่อไปยังหน้าถัดไป...</div>
   </div>
 
   <script>
-    const textBox = document.getElementById("text-box");
-    const note = document.getElementById("note");
-
-    const texts = [
+    const captions = [
       "น้ำฝน: เฮ้ออ หรือว่าฉันจะคิดไปเองจริงๆ?",
       "น้ำฝน: หืม?",
       "น้ำฝน: อ้าว สวัสดีค่ะพี่ไทม์",
@@ -88,36 +34,42 @@
       "เขายิ้มให้ฉัน..เป็นรอยยิ้มที่น่าขนลุก\nฉันทำได้แค่ยิ้มตอบและไม่พูดอะไรออกไป\nฉันพยายามไม่คิดอะไรและตั้งใจทำงานต่อ..จนถึงเวลา ตี 3"
     ];
 
+    const captionElem = document.getElementById('caption-text');
+    const note = document.getElementById('note');
     let index = 0;
     let readyToGoNext = false;
 
-    function handleClick() {
-      if (readyToGoNext) {
-        window.location.href = "Night2-3am.html";
-        return;
-      }
-      showNextText();
-    }
+    function showNextCaption() {
+      if (index < captions.length) {
+        captionElem.style.opacity = 0;
+        setTimeout(() => {
+          captionElem.textContent = captions[index++];
+          captionElem.style.opacity = 1;
 
-    function showNextText() {
-      textBox.style.opacity = 0;
-
-      setTimeout(() => {
-        if (index < texts.length) {
-          textBox.textContent = texts[index++];
-          textBox.style.opacity = 1;
-
-          if (index === texts.length) {
+          if (index === captions.length) {
             setTimeout(() => {
               note.classList.add("visible");
               readyToGoNext = true;
             }, 800);
           }
-        }
-      }, 300);
+        }, 400);
+      }
     }
 
-    window.onload = showNextText;
+    document.body.onclick = () => {
+      if (readyToGoNext) {
+        window.location.href = "Night2-3am.html";
+        return;
+      }
+      showNextCaption();
+    };
+
+    window.onload = () => {
+      showNextCaption();
+      setTimeout(() => {
+        document.body.style.backgroundImage = "url('images/P-time-smile.png')";
+      }, 5000);
+    };
   </script>
 </body>
 </html>
