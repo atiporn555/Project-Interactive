@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>5 คืนสยอง - ปฏิเสธเครื่องดื่ม</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="Night3-Pub-choice2.css">
   <style>
     * {
       margin: 0;
@@ -12,7 +13,8 @@
       font-family: 'Kanit', sans-serif;
     }
     body {
-      background-color: #111;
+      /* ใช้ background แบบรวมทุกอย่าง ป้องกันการถูก override */
+      background: url('images/bad-man.png') center/cover no-repeat fixed;
       color: white;
       height: 100vh;
       display: flex;
@@ -23,12 +25,13 @@
       padding: 20px;
       cursor: pointer;
       overflow: hidden;
+      transition: background 1s ease-in-out; /* เฟดภาพนุ่ม ๆ */
     }
     .scene-container {
       max-width: 640px;
       width: 100%;
     }
-    /* ซ่อนรูปออก */
+    /* ซ่อน placeholder ของภาพ */
     .image-placeholder {
       display: none !important;
     }
@@ -39,6 +42,7 @@
       transition: opacity 0.6s ease-in-out;
       margin-bottom: 20px;
       white-space: pre-line;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.7); /* อ่านง่ายบนพื้นหลัง */
     }
   </style>
 </head>
@@ -53,7 +57,6 @@
     const imageBox = document.getElementById("image-box");
 
     const texts = [
-      // ช่วงมีภาพ (ซ่อนภาพหมดแล้ว)
       "ชายแปลกหน้า: ดื่มด้วยกันหน่อยมั้ยครับ?",
       "น้ำฝน: ขอบคุณนะคะ แต่ฉันไม่ดื่มจากแก้วที่ไม่ได้สั่งเองค่ะ",
       "ชายแปลกหน้า: แหม...ไม่ต้องระแวงขนาดนั้นก็ได้มั้ง",
@@ -64,8 +67,6 @@
       "เหมียว: จริง แกทำถูกแล้ว...ฉันยังไม่กล้าดื่มเลย",
       "เอมี่: ก็จริงเนอะ เดี๋ยวนี้ข่าวเยอะมากเลยอะเรื่องโดนวางยา",
       "น้ำฝน: หืม?",
-
-      // ช่วงไม่มีภาพ
       "[ตืดด! เสียงแจ้งเตือนจากมือถือดังขึ้นเบา ๆ]",
       "ฉันเผลอมองหน้าจอ...แล้วถึงนึกขึ้นได้",
       "วันนี้ฉันนัดกับ 'บิ๊ก' — คนที่ฉันกำลังคุยอยู่ตอนนี้"
@@ -77,8 +78,6 @@
     function nextText() {
       if (isTransitioning) return;
       isTransitioning = true;
-
-      // ไม่มีการแสดงภาพแล้ว ไม่ต้องซ่อนหรือแสดง
 
       textBox.style.opacity = 0;
       setTimeout(() => {
@@ -93,7 +92,14 @@
       }, 500);
     }
 
-    window.onload = nextText;
+    window.onload = () => {
+      nextText();
+
+      // เปลี่ยนภาพพื้นหลังหลัง 4 วินาที
+      setTimeout(() => {
+        document.body.style.backgroundImage = "url('images/no-drink.png')";
+      }, 4000);
+    };
   </script>
 </body>
 </html>

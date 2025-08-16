@@ -1,0 +1,47 @@
+/* END-Night3-Chatbig-for-Choice2.css */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Kanit', sans-serif;
+}
+
+body {
+  /* ตั้งภาพพื้นหลัง */
+  background: url('images/Big-Fon.png') center/cover no-repeat fixed;
+  color: white;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;   /* ดันเนื้อหาลงล่าง */
+  align-items: center;         /* กึ่งกลางแนวนอน */
+  text-align: center;
+  padding: 30px 20px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: background 1s ease-in-out; /* เฟดภาพนุ่ม ๆ */
+}
+
+.text-box {
+  font-size: 1.1rem;
+  max-width: 600px;
+  min-height: 80px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  margin-bottom: 20px;
+  white-space: pre-line;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.7); /* อ่านง่ายบนพื้นหลัง */
+}
+
+.next-hint {
+  font-size: 0.9rem;
+  color: #888;
+  margin-bottom: 10px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.next-hint.visible {
+  opacity: 1;
+}

@@ -1,0 +1,44 @@
+/* Night3-Pub-choice2.css */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Kanit', sans-serif;
+}
+
+body {
+  /* ใช้ background แบบรวมทุกอย่าง ป้องกันการถูก override */
+  background: url('images/bad-man.png') center/cover no-repeat fixed;
+  color: white;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;        /* จัดเนื้อหาเป็นคอลัมน์ */
+  justify-content: flex-end;     /* ดันเนื้อหาลงล่าง */
+  align-items: center;           /* กึ่งกลางแนวนอน */
+  text-align: center;
+  padding: 20px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: background 1s ease-in-out; /* เฟดภาพนุ่ม ๆ */
+}
+
+.scene-container {
+  width: 100%;
+  max-width: 640px;
+}
+
+/* ซ่อน placeholder ของภาพ */
+.image-placeholder {
+  display: none !important;
+}
+
+.text-box {
+  font-size: 1.05rem;
+  min-height: 60px;
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+  white-space: pre-line;
+  margin-bottom: 20px;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.7); /* อ่านง่ายบนพื้นหลัง */
+}

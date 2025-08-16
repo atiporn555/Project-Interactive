@@ -1,0 +1,68 @@
+/* Night3-Insidepub.css */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Kanit', sans-serif;
+}
+
+body {
+  background-color: #111;
+  background-image: url('images/dance.png'); /* เปลี่ยนเป็นชื่อไฟล์ภาพของคุณ */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;   /* ดันเนื้อหาลงล่าง */
+  justify-content: flex-end;
+  align-items: center;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.scene-container {
+  width: 100%;
+  max-width: 640px;
+}
+
+.text-box {
+  font-size: 1.1rem;
+  min-height: 60px; /* คงตำแหน่งข้อความ */
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+  margin-bottom: 20px;
+}
+
+.choices {
+  display: none;
+  flex-direction: row;      /* เรียงปุ่มแนวนอน */
+  gap: 20px;                /* ช่องว่างระหว่างปุ่ม */
+  justify-content: center;  /* จัดกึ่งกลาง */
+  flex-wrap: wrap;          /* หน้าจอเล็กขึ้นบรรทัดใหม่ */
+  margin-top: 30px;
+}
+
+.choice-button {
+  padding: 12px 20px;
+  font-size: 1rem;
+  background-color: #222;
+  border: 1px solid #555;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 240px;         /* ขนาดปุ่มเท่ากัน */
+  text-align: center;
+  white-space: nowrap;
+  margin: 0;
+}
+
+.choice-button:hover {
+  background-color: #333;
+  transform: scale(1.03);
+}

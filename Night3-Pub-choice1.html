@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>5 คืนสยอง - เครื่องดื่มแปลกๆ และฟื้นขึ้นมา</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="Night3-Pub-choice1.css">
   <style>
     * {
       margin: 0; padding: 0; box-sizing: border-box;
@@ -11,12 +12,16 @@
     }
     body {
       background-color: #111;
+      background-image: url('images/drink.png'); /* ภาพแรกจาก CSS */
+      background-size: cover;
+      background-position: center;
+      transition: background-image 1s ease-in-out; /* เฟดภาพนุ่ม ๆ */
       color: white;
       height: 100vh;
       display: flex;
-      flex-direction: column;      /* จัดเนื้อหาเป็นคอลัมน์ */
-      justify-content: flex-end;   /* ดันเนื้อหาลงล่าง */
-      align-items: center;         /* กึ่งกลางแนวนอน */
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
       text-align: center;
       padding: 20px;
       cursor: pointer;
@@ -26,7 +31,7 @@
       width: 100%;
       max-width: 640px;
     }
-    /* ซ่อนภาพออกทั้งหมด */
+    /* ซ่อน placeholder ของภาพ */
     .image-placeholder {
       display: none !important;
     }
@@ -37,6 +42,7 @@
       transition: opacity 0.6s ease-in-out;
       white-space: pre-line;
       margin-bottom: 20px;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
     }
   </style>
 </head>
@@ -48,10 +54,9 @@
 
   <script>
     const textBox = document.getElementById("text-box");
-    const imageBox = document.getElementById("image-box");
 
     const texts = [
-      "น้ำฝน: ขอบคุณนะคะ~\n\n(น้ำฝนดื่มจนหมดแก้ว)",
+      "น้ำฝน: ขอบคุณนะคะ~",
       "เหมียว: เอ้า แกเอาจริงดิ!? แกไม่รู้จักเขาเลยนะ",
       "เอมี่: มันแปลกๆปะวะแก?",
       "น้ำฝน: แก้วเดียวเองไม่เป็นไรหรอก พวกแกคิดมาก",
@@ -61,7 +66,6 @@
       "เอมี่: เมื่อกี้ยังดี ๆ อยู่เลยไม่ใช่เหรอ?",
       "เหมียว: แกหน้าซีดมากอะฝน...",
       "น้ำฝน: (พึมพำเบา ๆ) ขา...มันเหมือนไม่มีแรงอะ...",
-      "(น้ำฝนพยายามลุกแต่ทรุดนั่งลง)",
       "เอมี่: ฝน!? เฮ้ย ฝน!",
       "(รู้สึกไม่มีแรงเลย...ทุกคนพูดอะไรกัน? ฟังไม่ออก....เกิดอะไรขึ้น?)",
       "เหมียว: แบบนี้ไม่ใช่เมาธรรมดาแล้ว ผู้ชายคนนั้นใส่อะไรลงไปในเครื่องดื่มแน่ๆ!",
@@ -76,7 +80,6 @@
     function nextText() {
       if (isTransitioning) return;
 
-      // ถ้าจบแล้ว ให้เปลี่ยนหน้า
       if (index >= texts.length) {
         setTimeout(() => {
           window.location.href = "Night3-Chatbig-for-Choice1.html";
@@ -85,10 +88,8 @@
       }
 
       isTransitioning = true;
-
-      // ไม่ต้องแสดงภาพแล้ว จึงไม่ต้องซ่อน/แสดง
-
       textBox.style.opacity = 0;
+
       setTimeout(() => {
         textBox.textContent = texts[index++];
         textBox.style.opacity = 1;
@@ -98,6 +99,11 @@
 
     window.onload = () => {
       nextText();
+
+      // เปลี่ยนภาพพื้นหลังเป็นภาพที่สอง หลังจาก 5 วินาที
+      setTimeout(() => {
+        document.body.style.backgroundImage = "url('images/out-of-focus.png')";
+      }, 5000);
     };
   </script>
 </body>

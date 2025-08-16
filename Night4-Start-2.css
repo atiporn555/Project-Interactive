@@ -1,0 +1,56 @@
+/* Night4-Start-2.css */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Kanit', sans-serif;
+}
+
+body {
+  /* ตั้งภาพพื้นหลัง */
+  background: url('images/back-to-work.png') center/cover no-repeat fixed;
+  color: white;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  text-align: center;
+  padding: 40px 20px;
+  cursor: pointer;
+  transition: background 1s ease-in-out; /* เฟดภาพนุ่ม ๆ */
+}
+
+.scene-container {
+  max-width: 700px;
+  width: 100%;
+}
+
+#night-label {
+  font-size: 1.4rem;
+  font-weight: bold;
+  opacity: 0;
+  margin-bottom: 20px;
+  transition: opacity 1s ease-in-out;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.7); /* อ่านง่ายบนพื้นหลัง */
+}
+
+.text-box {
+  font-size: 1.05rem;
+  white-space: pre-line;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  margin-bottom: 20px;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.7); /* อ่านง่ายบนพื้นหลัง */
+}
+
+.next-hint {
+  font-size: 0.9rem;
+  color: #888;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.next-hint.visible {
+  opacity: 1;
+}
