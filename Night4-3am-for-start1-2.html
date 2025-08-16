@@ -4,48 +4,7 @@
   <meta charset="UTF-8" />
   <title>5 คืนสยอง - คืนที่ 2</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Kanit', sans-serif;
-    }
-
-    body {
-      background-color: #111;
-      color: white;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      align-items: center;
-      padding: 20px;
-      overflow: hidden;
-      text-align: center;
-    }
-
-    .scene-container {
-      width: 100%;
-      max-width: 700px;
-    }
-
-    #night-label {
-      font-size: 1.4rem;
-      font-weight: bold;
-      opacity: 0;
-      margin-bottom: 20px;
-      transition: opacity 1s ease-in-out;
-    }
-
-    .text-box {
-      font-size: 1.1rem;
-      opacity: 0;
-      transition: opacity 0.6s ease-in-out;
-      margin-bottom: 30px;
-      white-space: pre-line;
-    }
-  </style>
+  <link rel="stylesheet" href="Night4-3am-for-start1-2.css">
 </head>
 <body onclick="nextText()">
   <div class="scene-container">
@@ -69,7 +28,7 @@
       "น้ำฝน: หือ...? รู้สึกเหมือนมีใครเดินตามมา...",
       "(ฉันหันกลับไปมองอย่างระแวง...)",
       "น้ำฝน: ...?",
-      "ชายแปลกหน้าสวมฮู้ดสีดำกำลังเดินตามมาอยู่ห่าง ๆ",
+      "ชายแปลกหน้าสวมเสื้อยืดสีขาวกำลังเดินตามมาอยู่ห่าง ๆ",
       "น้ำฝน: (เขาเป็นคนแถวนี้เหรอ...? หรือว่าเพิ่งเลิกงานเหมือนฉัน?)",
       "(ฉันพยายามไม่คิดมาก แล้วรีบเร่งฝีเท้าต่อไป)"
     ];
@@ -100,13 +59,21 @@
           isTransitioning = false;
         }, 400);
       } else {
-        // ถ้าหมดแล้ว จะเปลี่ยนหน้า หรือทำอย่างอื่นตรงนี้
-        window.location.href = "Night4-3am-lockscreen.html"; // เปลี่ยน path ได้ตามต้องการ
+        window.location.href = "Night4-3am-lockscreen.html";
       }
     }
 
+    // ✅ เปลี่ยนภาพพื้นหลังตามเวลา
     window.onload = () => {
       nightLabel.style.opacity = 1;
+
+      setTimeout(() => {
+        document.body.style.backgroundImage = 'url("images/road-dark.png")';
+      }, 5000); // หลัง 5 วิ → เปลี่ยนเป็นภาพที่ 2
+
+      setTimeout(() => {
+        document.body.style.backgroundImage = 'url("images/stalker.png")';
+      }, 20000); // หลังจากภาพที่ 2 ขึ้น 10 วิ (รวมเป็น 15 วิ) → เปลี่ยนเป็นภาพที่ 3
     };
   </script>
 </body>

@@ -1,0 +1,45 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Kanit', sans-serif;
+}
+
+body {
+  background-image: url("images/walk-night4.png"); /* ✅ ภาพแรก */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: background-image 1s ease-in-out; /* ทำให้เฟดเวลาเปลี่ยนภาพ */
+  color: white;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 20px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.scene-container {
+  width: 100%;
+  max-width: 700px;
+}
+
+#night-label {
+  font-size: 1.4rem;
+  font-weight: bold;
+  opacity: 0;
+  margin-bottom: 20px;
+  transition: opacity 1s ease-in-out;
+}
+
+.text-box {
+  font-size: 1.1rem;
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+  margin-bottom: 30px;
+  white-space: pre-line;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.8); /* ทำให้อ่านง่ายขึ้น */
+}

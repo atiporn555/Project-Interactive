@@ -4,76 +4,12 @@
   <meta charset="UTF-8" />
   <title>5 คืนสยอง - คืนที่ 4</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="Night4-3am-choice-protect-yourself.css">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Kanit', sans-serif;
-    }
-
     body {
-      background-color: #111;
-      color: white;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      align-items: center;
-      padding: 20px;
-      overflow: hidden;
-      text-align: center;
-    }
-
-    .scene-container {
-      width: 100%;
-      max-width: 700px;
-    }
-
-    .text-box {
-      font-size: 1.05rem;
-      min-height: 60px;
-      opacity: 0;
-      transition: opacity 0.6s ease-in-out;
-      margin-bottom: 20px;
-    }
-
-    .name {
-      color: #80d0ff;
-      font-weight: bold;
-    }
-
-    .inner-thought {
-      font-style: italic;
-      color: #ccc;
-    }
-
-    .danger {
-      color: #ff6464;
-    }
-
-    .choice-box {
-      margin-top: 20px;
-    }
-
-    .choice-button {
-      display: block;
-      background-color: #444;
-      color: white;
-      padding: 18px 24px;
-      margin: 16px auto;
-      font-size: 1.2rem;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.1s ease;
-      width: 100%;
-      max-width: 500px;
-    }
-
-    .choice-button:hover {
-      background-color: #666;
-      transform: scale(1.02);
+      background: url("images/scary.png") no-repeat center center fixed;
+      background-size: cover;
+      transition: background-image 1s ease-in-out;
     }
   </style>
 </head>
@@ -97,7 +33,7 @@
       '<span class="name">ไทม์:</span> "แต่พี่ไม่ให้ไปคนเดียวนะ มันอันตรายตอนดึก ๆ แบบนี้"',
       '<span class="inner-thought">(เขาก้าวมาขวางหน้า ใกล้จนได้กลิ่นบุหรี่กับกลิ่นเหงื่อผสมกัน เหมือนกับจงใจแช่ในอากาศ)</span>',
       '<span class="name">น้ำฝน:</span> "ขอโทษนะคะ หนูขอทางหน่อย"',
-      '<span class="name">ไทม์:</span> "เดินผ่านป่านี้คนเดียวมันไม่ดีหรอกฝน…รู้มั้ยว่าผู้หญิงหายไปแถวนี้ตั้งกี่คน" <span class="inner-thought">(ยิ้มแปลก ๆ ปากกระตุกเหมือนคนข่มอะไรบางอย่าง)</span>',
+      '<span class="name">ไทม์:</span> "เดินผ่านป่านี้คนเดียวมันไม่ดีหรอกฝน…รู้มั้ยว่าผู้หญิงหายไปแถวนี้ตั้งกี่คน"',
       '<span class="name">ไทม์:</span> "แต่ไม่ต้องห่วง…พี่อยู่ตรงนี้แล้วนี่ไง…พี่จะดูแลเอง"',
       '<span class="inner-thought">(มือเขาเอื้อมมาจับไหล่ฉัน แล้วค่อย ๆ ลูบลงมาช้า ๆ)</span>',
       '<span class="name">น้ำฝน:</span> (เสียงสั่น) "พี่…อย่าทำแบบนี้เลย…หนูจะไปแล้ว"',
@@ -106,7 +42,8 @@
       '<span class="inner-thought">(จากนั้นเขาพยายามลากฉันไปทางข้างทางที่มีแต่ต้นไม้ ไม่มีไฟ ไม่มีตึก ไม่มีคนเลย — พงหญ้าและกลิ่นดินชื้นเริ่มใกล้ขึ้นเรื่อย ๆ)</span>',
       '<span class="name">น้ำฝน:</span> "พี่อย่า!!! ปล่อยหนูไปเถอะนะ!!!"',
       '<span class="inner-thought">(ฉันร้องลั่นทั้งน้ำตา ดิ้นเต็มแรง สะบัดแขนและพยายามหาของที่สามารถใช้เป็นอาวุธได้ในกระเป๋า)</span>',
-      '<strong>คุณจะใช้อะไรในการเอาตัวรอด?</strong>'
+      '<strong class="danger">คุณจะใช้อะไรในการเอาตัวรอด?</strong>'
+
     ];
 
     let index = 0;
@@ -131,16 +68,20 @@
     }
 
     function choose(option) {
-      if (option === 1) {
-        window.location.href = "Night4-use-key-start1.html";
-      } else if (option === 2) {
-        window.location.href = "Night4-use-perfume-start1.html";
-      } else if (option === 3) {
-        window.location.href = "Night4-use-bite.html";
-      }
+      if (option === 1) window.location.href = "Night4-use-key-start1.html";
+      else if (option === 2) window.location.href = "Night4-use-perfume-start1.html";
+      else if (option === 3) window.location.href = "Night4-use-bite.html";
     }
 
-    window.onload = nextText;
+    window.onload = function() {
+      nextText();
+
+      // เปลี่ยนภาพตามเวลา
+      setTimeout(() => { document.body.style.backgroundImage = "url('images/carzy-time.png')"; }, 6000);
+      setTimeout(() => { document.body.style.backgroundImage = "url('images/Time-hold-fon.png')"; }, 11000);
+      setTimeout(() => { document.body.style.backgroundImage = "url('images/Time-pull-Fon2.png')"; }, 16000);
+      setTimeout(() => { document.body.style.backgroundImage = "url('images/Find-a-weapon.png')"; }, 26000);
+    };
   </script>
 </body>
 </html>

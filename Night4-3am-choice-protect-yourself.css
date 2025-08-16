@@ -1,0 +1,81 @@
+/* รีเซ็ตพื้นฐาน */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Kanit', sans-serif;
+}
+
+/* พื้นหลังของหน้า */
+body {
+  background: url("images/scary.png") no-repeat center center fixed; /* เปลี่ยนชื่อไฟล์ภาพตามต้องการ */
+  background-size: cover;
+  color: white;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 20px;
+  overflow: hidden;
+  text-align: center;
+  transition: background-image 1s ease-in-out; /* สำหรับเปลี่ยนภาพอนาคต */
+}
+
+/* กล่องเนื้อเรื่อง */
+.scene-container {
+  width: 100%;
+  max-width: 700px;
+}
+
+/* ข้อความในกล่อง */
+.text-box {
+  font-size: 1.05rem;
+  min-height: 60px;
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+  margin-bottom: 20px;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.8);
+  /* เอาพื้นหลังออก ถ้าอยากได้ใส่ rgba(0,0,0,0.5) */
+}
+
+/* สีตัวละครและข้อความ */
+.name {
+  color: white;
+  font-weight: bold;
+}
+
+.inner-thought {
+  font-style: italic;
+  color: white;
+}
+
+.danger {
+  color: #ff6464;
+}
+
+/* กล่องตัวเลือก */
+.choice-box {
+  margin-top: 20px;
+}
+
+/* ปุ่มตัวเลือก */
+.choice-button {
+  display: block;
+  background-color: rgba(0,0,0,0.6); /* เพิ่มความโปร่งแสงเล็กน้อย */
+  color: white;
+  padding: 18px 24px;
+  margin: 16px auto;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+  width: 100%;
+  max-width: 500px;
+}
+
+.choice-button:hover {
+  background-color: rgba(68,68,68,0.9);
+  transform: scale(1.02);
+}
