@@ -1,0 +1,75 @@
+/* Night4-start1-work-have-choice.css */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Kanit', sans-serif;
+}
+
+body {
+  background-image: url("images/Fon-night4-2.png"); /* ใส่ภาพพื้นหลังที่ต้องการ */
+  background-size: cover;        /* ปรับขนาดเต็มหน้าจอ */
+  background-position: center;   /* จัดกึ่งกลาง */
+  background-repeat: no-repeat;
+  background-attachment: fixed;  /* พื้นหลังคงที่เวลาเลื่อน */
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end; /* ชิดด้านล่าง */
+  height: 100vh;
+  padding: 40px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: background 1s ease-in-out; /* เพิ่มความนุ่มเวลาจะเปลี่ยนภาพ */
+}
+
+.scene-container {
+  max-width: 700px;
+  width: 100%;
+}
+
+.time-label {
+  font-size: 1.3rem;
+  color: #ccc;
+  margin-bottom: 20px;
+}
+
+.caption {
+  font-size: 1.05rem;
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+  white-space: pre-line;
+  margin-bottom: 20px;
+  min-height: 80px;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.7); /* ให้อ่านง่ายขึ้น */
+}
+
+.choices {
+  display: none;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.choice-button {
+  padding: 14px 22px;
+  font-size: 1rem;
+  background-color: #222;
+  border: 1px solid #555;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.choice-button:hover {
+  background-color: #444;
+  transform: scale(1.03);
+}
+
+@media screen and (max-width: 640px) {
+  .scene-container {
+    max-width: 95%;
+  }
+}
+ 

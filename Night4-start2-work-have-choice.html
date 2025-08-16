@@ -4,74 +4,7 @@
   <meta charset="UTF-8" />
   <title>5 คืนสยอง - คืนที่ 4</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Kanit', sans-serif;
-    }
-
-    body {
-      background-color: #111;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: flex-end; /* ชิดด้านล่าง */
-      height: 100vh;
-      padding: 40px 20px;
-      text-align: center;
-      cursor: pointer;
-    }
-
-    .scene-container {
-      max-width: 700px;
-      width: 100%;
-    }
-
-    .time-label {
-      font-size: 1.3rem;
-      color: #ccc;
-      margin-bottom: 20px;
-    }
-
-    .caption {
-      font-size: 1.05rem;
-      opacity: 0;
-      transition: opacity 0.6s ease-in-out;
-      white-space: pre-line;
-      margin-bottom: 20px;
-      min-height: 80px;
-    }
-
-    .choices {
-      display: none;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .choice-button {
-      padding: 14px 22px;
-      font-size: 1rem;
-      background-color: #222;
-      border: 1px solid #555;
-      border-radius: 10px;
-      color: white;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .choice-button:hover {
-      background-color: #444;
-      transform: scale(1.03);
-    }
-
-    @media screen and (max-width: 640px) {
-      .scene-container {
-        max-width: 95%;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="Night4-start2-work-have-choice.css">
 </head>
 <body>
   <div class="scene-container">
@@ -101,7 +34,6 @@
 
     const captionElem = document.getElementById('caption-text');
     const choiceBox = document.getElementById('choice-box');
-
     let index = 0;
 
     function showNextCaption() {

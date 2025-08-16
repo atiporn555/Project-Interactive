@@ -1,0 +1,75 @@
+/* Night4-start2-work-have-choice.css */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Kanit', sans-serif;
+}
+
+body {
+  background-image: url('images/Fon-night4-2.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 100vh;
+  padding: 40px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-image 1s ease-in-out;
+}
+
+.scene-container {
+  max-width: 700px;
+  width: 100%;
+}
+
+.time-label {
+  font-size: 1.3rem;
+  color: #ccc;
+  margin-bottom: 20px;
+}
+
+.caption {
+  font-size: 1.05rem;
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+  white-space: pre-line;
+  margin-bottom: 20px;
+  min-height: 80px;
+  /* เพิ่มเงาให้ตัวหนังสือ */
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+}
+
+.choices {
+  display: none;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.choice-button {
+  padding: 14px 22px;
+  font-size: 1rem;
+  background-color: #222;
+  border: 1px solid #555;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  /* เพิ่มเงาให้ตัวหนังสือบนปุ่ม */
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+}
+
+.choice-button:hover {
+  background-color: #444;
+  transform: scale(1.03);
+}
+
+@media screen and (max-width: 640px) {
+  .scene-container {
+    max-width: 95%;
+  }
+}

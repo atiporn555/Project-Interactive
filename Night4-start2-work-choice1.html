@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>5 คืนสยอง - ตัวเลือกที่ 1</title>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="Night4-start2-work-choice1.css">
   <style>
     * {
       margin: 0;
@@ -13,11 +14,15 @@
     }
 
     body {
-      background-color: #111;
+      background-image: url("images/Strangr-Woman2.png"); /* ภาพพื้นหลังแรก */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      transition: background-image 1s ease-in-out;
       color: white;
       display: flex;
       justify-content: center;
-      align-items: flex-end; /* เน้นให้อยู่ด้านล่าง */
+      align-items: flex-end;
       height: 100vh;
       padding: 40px 20px;
       text-align: center;
@@ -27,12 +32,6 @@
     .scene-container {
       max-width: 700px;
       width: 100%;
-    }
-
-    .time-label {
-      font-size: 1.3rem;
-      color: #ccc;
-      margin-bottom: 20px;
     }
 
     .caption {
@@ -134,6 +133,11 @@
         }, 500);
       }
     }
+
+    // --- ให้ภาพพื้นหลังเปลี่ยนหลัง 18 วิ ---
+    setTimeout(() => {
+      document.body.style.backgroundImage = 'url("images/time-night4.png")';
+    }, 18000);
 
     window.onload = () => {
       showNextCaption();

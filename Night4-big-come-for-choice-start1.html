@@ -4,10 +4,14 @@
   <meta charset="UTF-8" />
   <title>5 คืนสยอง - ตัวเลือก: บอกแฟนจะมารับ</title>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="Night4-big-come-for-choice-start1.css">
   <style>
     body {
       margin: 0;
-      background-color: #111;
+      background-image: url('images/Fon-Worried.png'); /* ภาพพื้นหลังแรก */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
       color: white;
       font-family: 'Prompt', sans-serif;
       height: 100vh;
@@ -15,9 +19,10 @@
       cursor: pointer;
       display: flex;
       justify-content: center;
-      align-items: flex-end; /* ข้อความอยู่ด้านล่าง */
+      align-items: flex-end;
       padding: 40px 20px;
       box-sizing: border-box;
+      transition: background-image 1s ease-in-out;
     }
 
     .scene-container {
@@ -32,10 +37,11 @@
       transition: opacity 0.5s ease;
       line-height: 1.6;
       white-space: pre-line;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
     }
   </style>
 </head>
-<body onclick="nextCaption()">
+<body id="body" onclick="nextCaption()">
   <div class="scene-container">
     <div class="caption" id="caption-text"></div>
   </div>
@@ -50,7 +56,6 @@
       "ฝน: เอ่อ...พี่ไทม์...วันนี้ดูแปลก ๆ ไปนะคะ มีอะไรหรือเปล่า?",
       "ไทม์: เปล่า...พี่แค่รู้สึกเสียใจนิดหน่อย ที่ฝนเลือกคนอื่น แทนที่จะเป็นพี่...",
       "(ฉันเริ่มรู้สึกได้ถึงบางอย่างที่ผิดปกติ...บรรยากาศรอบตัวเริ่มอึดอัดขึ้นเรื่อย ๆ)",
-      "(แล้วเสียงหนึ่งก็ดังขึ้นจากทางหน้าประตู)",
       "บิ๊ก: ฝน",
       "ฝน: อ๊ะ บิ๊ก! (ขอบคุณพระเจ้า มาทันเวลาพอดี!)",
       "บิ๊ก: ขอโทษทีนะ ไม่คิดว่าจะยังมีลูกค้าอยู่",
@@ -78,17 +83,26 @@
           captionText.style.opacity = 1;
           currentIndex++;
 
+          // ถ้าเป็น caption สุดท้าย ให้แสดงข้อความคลิกเพื่อไปต่อ
           if (currentIndex === captions.length) {
-            setTimeout(() => {
-              window.location.href = 'Night4-3am-for-start1-2.html';
-            }, 1000);
+            captionText.textContent += "\n\n(คลิกเพื่อไปต่อ)";
           }
         }, 400);
+      } else {
+        // เมื่อคลิกหลัง caption สุดท้ายแล้ว
+        window.location.href = 'Night4-3am-for-start1-2.html';
       }
     }
 
     window.onload = () => {
       nextCaption();
+
+      const body = document.getElementById('body');
+
+      // เปลี่ยนภาพ timeline
+      setTimeout(() => { body.style.backgroundImage = "url('images/Big-Come.png')"; }, 10000);       // ภาพ 2 หลัง 10 วินาที
+      setTimeout(() => { body.style.backgroundImage = "url('images/time-angry.png')"; }, 16000);      // ภาพ 3 หลัง 6 วินาทีจากภาพ 2
+      setTimeout(() => { body.style.backgroundImage = "url('images/Big-Fon-night4.png')"; }, 23000);  // ภาพ 4 หลัง 7 วินาทีจากภาพ 3
     };
   </script>
 </body>
