@@ -1,0 +1,67 @@
+body {
+  background-image: url('images/Run-away2.png'); /* ภาพพื้นหลัง */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center; /* ตรงกลางแนวนอน */
+  align-items: flex-end;   /* ชิดขอบล่าง */
+  font-family: 'Kanit', sans-serif;
+  color: white;
+  user-select: none;
+  cursor: pointer;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.9); /* เงาอ่านง่าย */
+  box-sizing: border-box;
+  padding: 0; /* ไม่มี padding บน/ล่าง เพื่อให้ข้อความชิดล่างจริง */
+}
+
+.scene-container {
+  width: 100%;
+  max-width: 700px;
+  text-align: center;
+  margin-bottom: 40px; /* ปรับระยะจากขอบล่าง */
+  font-size: 1.2rem;
+  line-height: 1.7;
+  white-space: pre-line;
+  min-height: 0;
+}
+
+.text-box {
+  position: relative;       /* ใช้งานได้จริง */
+  opacity: 0;               /* เริ่มต้นเป็นโปร่งใส */
+  transition: opacity 0.6s ease-out; /* สมูท fade-in */
+}
+
+.text-box.show {
+  opacity: 1;               /* แสดงข้อความ */
+}
+
+.caption-line {
+  margin: 0.5em 0;
+}
+
+.narration {
+  font-style: italic;
+  color: #f0f0f0;
+  text-shadow: 2px 2px 6px rgba(0,0,0,1);
+}
+
+.name {
+  font-weight: 600;
+}
+
+.fon { color: #ffffff; text-shadow: 2px 2px 6px rgba(0,0,0,1); }
+.time { color: #ffffff; text-shadow: 2px 2px 6px rgba(0,0,0,1); }
+.name.name { color: #ffffff; text-shadow: 2px 2px 6px rgba(0,0,0,1); }
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-out both;
+}

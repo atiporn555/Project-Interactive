@@ -1,0 +1,46 @@
+/* Night4-big-come-for-choice-start2.css */
+
+/* ตัว body ของหน้าฉาก */
+body {
+  margin: 0;
+  font-family: 'Prompt', sans-serif;
+  height: 100vh;
+  user-select: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end; /* ข้อความอยู่ด้านล่าง */
+  padding: 40px 20px;
+  box-sizing: border-box;
+
+  /* พื้นหลัง */
+  background-image: url('images/Fon-Worried.png'); /* ใส่ภาพพื้นหลังของฉาก */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  color: #fff; /* สีข้อความ */
+}
+
+/* กล่องข้อความธรรมดา ไม่มีไฟนีออนหรือ shadow */
+.scene-container {
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+  padding: 0; /* ไม่มี padding เพิ่ม */
+  background: transparent; /* ไม่มีสีพื้นหลัง */
+  border-radius: 0; /* ไม่มีมุมโค้ง */
+  box-shadow: none; /* ไม่มีเงา */
+}
+
+/* ข้อความบรรยาย */
+.caption {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  white-space: pre-line;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+
+  /* เพิ่มเงาให้ข้อความอ่านง่ายบนพื้นหลัง */
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+}

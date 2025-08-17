@@ -6,60 +6,82 @@
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     body {
-      background: #111;
-      color: white;
-      font-family: 'Prompt', sans-serif;
       margin: 0;
-      padding: 40px 20px;
+      padding: 0;
+      font-family: 'Prompt', sans-serif;
+      user-select: none;
+      cursor: pointer;
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: flex-end;
-      height: 100vh;
-      box-sizing: border-box;
-      user-select: none;
-      cursor: pointer;
+      overflow: hidden;
+    }
+
+    /* Container สำหรับภาพ background */
+    .bg-container {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    .bg-container img {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .bg-container img.active {
+      opacity: 1;
     }
 
     .scene-container {
       width: 100%;
       max-width: 600px;
       text-align: center;
-      font-size: 1.15rem;
-      line-height: 1.6;
+      font-size: 1.2rem;
+      line-height: 1.7;
       white-space: pre-line;
       min-height: 180px;
+      margin-bottom: 20px;
+      color: white;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.9);
     }
 
     .caption-line {
       margin: 1em 0;
     }
 
-    .narration {
-      font-style: italic;
-      color: #ccc;
-    }
+    .narration { font-style: italic; color: #f0f0f0; }
 
-    .speaker {
-      font-weight: 600;
-      margin-right: 0.4em;
-    }
+    .speaker { font-weight: 600; margin-right: 0.4em; }
+    .fon { color: #ffffff; }
+    .time { color: #ffffff; }
+    .teen { color: #ffffff; }
 
-    .fon { color: #66ccff; }       /* สีฟ้าสำหรับฝน */
-    .time { color: #ff6666; }      /* สีแดงสำหรับไทม์ */
-    .teen { color: #90ee90; }      /* สีเขียวอ่อนสำหรับวัยรุ่น */
-
-    /* Fade-in animation */
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
+    .fade-in { animation: fadeIn 0.6s ease-out both; }
 
-    .fade-in {
-      animation: fadeIn 0.6s ease-out both;
-    }
   </style>
 </head>
 <body onclick="nextLine()">
+  <div class="bg-container">
+    <img src="images/Run-away2.png" class="active" />
+    <img src="images/male-teenager.png" />
+    <img src="images/time-run-aways.png" />
+    <img src="images/cry.png" />
+    <img src="images/police-station.png" />
+  </div>
+
   <div class="scene-container">
     <div id="caption-text"></div>
   </div>
@@ -95,7 +117,6 @@
 
     function nextLine() {
       if (index >= lines.length) {
-        // เมื่อจบเนื้อเรื่อง ให้ไปหน้า Night5-last-night.html
         window.location.href = "Night5-last-night.html";
         return;
       }
@@ -107,12 +128,10 @@
         const speaker = text.split(':')[0].trim();
         const content = text.split(':').slice(1).join(':').trim();
         let className = '';
-
         if (speaker === 'ฝน') className = 'fon';
         else if (speaker === 'ไทม์') className = 'time';
         else if (speaker === 'วัยรุ่น') className = 'teen';
         else className = 'speaker';
-
         html = `<div class="caption-line"><span class="speaker ${className}">${speaker}:</span> ${content}</div>`;
       } else {
         html = `<div class="caption-line narration">${text.replace(/\n/g, "<br>")}</div>`;
@@ -129,6 +148,17 @@
 
     window.onload = () => {
       nextLine();
+
+      // เปลี่ยนภาพแบบสมูท
+      const bgImgs = document.querySelectorAll('.bg-container img');
+      const timings = [0, 5000, 10000, 16000, 26000];
+
+      timings.forEach((time, i) => {
+        setTimeout(() => {
+          bgImgs.forEach(img => img.classList.remove('active'));
+          bgImgs[i].classList.add('active');
+        }, time);
+      });
     };
   </script>
 </body>

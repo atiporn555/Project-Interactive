@@ -4,27 +4,28 @@
   <meta charset="UTF-8" />
   <title>เรื่องเล่าฝน - ใช้ปากกัดมือไทม์</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="Night4-use-bite.css">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Kanit', sans-serif;
-    }
-
     body {
-      background-color: #111;
-      color: white;
+      background-image: url('images/blood-hand.png'); /* ภาพแรก */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      transition: background-image 1s ease-in-out; /* ทำให้เปลี่ยนภาพสมูท */
       height: 100vh;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
+      justify-content: flex-end;   /* ชิดขอบล่าง */
       align-items: center;
       padding: 20px;
       overflow: hidden;
       text-align: center;
       user-select: none;
       cursor: pointer;
+      color: white;
+      font-family: 'Kanit', sans-serif;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.9);
+      box-sizing: border-box;
     }
 
     .scene-container {
@@ -47,18 +48,9 @@
       margin-right: 0.4em;
     }
 
-    .fon {
-      color: #66ccff;
-    }
-
-    .time {
-      color: #ff6666;
-    }
-
-    .narration {
-      font-style: italic;
-      color: #ccc;
-    }
+    .fon { color: white; }
+    .time { color: white; }
+    .narration { font-style: italic; color: #ccc; }
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
@@ -100,7 +92,6 @@
       }
 
       isTransitioning = true;
-
       const text = lines[index];
       let html = '';
 
@@ -127,7 +118,14 @@
       }, 300);
     }
 
-    window.onload = nextLine;
+    window.onload = () => {
+      nextLine();
+
+      // เปลี่ยนภาพพื้นหลังหลัง 10 วินาที
+      setTimeout(() => {
+        document.body.style.backgroundImage = "url('images/hurt.png')";
+      }, 10000);
+    };
   </script>
 </body>
 </html>
