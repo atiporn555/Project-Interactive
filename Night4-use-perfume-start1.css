@@ -1,0 +1,58 @@
+/* Reset พื้นฐาน */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Kanit', sans-serif;
+  height: 100vh;
+  width: 100%;
+  background-image: url('images/perfume.png'); /* ภาพแรก */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 20px;
+  overflow: hidden;
+  transition: background-image 1s ease-in-out; /* เปลี่ยนภาพลื่น */
+  color: white;
+  cursor: pointer;
+  text-align: center;
+}
+
+.scene-container {
+  width: 100%;
+  max-width: 700px;
+}
+
+.text-box {
+  font-size: 1.05rem;
+  min-height: 60px;
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+  line-height: 1.6;
+  white-space: pre-line;
+  /* เอากล่องออก ไม่มี background, padding หรือ border-radius */
+}
+
+.name {
+  font-weight: 600;
+  margin-right: 0.4em;
+}
+
+.fon { color: white; } /* สีฟ้าฝน */
+.time { color: white; } /* สีแดงไทม์ */
+.narration { font-style: italic; color: #ccc; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-out both;
+}

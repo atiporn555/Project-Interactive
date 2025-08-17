@@ -4,71 +4,7 @@
   <meta charset="UTF-8" />
   <title>5 คืนสยอง - น้ำหอม</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Kanit', sans-serif;
-    }
-
-    body {
-      background-color: #111;
-      color: white;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      align-items: center;
-      padding: 20px;
-      overflow: hidden;
-      text-align: center;
-      user-select: none;
-      cursor: pointer;
-    }
-
-    .scene-container {
-      width: 100%;
-      max-width: 700px;
-    }
-
-    .text-box {
-      font-size: 1.05rem;
-      min-height: 60px;
-      opacity: 0;
-      transition: opacity 0.6s ease-in-out;
-      margin-bottom: 20px;
-      line-height: 1.6;
-      white-space: pre-line;
-    }
-
-    .name {
-      font-weight: 600;
-      margin-right: 0.4em;
-    }
-
-    .fon {
-      color: #66ccff;  /* สีฟ้าสำหรับฝน */
-    }
-
-    .time {
-      color: #ff6666;  /* สีแดงสำหรับไทม์ */
-    }
-
-    .narration {
-      font-style: italic;
-      color: #ccc;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .fade-in {
-      animation: fadeIn 0.6s ease-out both;
-    }
-  </style>
+  <link rel="stylesheet" href="Night4-use-perfume-start1.css">
 </head>
 <body onclick="nextLine()">
   <div class="scene-container">
@@ -88,7 +24,6 @@
 
     function nextLine() {
       if (index >= lines.length) {
-        // เมื่อจบแล้วให้เปลี่ยนหน้าไป Night4-chat-choice-perfume.html
         window.location.href = 'Night4-chat-choice-perfume-start1.html';
         return;
       }
@@ -99,12 +34,7 @@
       if (text.includes(':')) {
         const speaker = text.split(':')[0].trim();
         const content = text.split(':').slice(1).join(':').trim();
-        let className = '';
-
-        if (speaker === 'ฝน') className = 'fon';
-        else if (speaker === 'ไทม์') className = 'time';
-        else className = 'name';
-
+        let className = speaker === 'ฝน' ? 'fon' : speaker === 'ไทม์' ? 'time' : 'name';
         html = `<span class="name ${className}">${speaker}:</span> ${content}`;
       } else {
         html = `<span class="narration">${text}</span>`;
@@ -119,7 +49,14 @@
       index++;
     }
 
-    window.onload = nextLine;
+    window.onload = () => {
+      nextLine();
+
+      // เปลี่ยนภาพพื้นหลังหลังจาก 6 วิ
+      setTimeout(() => {
+        document.body.style.backgroundImage = "url('images/Run-away2.png')";
+      }, 6000);
+    };
   </script>
 </body>
 </html>

@@ -4,50 +4,7 @@
   <meta charset="UTF-8" />
   <title>5 คืนสยอง - ใช้กุญแจแทง</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Kanit', sans-serif;
-    }
-
-    body {
-      background-color: #111;
-      color: white;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      align-items: center;
-      padding: 20px;
-      overflow: hidden;
-      text-align: center;
-    }
-
-    .scene-container {
-      width: 100%;
-      max-width: 700px;
-    }
-
-    .text-box {
-      font-size: 1.05rem;
-      min-height: 60px;
-      opacity: 0;
-      transition: opacity 0.6s ease-in-out;
-      margin-bottom: 20px;
-    }
-
-    .name {
-      color: #ff7777;
-      font-weight: bold;
-    }
-
-    .inner-thought {
-      font-style: italic;
-      color: #ccc;
-    }
-  </style>
+  <link rel="stylesheet" href="Night4-use-key-start1.css">
 </head>
 <body onclick="nextText()">
   <div class="scene-container">
@@ -79,13 +36,23 @@
           textBox.style.opacity = 1;
           isTransitioning = false;
         } else {
-          // สามารถเชื่อมไปหน้าเนื้อเรื่องถัดไปได้ที่นี่
           window.location.href = "Night4-chat-choice-key-start1.html";
         }
       }, 500);
     }
 
-    window.onload = nextText;
+    window.onload = function() {
+      // เริ่มบทสนทนา
+      nextText();
+
+      // ตั้งค่าพื้นหลังเริ่มต้น
+      document.body.style.backgroundImage = "url('images/key.png')";
+
+      // หลังจาก 5 วิ เปลี่ยนเป็นภาพ Run
+      setTimeout(() => {
+        document.body.style.backgroundImage = "url('images/Run.png')";
+      }, 5000);
+    };
   </script>
 </body>
 </html>

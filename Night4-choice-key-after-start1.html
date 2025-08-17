@@ -1,72 +1,52 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>เรื่องเล่าฝน</title>
-  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet" />
-  <style>
-    body {
-      background: #111;
-      color: white;
-      font-family: 'Prompt', sans-serif;
-      margin: 0;
-      padding: 40px 20px;
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      height: 100vh;
-      box-sizing: border-box;
-      user-select: none;
-      cursor: pointer;
-    }
-
-    .scene-container {
-      width: 100%;
-      max-width: 600px;
-      text-align: center;
-      font-size: 1.15rem;
-      line-height: 1.6;
-      white-space: pre-line;
-      min-height: 180px;
-    }
-
-    .caption-line {
-      margin: 1em 0;
-    }
-
-    .narration {
-      font-style: italic;
-      color: #ccc;
-    }
-
-    .speaker {
-      font-weight: 600;
-      margin-right: 0.4em;
-    }
-
-    .fon { color: #66ccff; }   /* สีฟ้าสำหรับฝน */
-    .time { color: #ff6666; }  /* สีแดงสำหรับไทม์ */
-    .teen { color: #90ee90; }  /* สีเขียวอ่อนสำหรับบิ๊ก */
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .fade-in {
-      animation: fadeIn 0.6s ease-out both;
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="Night4-choice-key-after-start1.css">
 </head>
-<body onclick="nextLine()">
+<body>
+
+  <!-- Background overlay -->
+  <div id="bg-container">
+    <div class="bg-image show" style="background-image:url('images/hand.png');"></div>
+  </div>
+
   <div class="scene-container">
     <div id="caption-text"></div>
   </div>
 
   <script>
+    const captionEl = document.getElementById('caption-text');
+    const bgContainer = document.getElementById('bg-container');
+
+    // Timeline ของ background
+    const bgTimeline = [
+      {time: 5000, img:'images/car-forest.png'},
+      {time: 10000, img:'images/big-help.png'},
+      {time: 15000, img:'images/Time-catch-Fon.png'},
+      {time: 23000, img:'images/time-run.png'},
+      {time: 30000, img:'images/big-hug-fon.png'},
+      {time: 35000, img:'images/police-station.png'}
+    ];
+
+    function changeBackgroundSmooth(imagePath) {
+      const newDiv = document.createElement('div');
+      newDiv.className = 'bg-image';
+      newDiv.style.backgroundImage = `url('${imagePath}')`;
+      bgContainer.appendChild(newDiv);
+      setTimeout(() => newDiv.classList.add('show'), 50);
+      const oldDivs = bgContainer.querySelectorAll('.bg-image');
+      if (oldDivs.length > 1) setTimeout(() => oldDivs[0].remove(), 800);
+    }
+
+    bgTimeline.forEach(item => setTimeout(() => changeBackgroundSmooth(item.img), item.time));
+
+    // ----------- เนื้อหาคำพูด -----------
     const lines = [
       'ฝน: พี่ ปล่อยฝนเถอะ! ฝนไม่มีอะไรจะให้แล้ว พี่อยากได้อะไรก็เอาไปเลย! แต่อย่าทำอะไรฝนเลยนะ...',
-      'ฉันยกมือขึ้นพนมไหว้ ร้องขอชีสิตทั้งน้ำตา แต่ดูเหมือนเขาไม่รับฟังอะไรเลย ดวงตาของเขาเต็มไปด้วยความคลุ้มคลั่งราวกับขาดสติ ฉันพยายามดิ้นสุดแรง ทุบตีเพื่อผลักเขาออก แต่แรงของฉันไม่อาจต้านเชาได้',
+      'ฉันยกมือขึ้นพนมไหว้ ร้องขอชีวิตทั้งน้ำตา แต่ดูเหมือนเขาไม่รับฟังอะไรเลย ดวงตาของเขาเต็มไปด้วยความคลุ้มคลั่งราวกับขาดสติ ฉันพยายามดิ้นสุดแรง ทุบตีเพื่อผลักเขาออก แต่แรงของฉันไม่อาจต้านเชาได้',
       'แต่แล้วเหมือนโชคชะตาจะเข้าข้างฉัน แสงจากรถยนต์คันหนึ่งสาดเข้ามาในความมืด ฉันเห็นโอกาสจึงรีบเปล่งเสียงร้องขอความช่วยเหลือ',
       'ฝน: "ช่วยด้วยค่ะ! ช่วยด้วย! มันจะข่มขืนหนู!"',
       'ไทม์: "เงียบ!"',
@@ -93,12 +73,11 @@
       'มันสอนให้ฉันรู้ว่า...\nเหตุการณ์เลวร้ายแบบนี้ ไม่ใช่เรื่องไกลตัวเลย\nมันสามารถเกิดขึ้นกับใครก็ได้ — แม้แต่คุณที่กำลังฟังเรื่องของฉันในตอนนี้...'
     ];
 
-    const captionEl = document.getElementById('caption-text');
     let index = 0;
 
     function nextLine() {
       if (index >= lines.length) {
-        window.location.href = "Night5-last-night.html"; // ไปหน้าต่อ
+        window.location.href = "Night5-last-night.html";
         return;
       }
 
@@ -109,29 +88,29 @@
         const speaker = text.split(':')[0].trim();
         const content = text.split(':').slice(1).join(':').trim();
         let className = '';
-
         if (speaker === 'ฝน') className = 'fon';
         else if (speaker === 'ไทม์') className = 'time';
         else if (speaker === 'บิ๊ก') className = 'teen';
         else className = 'speaker';
-
         html = `<div class="caption-line"><span class="speaker ${className}">${speaker}:</span> ${content}</div>`;
       } else {
         html = `<div class="caption-line narration">${text.replace(/\n/g, "<br>")}</div>`;
       }
 
-      captionEl.innerHTML = '';
-      const wrapper = document.createElement('div');
-      wrapper.className = 'fade-in';
-      wrapper.innerHTML = html;
-      captionEl.appendChild(wrapper);
+      captionEl.style.opacity = 0;
+      setTimeout(() => {
+        captionEl.innerHTML = html;
+        captionEl.style.opacity = 1;
+      }, 150);
 
       index++;
     }
 
-    window.onload = () => {
-      nextLine();
-    };
+    // เริ่มแรกเมื่อโหลดหน้า
+    window.onload = nextLine;
+
+    // กด anywhere บน body เพื่อเปลี่ยนข้อความ
+    document.body.addEventListener('click', nextLine);
   </script>
 </body>
 </html>

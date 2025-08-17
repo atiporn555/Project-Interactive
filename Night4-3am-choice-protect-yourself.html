@@ -11,6 +11,25 @@
       background-size: cover;
       transition: background-image 1s ease-in-out;
     }
+
+    /* หลอดเวลา */
+    #timer-bar-container {
+      width: 100%;
+      max-width: 500px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      margin: 20px auto 0;
+      overflow: hidden;
+      box-shadow: 0 0 10px black;
+    }
+
+    #timer-bar {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, #ff0000, #ffcc00);
+      transition: width 0.1s linear;
+    }
   </style>
 </head>
 <body onclick="nextText()">
@@ -20,12 +39,18 @@
       <button class="choice-button" onclick="choose(1)">กุญแจห้องใช้แทงไปที่คอ</button>
       <button class="choice-button" onclick="choose(2)">น้ำหอมที่มีแอลกอฮอลผสม</button>
       <button class="choice-button" onclick="choose(3)">ใช้ปากกัดมือของไทม์</button>
+      
+      <!-- หลอดเวลา -->
+      <div id="timer-bar-container">
+        <div id="timer-bar"></div>
+      </div>
     </div>
   </div>
 
   <script>
     const textBox = document.getElementById("text-box");
     const choiceBox = document.getElementById("choice-box");
+    const timerBar = document.getElementById("timer-bar");
 
     const texts = [
       '<span class="name">น้ำฝน:</span> "ไม่เป็นไรค่ะ…หนูเดินเองได้ เดี๋ยวก็ถึงแล้ว"',
@@ -43,11 +68,11 @@
       '<span class="name">น้ำฝน:</span> "พี่อย่า!!! ปล่อยหนูไปเถอะนะ!!!"',
       '<span class="inner-thought">(ฉันร้องลั่นทั้งน้ำตา ดิ้นเต็มแรง สะบัดแขนและพยายามหาของที่สามารถใช้เป็นอาวุธได้ในกระเป๋า)</span>',
       '<strong class="danger">คุณจะใช้อะไรในการเอาตัวรอด?</strong>'
-
     ];
 
     let index = 0;
     let isTransitioning = false;
+    let timerInterval;
 
     function nextText() {
       if (isTransitioning || choiceBox.style.display === "block") return;
@@ -62,12 +87,31 @@
         } else {
           textBox.style.display = "none";
           choiceBox.style.display = "block";
+          startTimer(10); // เริ่มจับเวลา 10 วิ
           isTransitioning = false;
         }
       }, 500);
     }
 
+    function startTimer(seconds) {
+      let timeLeft = seconds;
+      let totalWidth = 100; // %
+      let step = totalWidth / (seconds * 10); // ลดทุก 0.1 วิ
+
+      let currentWidth = totalWidth;
+      timerInterval = setInterval(() => {
+        currentWidth -= step;
+        if (currentWidth <= 0) {
+          currentWidth = 0;
+          clearInterval(timerInterval);
+          window.location.href = "GameOver.html";
+        }
+        timerBar.style.width = currentWidth + "%";
+      }, 100);
+    }
+
     function choose(option) {
+      clearInterval(timerInterval); 
       if (option === 1) window.location.href = "Night4-use-key-start1.html";
       else if (option === 2) window.location.href = "Night4-use-perfume-start1.html";
       else if (option === 3) window.location.href = "Night4-use-bite.html";
