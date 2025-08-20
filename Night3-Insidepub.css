@@ -9,14 +9,14 @@
 
 body {
   background-color: #111;
-  background-image: url('images/dance.png'); /* เปลี่ยนเป็นชื่อไฟล์ภาพของคุณ */
+  background-image: url('images/dance.png'); /* พื้นหลัง */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   color: white;
   height: 100vh;
   display: flex;
-  flex-direction: column;   /* ดันเนื้อหาลงล่าง */
+  flex-direction: column;  
   justify-content: flex-end;
   align-items: center;
   padding: 20px;
@@ -30,39 +30,75 @@ body {
   max-width: 640px;
 }
 
+/* ข้อความตัวละคร: ไม่มีพื้นหลัง มีแต่เงา */
 .text-box {
-  font-size: 1.1rem;
-  min-height: 60px; /* คงตำแหน่งข้อความ */
+  font-size: 1.2rem;
+  font-weight: 600;
+  min-height: 60px;
   opacity: 0;
   transition: opacity 0.6s ease-in-out;
   margin-bottom: 20px;
+
+  background: none;  /* เอาพื้นหลังออก */
+  padding: 0;        /* ไม่มี padding */
+
+  color: white;
+  text-shadow: 2px 2px 6px black; /* เงาเข้ม */
 }
 
+/* กล่องตัวเลือก */
 .choices {
   display: none;
-  flex-direction: row;      /* เรียงปุ่มแนวนอน */
-  gap: 20px;                /* ช่องว่างระหว่างปุ่ม */
-  justify-content: center;  /* จัดกึ่งกลาง */
-  flex-wrap: wrap;          /* หน้าจอเล็กขึ้นบรรทัดใหม่ */
+  flex-direction: row;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
   margin-top: 30px;
 }
 
+/* ปุ่มตัวเลือก */
 .choice-button {
   padding: 12px 20px;
-  font-size: 1rem;
-  background-color: #222;
-  border: 1px solid #555;
-  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+
+  background-color: rgba(50, 50, 50, 0.6);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 12px;
   color: white;
   cursor: pointer;
   transition: all 0.3s ease;
-  min-width: 240px;         /* ขนาดปุ่มเท่ากัน */
+  min-width: 240px;
   text-align: center;
   white-space: nowrap;
-  margin: 0;
+  text-shadow: 1px 1px 2px black;
 }
 
 .choice-button:hover {
-  background-color: #333;
+  background-color: rgba(255, 0, 0, 0.6);
   transform: scale(1.03);
+}
+
+/* ปุ่มปรับเสียง */
+.volume-controls {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0,0,0,0.3);
+  padding: 6px 10px;
+  border-radius: 8px;
+  z-index: 1000;
+}
+.volume-controls input[type="range"] { width: 120px; accent-color: red; }
+.volume-button { 
+  background-color: rgba(255,255,255,0.1); 
+  border: 1px solid rgba(255,255,255,0.3); 
+  border-radius: 6px; 
+  padding: 6px 10px; 
+  color: white; 
+  font-weight: bold; 
+  cursor: pointer; 
 }

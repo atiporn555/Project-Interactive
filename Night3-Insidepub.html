@@ -1,129 +1,90 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8" />
-  <title>5 คืนสยอง - ผับยามค่ำคืน</title>
-  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Kanit', sans-serif;
-    }
-    body {
-      background-color: #111;
-      background-image: url('images/dance.png'); /* ภาพเริ่มต้น */
-      background-size: cover;
-      background-position: center;
-      transition: background-image 1.5s ease-in-out; /* เฟดนุ่ม ๆ เมื่อเปลี่ยนภาพ */
-      color: white;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      align-items: center;
-      padding: 20px;
-      text-align: center;
-      cursor: pointer;
-      overflow: hidden;
-    }
-    .scene-container {
-      width: 100%;
-      max-width: 640px;
-    }
-    .text-box {
-      font-size: 1.1rem;
-      min-height: 60px;
-      opacity: 0;
-      transition: opacity 0.6s ease-in-out;
-      margin-bottom: 20px;
-    }
-    .choices {
-      display: none;
-      flex-direction: row;
-      gap: 20px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-top: 30px;
-    }
-    .choice-button {
-      padding: 12px 20px;
-      font-size: 1rem;
-      background-color: #222;
-      border: 1px solid #555;
-      border-radius: 10px;
-      color: white;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      min-width: 240px;
-      text-align: center;
-      white-space: nowrap;
-      margin: 0;
-    }
-    .choice-button:hover {
-      background-color: #333;
-      transform: scale(1.03);
-    }
-  </style>
+<meta charset="UTF-8" />
+<title>5 คืนสยอง - ผับยามค่ำคืน</title>
+<link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="Night3-Insidepub.css">
 </head>
-<body onclick="nextText()">
-  <div class="scene-container">
-    <div class="text-box" id="text-box"></div>
-    <div class="choices" id="choice-box">
-      <button class="choice-button" onclick="event.stopPropagation(); selectChoice(1)">รับเครื่องดื่ม</button>
-      <button class="choice-button" onclick="event.stopPropagation(); selectChoice(2)">ปฏิเสธ</button>
-    </div>
+<body>
+
+<div class="scene-container" id="scene">
+  <div class="text-box" id="text-box"></div>
+  <div class="choices" id="choice-box">
+    <button class="choice-button" onclick="event.stopPropagation(); selectChoice(1)">รับเครื่องดื่ม</button>
+    <button class="choice-button" onclick="event.stopPropagation(); selectChoice(2)">ปฏิเสธ</button>
   </div>
+</div>
 
-  <script>
-    const textBox = document.getElementById("text-box");
-    const choiceBox = document.getElementById("choice-box");
+<!-- เพลง background -->
+<audio id="bg-music" src="sounds/club-music-loop-74178.mp3" preload="auto" loop></audio>
 
-    const texts = [
-      "เอมี่: โอ้ยยย... คืนนี่ฉันขอเมาให้ลืมโลกเลยนะ!",
-      "เหมียว: เอมี่ เบาๆหน่อย เดี๋ยวหลุดไปเต้นบนโต๊ะอีก...",
-      "น้ำฝน: ฮ่าๆๆ อย่าเมาจนลืมกลับบ้านก็แล้วกันล่ะ",
-      "ชายแปลกหน้า: สวัสดีครับสาว ๆ มากัน 3 คนเหรอครับ...สนใจมาดื่มด้วยกันมั้ยครับ?",
-    ];
+<!-- ปุ่มปรับเสียง -->
+<div class="volume-controls" onclick="event.stopPropagation()">
+  <button class="volume-button" id="vol-down">🔉</button>
+  <input type="range" id="volumeSlider" min="0" max="1" step="0.01">
+  <button class="volume-button" id="vol-up">🔊</button>
+</div>
 
-    let index = 0;
-    let isTransitioning = false;
+<script>
+const textBox = document.getElementById("text-box");
+const choiceBox = document.getElementById("choice-box");
+const bgMusic = document.getElementById('bg-music');
+const volumeSlider = document.getElementById('volumeSlider');
+const volUp = document.getElementById('vol-up');
+const volDown = document.getElementById('vol-down');
 
-    function nextText() {
-      if (isTransitioning || index >= texts.length) return;
-      isTransitioning = true;
+bgMusic.volume = 0.5;
+volumeSlider.value = bgMusic.volume;
 
-      textBox.style.opacity = 0;
-      setTimeout(() => {
-        textBox.textContent = texts[index++];
-        textBox.style.opacity = 1;
-        isTransitioning = false;
+const texts = [
+  "เอมี่: โอ้ยยย... คืนนี่ฉันขอเมาให้ลืมโลกเลยนะ!",
+  "เหมียว: เอมี่ เบาๆหน่อย เดี๋ยวหลุดไปเต้นบนโต๊ะอีก...",
+  "น้ำฝน: ฮ่าๆๆ อย่าเมาจนลืมกลับบ้านก็แล้วกันล่ะ",
+  "ชายแปลกหน้า: สวัสดีครับสาว ๆ มากัน 3 คนเหรอครับ...สนใจมาดื่มด้วยกันมั้ยครับ?"
+];
 
-        if (index === texts.length) {
-          setTimeout(() => {
-            choiceBox.style.display = "flex";
-          }, 700);
-        }
-      }, 500);
-    }
+let index = 0;
+let firstClick = true;
 
-    function selectChoice(choice) {
-      if (choice === 1) {
-        window.location.href = "Night3-Pub-choice1.html";
-      } else {
-        window.location.href = "Night3-Pub-choice2.html";
-      }
-    }
+function nextText() {
+  if (firstClick) { 
+    bgMusic.play().catch(err => console.log("เล่นเพลงไม่ได้:", err)); 
+    firstClick = false; 
+  }
+  if (index < texts.length) {
+    textBox.style.opacity = 0;
+    setTimeout(() => {
+      textBox.textContent = texts[index++];
+      textBox.style.opacity = 1;
+      if(index === texts.length) setTimeout(() => { choiceBox.style.display = "flex"; }, 700);
+    }, 300);
+  }
+}
 
-    window.onload = () => {
-      nextText();
+function selectChoice(choice) {
+  if (choice === 1) window.location.href = "Night3-Pub-choice1.html";
+  else window.location.href = "Night3-Pub-choice2.html";
+}
 
-      // เปลี่ยนภาพพื้นหลังหลังจาก 5 วินาที
-      setTimeout(() => {
-        document.body.style.backgroundImage = "url('images/glass.png')";
-      }, 5000);
-    };
-  </script>
+document.body.addEventListener('click', nextText);
+
+window.onload = () => { 
+  setTimeout(() => { document.body.style.backgroundImage = "url('images/glass.png')"; }, 5000); 
+};
+
+// ปรับเสียง
+volUp.addEventListener('click', e => { 
+  e.stopPropagation(); 
+  bgMusic.volume = Math.min(bgMusic.volume + 0.1, 1); 
+  volumeSlider.value = bgMusic.volume; 
+});
+volDown.addEventListener('click', e => { 
+  e.stopPropagation(); 
+  bgMusic.volume = Math.max(bgMusic.volume - 0.1, 0); 
+  volumeSlider.value = bgMusic.volume; 
+});
+volumeSlider.addEventListener('input', e => { bgMusic.volume = e.target.value; });
+</script>
 </body>
 </html>

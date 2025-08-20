@@ -1,110 +1,149 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8" />
-  <title>5 คืนสยอง - เครื่องดื่มแปลกๆ และฟื้นขึ้นมา</title>
-  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="Night3-Pub-choice1.css">
-  <style>
-    * {
-      margin: 0; padding: 0; box-sizing: border-box;
-      font-family: 'Kanit', sans-serif;
-    }
-    body {
-      background-color: #111;
-      background-image: url('images/drink.png'); /* ภาพแรกจาก CSS */
-      background-size: cover;
-      background-position: center;
-      transition: background-image 1s ease-in-out; /* เฟดภาพนุ่ม ๆ */
-      color: white;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      align-items: center;
-      text-align: center;
-      padding: 20px;
-      cursor: pointer;
-      overflow: hidden;
-    }
-    .scene-container {
-      width: 100%;
-      max-width: 640px;
-    }
-    /* ซ่อน placeholder ของภาพ */
-    .image-placeholder {
-      display: none !important;
-    }
-    .text-box {
-      font-size: 1.05rem;
-      min-height: 80px;
-      opacity: 0;
-      transition: opacity 0.6s ease-in-out;
-      white-space: pre-line;
-      margin-bottom: 20px;
-      text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
-    }
-  </style>
+<meta charset="UTF-8" />
+<title>5 คืนสยอง - เครื่องดื่มแปลกๆ และฟื้นขึ้นมา</title>
+<link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="Night3-Pub-choice1.css">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Kanit', sans-serif; }
+
+body {
+  background-color:#111;
+  background-image:url('images/drink.png');
+  background-size:cover;
+  background-position:center;
+  transition: background-image 1s ease-in-out;
+  color:white;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  align-items:center;
+  text-align:center;
+  padding:20px;
+  overflow:hidden;
+  cursor:pointer;
+}
+
+.scene-container { width:100%; max-width:640px; display:flex; flex-direction:column; align-items:center; }
+.text-box {
+  font-size:1.05rem;
+  min-height:80px;
+  opacity:1;
+  transition: opacity 0.4s ease-in-out;
+  white-space: pre-line;
+  margin-bottom:20px;
+  text-shadow: 2px 2px 6px black;
+}
+
+/* ปุ่มปรับเสียง */
+.volume-controls {
+  position:fixed;
+  top:20px;
+  right:20px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background: rgba(0,0,0,0.3);
+  padding:6px 10px;
+  border-radius:8px;
+  z-index:1000;
+  cursor:auto;
+}
+.volume-controls input[type="range"] { width:120px; accent-color:red; }
+.volume-button { 
+  background-color: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius:6px;
+  padding:6px 10px;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+</style>
 </head>
-<body onclick="nextText()">
-  <div class="scene-container">
-    <div class="image-placeholder" id="image-box">[ภาพผับ]</div>
-    <div class="text-box" id="text-box"></div>
-  </div>
+<body>
 
-  <script>
-    const textBox = document.getElementById("text-box");
+<div class="scene-container">
+  <div class="text-box" id="text-box">น้ำฝน: ขอบคุณนะคะ~</div>
+</div>
 
-    const texts = [
-      "น้ำฝน: ขอบคุณนะคะ~",
-      "เหมียว: เอ้า แกเอาจริงดิ!? แกไม่รู้จักเขาเลยนะ",
-      "เอมี่: มันแปลกๆปะวะแก?",
-      "น้ำฝน: แก้วเดียวเองไม่เป็นไรหรอก พวกแกคิดมาก",
-      "(15 นาทีต่อมา)",
-      "เหมียว: ฝน แกโอเคปะอะ?",
-      "น้ำฝน: อือ...รู้สึกง่วง ๆ แฮะ เหมือนหัวมันเบา ๆ",
-      "เอมี่: เมื่อกี้ยังดี ๆ อยู่เลยไม่ใช่เหรอ?",
-      "เหมียว: แกหน้าซีดมากอะฝน...",
-      "น้ำฝน: (พึมพำเบา ๆ) ขา...มันเหมือนไม่มีแรงอะ...",
-      "เอมี่: ฝน!? เฮ้ย ฝน!",
-      "(รู้สึกไม่มีแรงเลย...ทุกคนพูดอะไรกัน? ฟังไม่ออก....เกิดอะไรขึ้น?)",
-      "เหมียว: แบบนี้ไม่ใช่เมาธรรมดาแล้ว ผู้ชายคนนั้นใส่อะไรลงไปในเครื่องดื่มแน่ๆ!",
-      "เอมี่: รีบพาไปโรงพยาบาลก่อน! ฉันจะไปแจ้งการ์ดว่ามีคนผสมยาลงในเครื่องดื่ม!",
-      "(ฉันเริ่มหายใจช้าลง ภาพตรงหน้าเบลอไปหมด เสียงเพลงกลายเป็นเสียงอื้ออึงในหู)",
-      "ฉันรู้สึกตัวขึ้นมาอีกทีในตอนบ่ายของอีกวัน...\nพอฟื้นขึ้นมาก็พบว่าตัวเองอยู่ที่โรงพยาบาลแล้ว...\n\nฉันจำเหตุการณ์ที่เกิดขึ้นไม่ได้เลย...\nหมอบอกว่าตรวจพบ “ยาอัลปราโซแลม (Alprazolam)” ในร่างกายฉัน...\n\nมันเป็นวัตถุออกฤทธิ์ต่อจิตและประสาทที่ปัจจุบันมักถูกใช้ในทางที่ผิด\nมักถูกนำไปใช้เป็นยานอนหลับอย่างแรงเพื่อล่วงละเมิดทางเพศ\nหรือผสมในสารเสพติด...\n\nโชคดีที่เพื่อนของฉันสังเกตอาการและรีบพาฉันมาที่โรงพยาบาลอย่างรวดเร็ว\n\nฉันตกใจมาก...\nไม่คิดว่าจะเกิดเรื่องแบบนี้ขึ้นกับตัวเอง"
-    ];
+<audio id="bg-music" src="sounds/club-music-loop-74178.mp3" preload="auto" loop></audio>
 
-    let index = 0;
-    let isTransitioning = false;
+<div class="volume-controls" onclick="event.stopPropagation()">
+  <button class="volume-button" id="vol-down">🔉</button>
+  <input type="range" id="volumeSlider" min="0" max="1" step="0.01">
+  <button class="volume-button" id="vol-up">🔊</button>
+</div>
 
-    function nextText() {
-      if (isTransitioning) return;
+<script>
+const textBox = document.getElementById('text-box');
+const bgMusic = document.getElementById('bg-music');
+const volumeSlider = document.getElementById('volumeSlider');
+const volUp = document.getElementById('vol-up');
+const volDown = document.getElementById('vol-down');
 
-      if (index >= texts.length) {
-        setTimeout(() => {
-          window.location.href = "Night3-Chatbig-for-Choice1.html";
-        }, 800);
-        return;
-      }
+bgMusic.volume = 0.5;
+volumeSlider.value = bgMusic.volume;
 
-      isTransitioning = true;
-      textBox.style.opacity = 0;
+const texts = [
+  "เหมียว: เอ้า แกเอาจริงดิ!? แกไม่รู้จักเขาเลยนะ",
+  "เอมี่: มันแปลกๆปะวะแก?",
+  "น้ำฝน: แก้วเดียวเองไม่เป็นไรหรอก พวกแกคิดมาก",
+  "(15 นาทีต่อมา)",
+  "เหมียว: ฝน แกโอเคปะอะ?",
+  "น้ำฝน: อือ...รู้สึกง่วง ๆ แฮะ เหมือนหัวมันเบา ๆ",
+  "เอมี่: เมื่อกี้ยังดี ๆ อยู่เลยไม่ใช่เหรอ?",
+  "เหมียว: แกหน้าซีดมากอะฝน...",
+  "น้ำฝน: (พึมพำเบา ๆ) ขา...มันเหมือนไม่มีแรงอะ...",
+  "เอมี่: ฝน!? เฮ้ย ฝน!",
+  "(รู้สึกไม่มีแรงเลย...ทุกคนพูดอะไรกัน? ฟังไม่ออก....เกิดอะไรขึ้น?)",
+  "เหมียว: แบบนี้ไม่ใช่เมาธรรมดาแล้ว ผู้ชายคนนั้นใส่อะไรลงไปในเครื่องดื่มแน่ๆ!",
+  "เอมี่: รีบพาไปโรงพยาบาลก่อน! ฉันจะไปแจ้งการ์ดว่ามีคนผสมยาลงในเครื่องดื่ม!",
+  "(ฉันเริ่มหายใจช้าลง ภาพตรงหน้าเบลอไปหมด เสียงเพลงกลายเป็นเสียงอื้ออึงในหู)",
+  "ฉันรู้สึกตัวขึ้นมาอีกทีในตอนบ่ายของอีกวัน...\nพอฟื้นขึ้นมาก็พบว่าตัวเองอยู่ที่โรงพยาบาลแล้ว...\n\nฉันจำเหตุการณ์ที่เกิดขึ้นไม่ได้เลย..."
+];
 
-      setTimeout(() => {
-        textBox.textContent = texts[index++];
-        textBox.style.opacity = 1;
-        isTransitioning = false;
-      }, 400);
+let index = 0;
+let isTransitioning = false;
+
+function nextText() {
+  if(isTransitioning) return;
+  if(index >= texts.length){
+    setTimeout(()=>{ window.location.href="Night3-Chatbig-for-Choice1.html"; }, 800);
+    return;
+  }
+  isTransitioning = true;
+  textBox.style.opacity = 0;
+
+  setTimeout(()=>{
+    const currentText = texts[index++];
+    textBox.textContent = currentText;
+    textBox.style.opacity = 1;
+    isTransitioning = false;
+
+    // ถ้าเป็นข้อความ "(15 นาทีต่อมา)" ให้เปลี่ยน background พร้อม fade
+    if(currentText === "(15 นาทีต่อมา)"){
+      document.body.style.transition = "background-image 1s ease-in-out";
+      document.body.style.backgroundImage = "url('images/out-of-focus.png')";
     }
+  }, 400);
 
-    window.onload = () => {
-      nextText();
+  // เล่นเพลงครั้งแรก
+  if(bgMusic.paused){
+    bgMusic.play().catch(e => console.log("เล่นเพลงไม่ได้:", e));
+  }
+}
 
-      // เปลี่ยนภาพพื้นหลังเป็นภาพที่สอง หลังจาก 5 วินาที
-      setTimeout(() => {
-        document.body.style.backgroundImage = "url('images/out-of-focus.png')";
-      }, 5000);
-    };
-  </script>
+// ปรับเสียง
+volUp.addEventListener('click', e => { e.stopPropagation(); bgMusic.volume=Math.min(bgMusic.volume+0.1,1); volumeSlider.value=bgMusic.volume; });
+volDown.addEventListener('click', e => { e.stopPropagation(); bgMusic.volume=Math.max(bgMusic.volume-0.1,0); volumeSlider.value=bgMusic.volume; });
+volumeSlider.addEventListener('input', e => { bgMusic.volume=e.target.value; });
+
+// คลิกที่ body เพื่อไปข้อความต่อ
+document.body.addEventListener('click', nextText);
+</script>
+
 </body>
 </html>

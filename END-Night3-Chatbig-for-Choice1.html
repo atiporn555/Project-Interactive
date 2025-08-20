@@ -90,6 +90,9 @@
     <div class="click-hint">แตะหน้าจอเพื่ออ่านข้อความถัดไป</div>
   </div>
 
+  <!-- เสียง notification -->
+  <audio id="notifSound" src="sounds/new-notification-07-210334.mp3"></audio>
+
   <script>
     const chatMessages = [
       { sender: "เหมียว", from: "friend", text: "ฝนเป็นไงบ้าง ฉันมีงานเช้าเลยไม่ได้อยู่เฝ้าแกอะ" },
@@ -111,13 +114,13 @@
 
     let index = 0;
     const chatBox = document.getElementById('chat-box');
+    const notifSound = document.getElementById('notifSound');
 
     function showNextMessage() {
       if (index < chatMessages.length) {
         const msgData = chatMessages[index];
         const msg = document.createElement('div');
-        msg.classList.add('message');
-        msg.classList.add(msgData.from === 'friend' ? 'from-friend' : 'from-user');
+        msg.classList.add('message', msgData.from === 'friend' ? 'from-friend' : 'from-user');
 
         const name = document.createElement('div');
         name.className = 'sender-name';
@@ -130,6 +133,14 @@
         msg.appendChild(content);
         chatBox.appendChild(msg);
         chatBox.scrollTop = chatBox.scrollHeight;
+
+        // เล่นเสียงเฉพาะจากเพื่อน
+        if(msgData.from === 'friend'){
+          notifSound.volume = 1; // ดังขึ้น
+          notifSound.currentTime = 0;
+          notifSound.play().catch(()=>{});
+        }
+
         index++;
       } else {
         setTimeout(() => window.location.href = "Night4-Start-1.html", 1500);

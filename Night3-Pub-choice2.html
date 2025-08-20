@@ -1,105 +1,149 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8" />
-  <title>5 คืนสยอง - ปฏิเสธเครื่องดื่ม</title>
-  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="Night3-Pub-choice2.css">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Kanit', sans-serif;
-    }
-    body {
-      /* ใช้ background แบบรวมทุกอย่าง ป้องกันการถูก override */
-      background: url('images/bad-man.png') center/cover no-repeat fixed;
-      color: white;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;      /* จัดเนื้อหาเป็นคอลัมน์ */
-      justify-content: flex-end;   /* ดันเนื้อหาลงล่าง */
-      align-items: center;         /* กึ่งกลางแนวนอน */
-      text-align: center;
-      padding: 20px;
-      cursor: pointer;
-      overflow: hidden;
-      transition: background 1s ease-in-out; /* เฟดภาพนุ่ม ๆ */
-    }
-    .scene-container {
-      max-width: 640px;
-      width: 100%;
-    }
-    /* ซ่อน placeholder ของภาพ */
-    .image-placeholder {
-      display: none !important;
-    }
-    .text-box {
-      font-size: 1.05rem;
-      min-height: 60px;
-      opacity: 0;
-      transition: opacity 0.6s ease-in-out;
-      margin-bottom: 20px;
-      white-space: pre-line;
-      text-shadow: 1px 1px 4px rgba(0,0,0,0.7); /* อ่านง่ายบนพื้นหลัง */
-    }
-  </style>
+<meta charset="UTF-8" />
+<title>5 คืนสยอง - ปฏิเสธเครื่องดื่ม</title>
+<link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="Night3-Pub-choice2.css">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Kanit', sans-serif; }
+  body {
+    background: url('images/bad-man.png') center/cover no-repeat fixed;
+    color: white;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: background 1s ease-in-out;
+  }
+  .scene-container { max-width: 640px; width: 100%; }
+  .image-placeholder { display: none !important; }
+  .text-box {
+    font-size: 1.05rem;
+    min-height: 60px;
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out;
+    margin-bottom: 20px;
+    white-space: pre-line;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+  }
+  /* ปุ่มปรับเสียง */
+  .volume-controls {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(0,0,0,0.3);
+    padding: 6px 10px;
+    border-radius: 8px;
+    z-index: 1000;
+    cursor: auto;
+  }
+  .volume-controls input[type="range"] { width: 120px; accent-color: red; }
+  .volume-button { 
+    background-color: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 6px;
+    padding: 6px 10px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+  }
+</style>
 </head>
-<body onclick="nextText()">
-  <div class="scene-container">
-    <div class="image-placeholder" id="image-box">[ภาพในผับ]</div>
-    <div class="text-box" id="text-box"></div>
-  </div>
+<body>
 
-  <script>
-    const textBox = document.getElementById("text-box");
-    const imageBox = document.getElementById("image-box");
+<div class="scene-container">
+  <div class="image-placeholder" id="image-box">[ภาพในผับ]</div>
+  <div class="text-box" id="text-box"></div>
+</div>
 
-    const texts = [
-      "ชายแปลกหน้า: ดื่มด้วยกันหน่อยมั้ยครับ?",
-      "น้ำฝน: ขอบคุณนะคะ แต่ฉันไม่ดื่มจากแก้วที่ไม่ได้สั่งเองค่ะ",
-      "ชายแปลกหน้า: แหม...ไม่ต้องระแวงขนาดนั้นก็ได้มั้ง",
-      "น้ำฝน: ก็แค่ระวังตัวไว้ก่อนน่ะค่ะ",
-      "(ชายแปลกหน้าชักสีหน้าเล็กน้อยก่อนจะเดินจากไป)",
-      "เอมี่: แกไม่เอาเหรอ? เขาก็ดูโอเคดีนะ",
-      "น้ำฝน: ก็ไม่รู้จักเขาอะ...เดี๋ยวนี้ไว้ใจใครยากจะตาย",
-      "เหมียว: จริง แกทำถูกแล้ว...ฉันยังไม่กล้าดื่มเลย",
-      "เอมี่: ก็จริงเนอะ เดี๋ยวนี้ข่าวเยอะมากเลยอะเรื่องโดนวางยา",
-      "น้ำฝน: หืม?",
-      "[ตืดด! เสียงแจ้งเตือนจากมือถือดังขึ้นเบา ๆ]",
-      "ฉันเผลอมองหน้าจอ...แล้วถึงนึกขึ้นได้",
-      "วันนี้ฉันนัดกับ 'บิ๊ก' — คนที่ฉันกำลังคุยอยู่ตอนนี้"
-    ];
+<audio id="bg-music" src="sounds/club-music-loop-74178.mp3" preload="auto" loop></audio>
+<audio id="phone-sfx" src="sounds/mobile-vibrate-sfx-323777.mp3" preload="auto"></audio>
 
-    let index = 0;
-    let isTransitioning = false;
+<div class="volume-controls" onclick="event.stopPropagation()">
+  <button class="volume-button" id="vol-down">🔉</button>
+  <input type="range" id="volumeSlider" min="0" max="1" step="0.01">
+  <button class="volume-button" id="vol-up">🔊</button>
+</div>
 
-    function nextText() {
-      if (isTransitioning) return;
-      isTransitioning = true;
+<script>
+const textBox = document.getElementById("text-box");
+const bgMusic = document.getElementById("bg-music");
+const phoneSfx = document.getElementById("phone-sfx");
+const volumeSlider = document.getElementById("volumeSlider");
+const volUp = document.getElementById("vol-up");
+const volDown = document.getElementById("vol-down");
 
-      textBox.style.opacity = 0;
-      setTimeout(() => {
-        if (index < texts.length) {
-          textBox.textContent = texts[index++];
-          textBox.style.opacity = 1;
-          isTransitioning = false;
-        } else {
-          // เมื่อจบข้อความทั้งหมด ให้เปลี่ยนหน้า
-          window.location.href = "Night3-Chatbig-for-Choice2.html";
-        }
-      }, 500);
+bgMusic.volume = 0.5;
+volumeSlider.value = bgMusic.volume;
+
+const texts = [
+  "ชายแปลกหน้า: ดื่มด้วยกันหน่อยมั้ยครับ?",
+  "น้ำฝน: ขอบคุณนะคะ แต่ฉันไม่ดื่มจากแก้วที่ไม่ได้สั่งเองค่ะ",
+  "ชายแปลกหน้า: แหม...ไม่ต้องระแวงขนาดนั้นก็ได้มั้ง",
+  "น้ำฝน: ก็แค่ระวังตัวไว้ก่อนน่ะค่ะ",
+  "(ชายแปลกหน้าชักสีหน้าเล็กน้อยก่อนจะเดินจากไป)",
+  "เอมี่: แกไม่เอาเหรอ? เขาก็ดูโอเคดีนะ",
+  "น้ำฝน: ก็ไม่รู้จักเขาอะ...เดี๋ยวนี้ไว้ใจใครยากจะตาย",
+  "เหมียว: จริง แกทำถูกแล้ว...ฉันยังไม่กล้าดื่มเลย",
+  "เอมี่: ก็จริงเนอะ เดี๋ยวนี้ข่าวเยอะมากเลยอะเรื่องโดนวางยา",
+  "น้ำฝน: หืม?",
+  "[ตืดด! เสียงแจ้งเตือนจากมือถือดังขึ้นเบา ๆ]",
+  "ฉันเผลอมองหน้าจอ...แล้วถึงนึกขึ้นได้",
+  "วันนี้ฉันนัดกับ 'บิ๊ก' — คนที่ฉันกำลังคุยอยู่ตอนนี้"
+];
+
+let index = 0;
+let isTransitioning = false;
+
+function nextText() {
+  if(isTransitioning) return;
+  isTransitioning = true;
+  textBox.style.opacity = 0;
+
+  setTimeout(() => {
+    if(index < texts.length) {
+      textBox.textContent = texts[index++];
+      textBox.style.opacity = 1;
+      isTransitioning = false;
+
+      // เล่นเพลงครั้งแรก
+      if(bgMusic.paused){
+        bgMusic.play().catch(e => console.log("เล่นเพลงไม่ได้:", e));
+      }
+
+      // เล่นเสียงมือถือเมื่อเจอข้อความแจ้งเตือน
+      if(textBox.textContent.includes("[ตืดด!")){
+        phoneSfx.currentTime = 0;
+        phoneSfx.play().catch(e => console.log("เล่น SFX ไม่ได้:", e));
+      }
+
+    } else {
+      window.location.href = "Night3-Chatbig-for-Choice2.html";
     }
+  }, 500);
+}
 
-    window.onload = () => {
-      nextText();
+// คลิก anywhere บนหน้าเพื่อไปข้อความถัดไป
+document.body.addEventListener('click', nextText);
 
-      // เปลี่ยนภาพพื้นหลังหลัง 4 วินาที
-      setTimeout(() => {
-        document.body.style.backgroundImage = "url('images/no-drink.png')";
-      }, 4000);
-    };
-  </script>
+// ปุ่มปรับเสียง
+volUp.addEventListener('click', e => { e.stopPropagation(); bgMusic.volume = Math.min(bgMusic.volume + 0.1,1); volumeSlider.value = bgMusic.volume; });
+volDown.addEventListener('click', e => { e.stopPropagation(); bgMusic.volume = Math.max(bgMusic.volume - 0.1,0); volumeSlider.value = bgMusic.volume; });
+volumeSlider.addEventListener('input', e => { bgMusic.volume = e.target.value; });
+
+// เริ่มข้อความแรก
+window.addEventListener('DOMContentLoaded', () => {
+  nextText();
+});
+</script>
 </body>
 </html>

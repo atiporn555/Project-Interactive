@@ -44,6 +44,7 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
+      scroll-behavior: smooth;
     }
 
     .message {
@@ -52,6 +53,9 @@
       border-radius: 18px;
       font-size: 0.95rem;
       line-height: 1.4;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeIn 0.3s forwards;
     }
 
     .from-friend {
@@ -73,13 +77,42 @@
       color: #666;
       background-color: #f1f1f1;
     }
+
+    @keyframes fadeIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .bounce { animation: bounce 0.2s; }
+    @keyframes bounce { 0% { transform: scale(0.9); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+
+    #start-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 12px 20px;
+      font-size: 1.2rem;
+      background-color: #ff5555;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 0 8px #aa2222;
+    }
+
+    #start-btn:hover { background-color: #ff7777; }
   </style>
 </head>
-<body onclick="showNextMessage()">
+<body>
+
+  <!-- เสียงแจ้งเตือนเฉพาะเพื่อน -->
+  <audio id="msgSound" src="sounds/new-notification-07-210334.mp3"></audio>
+
   <div class="phone-frame">
     <div class="top-bar">บิ๊ก 🟢</div>
     <div class="chat-area" id="chat-box"></div>
     <div class="click-hint">แตะหน้าจอเพื่ออ่านข้อความถัดไป</div>
+    <button id="start-btn">เริ่มแชท</button>
   </div>
 
   <script>
@@ -101,27 +134,56 @@
       { text: "ไม่ต้องห้ามนะ เพราะยังไงก็จะไปหา", from: "friend" }
     ];
 
-    let index = 0;
     const chatBox = document.getElementById('chat-box');
+    const msgSound = document.getElementById('msgSound');
+    const startBtn = document.getElementById('start-btn');
+    let index = 0;
+    let chatStarted = false;
 
-    function showNextMessage() {
-      if (index < chatMessages.length) {
-        const msg = document.createElement('div');
-        msg.classList.add('message');
-        msg.classList.add(chatMessages[index].from === 'friend' ? 'from-friend' : 'from-user');
-        msg.textContent = chatMessages[index].text;
-        chatBox.appendChild(msg);
-        chatBox.scrollTop = chatBox.scrollHeight;
-        index++;
-      } else {
-        // จบแชท → ไปหน้าถัดไป (เช่น night4-start.html)
-        setTimeout(() => {
-          window.location.href = "END-Night3-Chatbig-for-Choice1.html";
-        }, 1000);
-      }
+    function playNotificationSound() {
+      const soundClone = msgSound.cloneNode(true);
+      soundClone.volume = 1.0;
+      soundClone.addEventListener('canplaythrough', () => { soundClone.play().catch(()=>{}); });
     }
 
-    window.onload = showNextMessage;
+    function showNextMessage() {
+      if (!chatStarted) return;
+
+      if (index >= chatMessages.length) {
+        setTimeout(() => window.location.href = "END-Night3-Chatbig-for-Choice1.html", 1000);
+        return;
+      }
+
+      const msgData = chatMessages[index];
+      const msg = document.createElement('div');
+      msg.classList.add('message');
+      msg.classList.add(msgData.from === 'friend' ? 'from-friend' : 'from-user');
+      msg.textContent = msgData.text;
+      chatBox.appendChild(msg);
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      if (msgData.from === 'friend') {
+        playNotificationSound();
+        msg.classList.add('bounce');
+        setTimeout(() => msg.classList.remove('bounce'), 300);
+      }
+
+      index++;
+    }
+
+    function startChat() {
+      chatStarted = true;
+      startBtn.style.display = 'none';
+
+      // unlock browser audio
+      msgSound.play().then(() => { msgSound.pause(); msgSound.currentTime = 0; }).catch(()=>{});
+
+      document.body.addEventListener('click', showNextMessage);
+      showNextMessage();
+    }
+
+    startBtn.addEventListener('click', startChat);
   </script>
+
 </body>
 </html>

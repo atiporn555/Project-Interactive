@@ -4,14 +4,9 @@
   <meta charset="UTF-8" />
   <title>5 คืนสยอง - บ้านของบิ๊ก</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="END-Night3-Chatbig-for-Choice2.css"> <!-- เชื่อม CSS -->
+  <link rel="stylesheet" href="END-Night3-Chatbig-for-Choice2.css">
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Kanit', sans-serif;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Kanit', sans-serif; }
 
     body {
       background-color: #111;
@@ -19,12 +14,13 @@
       height: 100vh;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;   /* ดันเนื้อหาลงล่าง */
-      align-items: center;         /* กึ่งกลางแนวนอน */
+      justify-content: flex-end;
+      align-items: center;
       text-align: center;
       padding: 30px 20px;
       cursor: pointer;
       overflow: hidden;
+      position: relative;
     }
 
     .text-box {
@@ -45,12 +41,57 @@
       transition: opacity 0.4s ease;
     }
 
-    .next-hint.visible {
-      opacity: 1;
+    .next-hint.visible { opacity: 1; }
+
+    /* ปุ่มปรับเสียงแบบ slider สีแดง */
+    .volume-controls {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0,0,0,0.3);
+      padding: 6px 10px;
+      border-radius: 8px;
+      z-index: 1000;
+    }
+
+    .volume-controls input[type="range"] {
+      width: 120px;
+      accent-color: red;
+    }
+
+    .volume-button {
+      background-color: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 6px;
+      padding: 6px 10px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .volume-button:hover {
+      background-color: rgba(255,255,255,0.3);
+      color: #ff5555;
+      transform: scale(1.05);
     }
   </style>
 </head>
-<body onclick="handleClick()">
+<body>
+
+  <!-- เพลงประกอบ -->
+  <audio id="bgMusic" src="sounds/chonology-of-love-6094.mp3" loop></audio>
+
+  <!-- ปุ่มปรับเสียง -->
+  <div class="volume-controls" onclick="event.stopPropagation()">
+    <button class="volume-button" id="vol-down">🔉</button>
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.01">
+    <button class="volume-button" id="vol-up">🔊</button>
+  </div>
+
   <div class="text-box" id="text-box"></div>
   <div class="next-hint" id="next-hint">แตะหน้าจอเพื่อไปหน้าถัดไป...</div>
 
@@ -65,29 +106,68 @@
 
     const textBox = document.getElementById("text-box");
     const nextHint = document.getElementById("next-hint");
+    const bgMusic = document.getElementById("bgMusic");
+    const volumeSlider = document.getElementById("volumeSlider");
+
     let index = 0;
     let finished = false;
+    let started = false;
+    let isTransitioning = false;
 
-    function handleClick() {
-      if (finished) {
-        window.location.href = "Night4-Start-2.html"; // ลิงก์หน้าถัดไป
+    function nextText() {
+      if (isTransitioning) return;
+      isTransitioning = true;
+
+      if (!started) {
+        // เริ่มเพลงและข้อความแรก
+        bgMusic.volume = 0.5;
+        bgMusic.play().catch(()=>{});
+        volumeSlider.value = bgMusic.volume;
+
+        textBox.textContent = texts[index++];
+        textBox.style.opacity = 1;
+        started = true;
+        isTransitioning = false;
         return;
       }
 
-      textBox.style.opacity = 0;
+      if (finished) {
+        window.location.href = "Night4-Start-2.html";
+        return;
+      }
 
-      setTimeout(() => {
-        textBox.textContent = texts[index++];
-        textBox.style.opacity = 1;
-
-        if (index === texts.length) {
-          nextHint.classList.add("visible");
-          finished = true;
-        }
-      }, 300);
+      if (index < texts.length) {
+        textBox.style.opacity = 0;
+        setTimeout(() => {
+          textBox.textContent = texts[index++];
+          textBox.style.opacity = 1;
+          if (index === texts.length) {
+            nextHint.classList.add("visible");
+            finished = true;
+          }
+          isTransitioning = false;
+        }, 200);
+      }
     }
 
-    window.onload = handleClick;
+    // ปุ่มปรับเสียง
+    document.getElementById('vol-up').addEventListener('click', e => {
+      e.stopPropagation();
+      bgMusic.volume = Math.min(bgMusic.volume + 0.1, 1);
+      volumeSlider.value = bgMusic.volume;
+    });
+
+    document.getElementById('vol-down').addEventListener('click', e => {
+      e.stopPropagation();
+      bgMusic.volume = Math.max(bgMusic.volume - 0.1, 0);
+      volumeSlider.value = bgMusic.volume;
+    });
+
+    volumeSlider.addEventListener('input', e => {
+      bgMusic.volume = e.target.value;
+    });
+
+    document.body.addEventListener("click", nextText);
   </script>
 </body>
 </html>

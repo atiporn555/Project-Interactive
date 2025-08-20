@@ -54,17 +54,8 @@
       line-height: 1.4;
     }
 
-    .from-friend {
-      align-self: flex-start;
-      background-color: #fff;
-      color: #000;
-    }
-
-    .from-user {
-      align-self: flex-end;
-      background-color: #2196f3;
-      color: #fff;
-    }
+    .from-friend { align-self: flex-start; background-color: #fff; color: #000; }
+    .from-user { align-self: flex-end; background-color: #2196f3; color: #fff; }
 
     .click-hint {
       text-align: center;
@@ -98,12 +89,15 @@
   </style>
 </head>
 <body>
+  <!-- เสียงแจ้งเตือนเฉพาะเพื่อน -->
+  <audio id="msgSound" src="sounds/new-notification-07-210334.mp3"></audio>
+
   <div class="phone-frame" onclick="handleClick()">
     <div class="top-bar">บิ๊ก 🟢</div>
     <div class="chat-area" id="chat-box"></div>
     <div class="choice-box" id="choice-box">
-      <button class="choice-button" onclick="choose(1)">1. ออกไปตอนนี้</button>
-      <button class="choice-button" onclick="choose(2)">2. อยู่ต่ออีกหน่อย</button>
+      <button class="choice-button" onclick="choose(1)">ออกไปตอนนี้</button>
+      <button class="choice-button" onclick="choose(2)">อยู่ต่ออีกหน่อย</button>
     </div>
     <div class="click-hint" id="hint">แตะหน้าจอเพื่ออ่านข้อความถัดไป</div>
   </div>
@@ -113,6 +107,7 @@
     const choiceBox = document.getElementById('choice-box');
     const hint = document.getElementById('hint');
     const phoneFrame = document.querySelector('.phone-frame');
+    const msgSound = document.getElementById('msgSound');
 
     const introMessages = [
       { text: "อยู่ตรงไหนอะ", from: "friend" },
@@ -153,6 +148,24 @@
     let waitingForChoice = false;
     let afterChoice = false;
 
+    function playNotificationSound() {
+      const soundClone = msgSound.cloneNode(true); // clone เพื่อเล่นซ้ำได้
+      soundClone.volume = 1.0;
+      soundClone.play().catch(()=>{}); // ป้องกัน error
+    }
+
+    function showMessage(msgData) {
+      const msg = document.createElement('div');
+      msg.classList.add('message', msgData.from === 'friend' ? 'from-friend' : 'from-user');
+      msg.textContent = msgData.text;
+      chatBox.appendChild(msg);
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      if (msgData.from === 'friend') {
+        playNotificationSound();
+      }
+    }
+
     function handleClick() {
       if (waitingForChoice) return;
       if (index < currentMessages.length) {
@@ -165,7 +178,7 @@
       } else if (afterChoice) {
         hint.textContent = "แตะหน้าจอเพื่อไปหน้าถัดไป...";
         phoneFrame.onclick = () => {
-          window.location.href = "END-Night3-Chatbig-for-Choice2.html"; // เปลี่ยนตามชื่อหน้าถัดไป
+          window.location.href = "END-Night3-Chatbig-for-Choice2.html"; 
         };
       }
     }
@@ -176,14 +189,6 @@
       afterChoice = true;
       index = 0;
       currentMessages = option === 1 ? option1Messages : option2Messages;
-    }
-
-    function showMessage(msgData) {
-      const msg = document.createElement('div');
-      msg.classList.add('message', msgData.from === 'friend' ? 'from-friend' : 'from-user');
-      msg.textContent = msgData.text;
-      chatBox.appendChild(msg);
-      chatBox.scrollTop = chatBox.scrollHeight;
     }
 
     window.onload = handleClick;
