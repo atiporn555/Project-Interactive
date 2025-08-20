@@ -4,33 +4,22 @@
   <meta charset="UTF-8">
   <title>5 คืนสยอง - ตี 3 (อยู่ในร้านต่อ)</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="Night2-3am-choice2.css"> <!-- เชื่อม CSS -->
+  <link rel="stylesheet" href="Night2-3am-choice2.css">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Kanit', sans-serif;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Kanit', sans-serif; }
     body {
       background-color: #111;
       color: white;
       height: 100vh;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;  /* ตั้งข้อความให้อยู่ด้านล่าง */
+      justify-content: flex-end;
       align-items: center;
       padding: 20px;
       text-align: center;
       cursor: pointer;
     }
-
-    .scene-container {
-      width: 100%;
-      max-width: 640px;
-    }
-
+    .scene-container { width: 100%; max-width: 640px; }
     .text-box {
       font-size: 1.05rem;
       min-height: 80px;
@@ -42,24 +31,42 @@
       justify-content: center;
       white-space: pre-line;
     }
+    .note { font-size: 0.9rem; color: #888; opacity: 0; transition: opacity 0.5s ease; margin-bottom: 30px; }
+    .note.visible { opacity: 1; }
 
-    .note {
-      font-size: 0.9rem;
-      color: #888;
-      opacity: 0;
-      transition: opacity 0.5s ease;
-      margin-bottom: 30px;
+    /* ปุ่มปรับเสียง */
+    .volume-controls {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0,0,0,0.3);
+      padding: 6px 10px;
+      border-radius: 8px;
+      z-index: 1000;
     }
-
-    .note.visible {
-      opacity: 1;
-    }
+    .volume-controls input[type="range"] { width: 120px; accent-color: red; }
+    .volume-button { background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); border-radius: 6px; padding: 6px 10px; color: white; font-weight: bold; cursor: pointer; }
   </style>
 </head>
 <body onclick="handleClick()">
   <div class="scene-container">
     <div class="text-box" id="text-box"></div>
     <div class="note" id="note">แตะหน้าจอเพื่อไปยังคืนถัดไป...</div>
+  </div>
+
+  <!-- เพลง background -->
+  <audio id="bg-music" src="sounds/scary-horror-atmosphere-176754.mp3" preload="auto" loop></audio>
+  <!-- เสียง bell -->
+  <audio id="bell-sound" src="sounds/bell-98033.mp3" preload="auto"></audio>
+
+  <!-- ปุ่มปรับเสียง -->
+  <div class="volume-controls" onclick="event.stopPropagation()">
+    <button class="volume-button" id="vol-down">🔉</button>
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.01">
+    <button class="volume-button" id="vol-up">🔊</button>
   </div>
 
   <script>
@@ -79,8 +86,24 @@
 
     let index = 0;
     let finished = false;
+    let firstClick = true;
+
+    const bgMusic = document.getElementById('bg-music');
+    const bellSound = document.getElementById('bell-sound');
+    const volumeSlider = document.getElementById('volumeSlider');
+    const volUp = document.getElementById('vol-up');
+    const volDown = document.getElementById('vol-down');
+
+    // ตั้งค่าเริ่มต้น
+    bgMusic.volume = 0.5;
+    volumeSlider.value = bgMusic.volume;
 
     function handleClick() {
+      if (firstClick) {
+        bgMusic.play().catch(err => console.log("เล่นเพลงไม่ได้:", err));
+        firstClick = false;
+      }
+
       if (finished) {
         window.location.href = "END-Night2.html";
         return;
@@ -94,9 +117,14 @@
       setTimeout(() => {
         if (index < texts.length) {
           const line = texts[index++];
-
           textBox.textContent = line;
           textBox.style.opacity = 1;
+
+          // ถ้าข้อความเป็น "[เสียงของประตูร้านดังขึ้น ทั้งที่ประตูไม่ขยับ]" ให้เล่นเสียง bell
+          if (line === "[เสียงของประตูร้านดังขึ้น ทั้งที่ประตูไม่ขยับ]") {
+            bellSound.currentTime = 0;
+            bellSound.play().catch(err => console.log("เล่นเสียง bell ไม่ได้:", err));
+          }
 
           if (index === texts.length) {
             setTimeout(() => {
@@ -109,6 +137,11 @@
     }
 
     window.onload = showNextText;
+
+    // ปุ่มปรับเสียง
+    volUp.addEventListener('click', e => { e.stopPropagation(); bgMusic.volume = Math.min(bgMusic.volume + 0.1, 1); volumeSlider.value = bgMusic.volume; });
+    volDown.addEventListener('click', e => { e.stopPropagation(); bgMusic.volume = Math.max(bgMusic.volume - 0.1, 0); volumeSlider.value = bgMusic.volume; });
+    volumeSlider.addEventListener('input', e => { bgMusic.volume = e.target.value; });
   </script>
 </body>
 </html>

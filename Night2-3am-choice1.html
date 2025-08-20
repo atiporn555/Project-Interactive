@@ -4,15 +4,9 @@
   <meta charset="UTF-8">
   <title>5 คืนสยอง - ออกไปดู</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="Night2-3am-choice1.css"> <!-- เชื่อม CSS -->
+  <link rel="stylesheet" href="Night2-3am-choice1.css">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Kanit', sans-serif;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Kanit', sans-serif; }
     body {
       background-color: #111;
       color: white;
@@ -24,17 +18,12 @@
       padding: 20px;
       text-align: center;
       cursor: pointer;
-      background-image: url('images/car_cleanup-bg.png'); /* ภาพเริ่มต้น */
+      background-image: url('images/car_cleanup-bg.png');
       background-size: cover;
       background-position: center;
-      transition: background-image 1.5s ease-in-out; /* เพิ่ม transition */
+      transition: background-image 1.5s ease-in-out;
     }
-
-    .scene-container {
-      width: 100%;
-      max-width: 700px;
-    }
-
+    .scene-container { width: 100%; max-width: 700px; }
     .text-box {
       font-size: 1.05rem;
       min-height: 80px;
@@ -46,7 +35,6 @@
       justify-content: center;
       white-space: pre-line;
     }
-
     .note {
       font-size: 0.9rem;
       color: #888;
@@ -54,16 +42,41 @@
       transition: opacity 0.5s ease;
       margin-bottom: 30px;
     }
+    .note.visible { opacity: 1; }
 
-    .note.visible {
-      opacity: 1;
+    /* ปุ่มปรับเสียง */
+    .volume-controls {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0,0,0,0.3);
+      padding: 6px 10px;
+      border-radius: 8px;
+      z-index: 1000;
     }
+    .volume-controls input[type="range"] { width: 120px; accent-color: red; }
+    .volume-button { background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); border-radius: 6px; padding: 6px 10px; color: white; font-weight: bold; cursor: pointer; }
   </style>
 </head>
 <body onclick="handleClick()">
   <div class="scene-container">
     <div class="text-box" id="text-box"></div>
     <div class="note" id="note">แตะหน้าจอเพื่อไปยังคืนถัดไป...</div>
+  </div>
+
+  <!-- เพลง background -->
+  <audio id="bg-music" src="sounds/scary-horror-atmosphere-176754.mp3" preload="auto" loop></audio>
+  <!-- เสียงลม -->
+  <audio id="wind-sound" src="sounds/wind-1-44149.mp3" preload="auto"></audio>
+
+  <!-- ปุ่มปรับเสียง -->
+  <div class="volume-controls" onclick="event.stopPropagation()">
+    <button class="volume-button" id="vol-down">🔉</button>
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.01">
+    <button class="volume-button" id="vol-up">🔊</button>
   </div>
 
   <script>
@@ -82,8 +95,24 @@
 
     let index = 0;
     let readyToNext = false;
+    let firstClick = true;
+
+    const bgMusic = document.getElementById('bg-music');
+    const windSound = document.getElementById('wind-sound');
+    const volumeSlider = document.getElementById('volumeSlider');
+    const volUp = document.getElementById('vol-up');
+    const volDown = document.getElementById('vol-down');
+
+    // ตั้งค่าเริ่มต้น
+    bgMusic.volume = 0.5;
+    volumeSlider.value = bgMusic.volume;
 
     function handleClick() {
+      if (firstClick) {
+        bgMusic.play().catch(err => console.log("เล่นเพลงไม่ได้:", err));
+        firstClick = false;
+      }
+
       if (readyToNext) {
         window.location.href = "END-Night2.html";
         return;
@@ -96,8 +125,15 @@
 
       setTimeout(() => {
         if (index < texts.length) {
-          textBox.textContent = texts[index++];
+          const currentText = texts[index++];
+          textBox.textContent = currentText;
           textBox.style.opacity = 1;
+
+          // ถ้าข้อความขึ้นต้นด้วย "น้ำฝน:" ให้เล่นเสียงลม
+          if (currentText.startsWith("น้ำฝน:")) {
+            windSound.currentTime = 0;
+            windSound.play().catch(err => console.log("เล่นเสียงลมไม่ได้:", err));
+          }
 
           if (index === texts.length) {
             setTimeout(() => {
@@ -112,11 +148,16 @@
     window.onload = () => {
       showNextText();
 
-      // เปลี่ยนพื้นหลังหลังจาก 5 วินาที
       setTimeout(() => {
-        document.body.style.backgroundImage = "url('images/store-bg.png')"; // ภาพใหม่
+        document.body.style.backgroundImage = "url('images/store-bg.png')";
       }, 5000);
     };
+
+    // ปุ่มปรับเสียง
+    volUp.addEventListener('click', e => { e.stopPropagation(); bgMusic.volume = Math.min(bgMusic.volume + 0.1, 1); volumeSlider.value = bgMusic.volume; });
+    volDown.addEventListener('click', e => { e.stopPropagation(); bgMusic.volume = Math.max(bgMusic.volume - 0.1, 0); volumeSlider.value = bgMusic.volume; });
+    volumeSlider.addEventListener('input', e => { bgMusic.volume = e.target.value; });
+
   </script>
 </body>
 </html>

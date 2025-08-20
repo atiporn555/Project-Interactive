@@ -5,11 +5,101 @@
   <title>5 คืนสยอง - ลูกค้าคนที่ 2</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="Night2-second-customer.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Kanit', sans-serif;
+    }
+
+    body {
+      background-image: url('images/bored-face.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      color: white;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 20px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: background-image 1s ease-in-out;
+    }
+
+    .scene-container {
+      width: 100%;
+      max-width: 700px;
+      text-align: center;
+    }
+
+    .caption {
+      font-size: 1.2rem;
+      min-height: 60px;
+      opacity: 0;
+      transition: opacity 0.6s ease-in-out;
+      margin-bottom: 20px;
+    }
+
+    .caption.show { opacity: 1; }
+
+    .note {
+      color: #ccc;
+      margin-top: 20px;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    .note.visible { opacity: 1; }
+
+    /* ปุ่มปรับเสียง */
+    .volume-controls {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0,0,0,0.3);
+      padding: 6px 10px;
+      border-radius: 8px;
+      z-index: 1000;
+    }
+
+    .volume-controls input[type="range"] {
+      width: 120px;
+      accent-color: red;
+    }
+
+    .volume-button {
+      background-color: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 6px;
+      padding: 6px 10px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
   <div class="scene-container">
     <div class="caption" id="caption-text"></div>
     <div class="note" id="note">แตะหน้าจอเพื่อไปยังหน้าถัดไป...</div>
+  </div>
+
+  <!-- เสียง background & bell -->
+  <audio id="bg-music" src="sounds/scary-horror-atmosphere-176754.mp3" loop></audio>
+  <audio id="bell-sound" src="sounds/bell-98033.mp3"></audio>
+
+  <!-- ปุ่มปรับเสียง -->
+  <div class="volume-controls" onclick="event.stopPropagation()">
+    <button class="volume-button" id="vol-down">🔉</button>
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.01">
+    <button class="volume-button" id="vol-up">🔊</button>
   </div>
 
   <script>
@@ -29,7 +119,7 @@
       "ไทม์: ...",
       "บรรยากาศในร้านตอนนั้นเต็มไปด้วยความเงียบ\nพี่ไทม์นิ่งและมองฉันเขาไม่พูดอะไรเลยสักคำ...\nเขาเอาแต่จ้องมาที่ฉันจนรู้สึกขนลุกไปทั้งตัว",
       "น้ำฝน: เอ่อ พี่ไทม์?",
-      "ไทม์: ห๊ะ อะไร? อ๋อ พี่รู้ได้ไงน่ะเหรอก็ลุงแกชอบทำแบบนี้เป็นประจำไงพนักงานร้านอื่นก็ได้รับเครื่องดื่มเหมือนกัน",
+      "ไทม์: ห๊ะ อะไร? อ๋อ พี่รู้ได้ยังไงน่ะเหรอก็ลุงแกชอบทำแบบนี้เป็นประจำไงพนักงานร้านอื่นก็ได้รับเครื่องดื่มเหมือนกัน",
       "น้ำฝน: .....",
       "เขายิ้มให้ฉัน..เป็นรอยยิ้มที่น่าขนลุก\nฉันทำได้แค่ยิ้มตอบและไม่พูดอะไรออกไป\nฉันพยายามไม่คิดอะไรและตั้งใจทำงานต่อ..จนถึงเวลา ตี 3"
     ];
@@ -38,37 +128,79 @@
     const note = document.getElementById('note');
     let index = 0;
     let readyToGoNext = false;
+    let firstClick = true;
+    let bellPlayed = false;
+
+    const bgMusic = document.getElementById('bg-music');
+    const bellSound = document.getElementById('bell-sound');
+    const volumeSlider = document.getElementById('volumeSlider');
+    const volUp = document.getElementById('vol-up');
+    const volDown = document.getElementById('vol-down');
 
     function showNextCaption() {
       if (index < captions.length) {
-        captionElem.style.opacity = 0;
+        captionElem.classList.remove('show');
         setTimeout(() => {
-          captionElem.textContent = captions[index++];
-          captionElem.style.opacity = 1;
+          const currentText = captions[index];
+          captionElem.textContent = currentText;
+
+          // เล่น bell แค่ครั้งเดียวตอน "น้ำฝน: หืม?"
+          if (!bellPlayed && currentText.includes("น้ำฝน: หืม?")) {
+            bellSound.play().catch(()=>{});
+            bellPlayed = true;
+          }
+
+          // เปลี่ยนภาพตอน "น้ำฝน: อ้าว สวัสดีค่ะพี่ไทม์"
+          if (currentText.includes("น้ำฝน: อ้าว สวัสดีค่ะพี่ไทม์")) {
+            document.body.style.backgroundImage = "url('images/P-time-smile.png')";
+          }
+
+          captionElem.classList.add('show');
+          index++;
 
           if (index === captions.length) {
             setTimeout(() => {
               note.classList.add("visible");
               readyToGoNext = true;
-            }, 800);
+            }, 500);
           }
-        }, 400);
+        }, 300);
       }
     }
 
     document.body.onclick = () => {
+      if (firstClick) {
+        bgMusic.volume = 0.5;
+        bgMusic.play().catch(()=>{});
+        volumeSlider.value = bgMusic.volume;
+        firstClick = false;
+      }
+
       if (readyToGoNext) {
         window.location.href = "Night2-3am.html";
-        return;
+      } else {
+        showNextCaption();
       }
-      showNextCaption();
     };
 
+    // ปุ่มปรับเสียง
+    volUp.addEventListener('click', e => {
+      e.stopPropagation();
+      bgMusic.volume = Math.min(bgMusic.volume + 0.1, 1);
+      volumeSlider.value = bgMusic.volume;
+    });
+    volDown.addEventListener('click', e => {
+      e.stopPropagation();
+      bgMusic.volume = Math.max(bgMusic.volume - 0.1, 0);
+      volumeSlider.value = bgMusic.volume;
+    });
+    volumeSlider.addEventListener('input', e => {
+      bgMusic.volume = e.target.value;
+    });
+
+    // เริ่มแสดงข้อความแรกเมื่อโหลด
     window.onload = () => {
       showNextCaption();
-      setTimeout(() => {
-        document.body.style.backgroundImage = "url('images/P-time-smile.png')";
-      }, 5000);
     };
   </script>
 </body>

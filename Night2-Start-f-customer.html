@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>5 คืนสยอง - คืนที่ 2</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="Night2-Start-f-customer.css"> <!-- เชื่อม CSS -->
+  <link rel="stylesheet" href="Night2-Start-f-customer.css">
   <style>
     * {
       margin: 0;
@@ -14,7 +14,7 @@
     }
 
     body {
-      background-image: url('images/bored-face.png'); /* ภาพเริ่มต้น */
+      background-image: url('images/bored-face.png');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -27,8 +27,6 @@
       padding: 20px;
       overflow: hidden;
       cursor: pointer;
-
-      /* เพิ่ม transition สำหรับเปลี่ยนภาพ */
       transition: background-image 1s ease-in-out;
     }
 
@@ -64,11 +62,12 @@
       border-radius: 0;
     }
 
+    /* ปุ่มตัวเลือกใส */
     .choice-button {
       padding: 12px 20px;
       font-size: 1rem;
-      background-color: #222;
-      border: 1px solid #555;
+      background-color: transparent;
+      border: 2px solid rgba(255,255,255,0.6);
       border-radius: 10px;
       color: white;
       cursor: pointer;
@@ -80,8 +79,45 @@
     }
 
     .choice-button:hover {
-      background-color: #444;
+      background-color: rgba(255, 0, 0, 0.6);
+      color: white;
       transform: scale(1.03);
+    }
+
+    /* ปุ่มปรับเสียง */
+    .volume-controls {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0,0,0,0.3);
+      padding: 6px 10px;
+      border-radius: 8px;
+      z-index: 1000;
+    }
+
+    .volume-controls input[type="range"] {
+      width: 120px;
+      accent-color: red;
+    }
+
+    .volume-button {
+      background-color: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 6px;
+      padding: 6px 10px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .volume-button:hover {
+      background-color: rgba(255,255,255,0.3);
+      color: #ff5555;
+      transform: scale(1.05);
     }
   </style>
 </head>
@@ -95,19 +131,39 @@
     </div>
   </div>
 
+  <!-- ปุ่มปรับเสียง -->
+  <div class="volume-controls" onclick="event.stopPropagation()">
+    <button class="volume-button" id="vol-down">🔉</button>
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.01">
+    <button class="volume-button" id="vol-up">🔊</button>
+  </div>
+
+  <!-- เสียง background & sound effects -->
+  <audio id="bg-music" src="sounds/scary-horror-atmosphere-176754.mp3" loop></audio>
+  <audio id="walk-sound" src="sounds/walking-on-concrete-ver-2-268513 (2).mp3"></audio>
+  <audio id="warning-sound" src="sounds/horror-orchestra-warning-338415.mp3"></audio>
+
   <script>
     const textBox = document.getElementById("text-box");
     const choiceBox = document.getElementById("choice-box");
     const nightLabel = document.getElementById("night-label");
 
+    const bgMusic = document.getElementById("bg-music");
+    const walkSound = document.getElementById("walk-sound");
+    const warningSound = document.getElementById("warning-sound");
+
+    const volumeSlider = document.getElementById("volumeSlider");
+    const volUp = document.getElementById("vol-up");
+    const volDown = document.getElementById("vol-down");
+
     const texts = [
       "น้ำฝน: เฮ้อออ...วันนี้ลูกค้าน้อยจัง",
       "น้ำฝน: ไปเอาของมาเติมดีกว่า",
-      "(มีเสียงเดินดังขึ้นระหว่างที่ฉันกำลังเติมของ...)",
+      "(มีเสียงเดินดังขึ้นระหว่างที่ฉันกำลังเติมของ...)", // เล่นเสียงเดิน
       "น้ำฝน: (หืม? ลูกค้ามาเหรอ)",
       "ฉันมั่นใจว่านั่นคือเสียงเดินแน่ๆ แต่พอกวาดสายตาไปรอบๆร้านกลับไม่เห็นใครเลย...",
-      "น้ำฝน: แปลกจัง หรือว่าฉันหูฝาดนะ",
-      "ลูกค้า: แม่หนู...",
+      "น้ำฝน: แปลกจัง หรือว่าฉันหูฝาดนะ", // หยุดเสียงเดิน
+      "ลูกค้า: แม่หนู...", // เล่น warning + เปลี่ยนภาพ
       "น้ำฝน: ว๊ายย!! คะ คุณยาย!?",
       "ลูกค้า: ตายแล้ว..ขอโทษที่ทำให้ตกใจนะแม่หนู",
       "น้ำฝน: มะ ไม่เป็นไรค่ะคุณยาย",
@@ -118,8 +174,16 @@
     let index = 0;
     let isTransitioning = false;
     let hasShownNightTitle = false;
+    let started = false;
 
     function nextText() {
+      if (!started) {
+        bgMusic.volume = 0.5;
+        bgMusic.play().catch(e => console.log("bg-music play error:", e));
+        volumeSlider.value = bgMusic.volume;
+        started = true;
+      }
+
       if (isTransitioning) return;
       isTransitioning = true;
 
@@ -136,7 +200,26 @@
       if (index < texts.length) {
         textBox.style.opacity = 0;
         setTimeout(() => {
-          textBox.textContent = texts[index++];
+          const currentText = texts[index++];
+          textBox.textContent = currentText;
+
+          // เล่นเสียงเดิน
+          if (currentText.includes("เสียงเดิน")) {
+            walkSound.play();
+          }
+
+          // หยุดเสียงเดิน
+          if (currentText.includes("น้ำฝน: แปลกจัง")) {
+            walkSound.pause();
+            walkSound.currentTime = 0;
+          }
+
+          // เล่นเสียง warning + เปลี่ยนภาพ
+          if (currentText.includes("ลูกค้า: แม่หนู")) {
+            warningSound.play();
+            document.body.style.backgroundImage = "url('images/old-woman.png')";
+          }
+
           textBox.style.opacity = 1;
           isTransitioning = false;
         }, 400);
@@ -147,15 +230,6 @@
       }
     }
 
-    window.onload = () => {
-      nightLabel.style.opacity = 1;
-
-      // เปลี่ยนภาพพื้นหลังหลัง 6 วินาที
-      setTimeout(() => {
-        document.body.style.backgroundImage = "url('images/old-woman.png')";
-      }, 10000);
-    };
-
     function selectChoice(choice) {
       if (choice === 1) {
         window.location.href = "Night2-f-customer-choice1.html";
@@ -163,6 +237,23 @@
         window.location.href = "Night2-f-customer-choice2.html";
       }
     }
+
+    // ปุ่มปรับเสียง
+    volUp.addEventListener("click", e => {
+      e.stopPropagation();
+      bgMusic.volume = Math.min(bgMusic.volume + 0.1, 1);
+      volumeSlider.value = bgMusic.volume;
+    });
+
+    volDown.addEventListener("click", e => {
+      e.stopPropagation();
+      bgMusic.volume = Math.max(bgMusic.volume - 0.1, 0);
+      volumeSlider.value = bgMusic.volume;
+    });
+
+    volumeSlider.addEventListener("input", e => {
+      bgMusic.volume = e.target.value;
+    });
   </script>
 </body>
 </html>

@@ -10,7 +10,7 @@
 
 /* พื้นหลังและโครงสร้างหลัก */
 body {
-  background-image: url('images/car_cleanup-bg.png'); /* ใส่ path ของภาพพื้นหลัง */
+  background-image: url('images/car.png'); /* ใส่ path ของภาพพื้นหลัง */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

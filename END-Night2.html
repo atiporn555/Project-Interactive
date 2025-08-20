@@ -4,15 +4,9 @@
   <meta charset="UTF-8">
   <title>5 คืนสยอง - จบคืนที่ 2</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="END-Night2.css"> <!-- เชื่อม CSS -->
+  <link rel="stylesheet" href="END-Night2.css">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Kanit', sans-serif;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Kanit', sans-serif; }
     body {
       background-color: #111;
       color: white;
@@ -25,41 +19,28 @@
       text-align: center;
       cursor: pointer;
     }
+    .container { max-width: 640px; width: 100%; }
+    .title { font-size: 1.6rem; font-weight: bold; margin-bottom: 12px; }
+    .time { font-size: 1.1rem; color: #aaa; margin-bottom: 24px; }
+    .text { font-size: 1.1rem; line-height: 1.8; opacity: 0; transition: opacity 0.8s ease-in-out; margin-bottom: 30px; }
+    .fade-in { opacity: 1; }
+    .instruction { font-size: 0.95rem; color: #888; opacity: 0.7; }
 
-    .container {
-      max-width: 640px;
-      width: 100%;
+    /* ปุ่มปรับเสียง */
+    .volume-controls {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0,0,0,0.3);
+      padding: 6px 10px;
+      border-radius: 8px;
+      z-index: 1000;
     }
-
-    .title {
-      font-size: 1.6rem;
-      font-weight: bold;
-      margin-bottom: 12px;
-    }
-
-    .time {
-      font-size: 1.1rem;
-      color: #aaa;
-      margin-bottom: 24px;
-    }
-
-    .text {
-      font-size: 1.1rem;
-      line-height: 1.8;
-      opacity: 0;
-      transition: opacity 0.8s ease-in-out;
-      margin-bottom: 30px;
-    }
-
-    .fade-in {
-      opacity: 1;
-    }
-
-    .instruction {
-      font-size: 0.95rem;
-      color: #888;
-      opacity: 0.7;
-    }
+    .volume-controls input[type="range"] { width: 120px; accent-color: red; }
+    .volume-button { background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); border-radius: 6px; padding: 6px 10px; color: white; font-weight: bold; cursor: pointer; }
   </style>
 </head>
 <body onclick="goToNext()">
@@ -70,13 +51,34 @@
     <div class="instruction">(แตะที่หน้าจอเพื่อดำเนินเรื่องราวต่อ...)</div>
   </div>
 
+  <!-- เพลง background -->
+  <audio id="bg-music" src="sounds/early-morning-sound-in-village-345750.mp3" preload="auto" loop></audio>
+
+  <!-- ปุ่มปรับเสียง -->
+  <div class="volume-controls" onclick="event.stopPropagation()">
+    <button class="volume-button" id="vol-down">🔉</button>
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.01">
+    <button class="volume-button" id="vol-up">🔊</button>
+  </div>
+
   <script>
     const text = `คืนนี้ฉันรู้สึกแปลก ๆ...<br>
     มีบางอย่างผิดปกติ เหมือนกับว่าฉันกำลังถูกจ้องมองอยู่<br>
     ฉันหวังว่า...ทุกอย่างจะไม่เลวร้ายไปกว่านี้...`;
 
+    const box = document.getElementById("text-box");
+
+    const bgMusic = document.getElementById('bg-music');
+    const volumeSlider = document.getElementById('volumeSlider');
+    const volUp = document.getElementById('vol-up');
+    const volDown = document.getElementById('vol-down');
+
+    // ตั้งค่าเริ่มต้น
+    bgMusic.volume = 0.5;
+    volumeSlider.value = bgMusic.volume;
+    let firstClick = true;
+
     function revealText() {
-      const box = document.getElementById("text-box");
       setTimeout(() => {
         box.innerHTML = text;
         box.classList.add("fade-in");
@@ -84,10 +86,19 @@
     }
 
     function goToNext() {
+      if (firstClick) {
+        bgMusic.play().catch(err => console.log("เล่นเพลงไม่ได้:", err));
+        firstClick = false;
+      }
       window.location.href = "Night3-Pub.html"; // แก้ชื่อให้ตรงกับไฟล์ของคืนที่ 3
     }
 
     window.onload = revealText;
+
+    // ปุ่มปรับเสียง
+    volUp.addEventListener('click', e => { e.stopPropagation(); bgMusic.volume = Math.min(bgMusic.volume + 0.1, 1); volumeSlider.value = bgMusic.volume; });
+    volDown.addEventListener('click', e => { e.stopPropagation(); bgMusic.volume = Math.max(bgMusic.volume - 0.1, 0); volumeSlider.value = bgMusic.volume; });
+    volumeSlider.addEventListener('input', e => { bgMusic.volume = e.target.value; });
   </script>
 </body>
 </html>
