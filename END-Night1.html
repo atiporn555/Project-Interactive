@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>5 คืนสยอง - จบคืนที่ 1</title>
   <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="END-Night1.css"> <!-- เชื่อม CSS -->
+  <link rel="stylesheet" href="END-Night1.css">
   <style>
     body {
       margin: 0;
@@ -16,6 +16,7 @@
       justify-content: center;
       align-items: flex-end;
       padding: 20px;
+      cursor: pointer;
     }
 
     .scene-container {
@@ -48,6 +49,42 @@
     .visible {
       opacity: 1;
     }
+
+    /* ปุ่มปรับเสียง */
+    .volume-controls {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0,0,0,0.3);
+      padding: 6px 10px;
+      border-radius: 8px;
+      z-index: 1000;
+    }
+
+    .volume-controls input[type="range"] {
+      width: 120px;
+      accent-color: red;
+    }
+
+    .volume-button {
+      background-color: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 6px;
+      padding: 6px 10px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .volume-button:hover {
+      background-color: rgba(255,255,255,0.3);
+      color: #ff5555;
+      transform: scale(1.05);
+    }
   </style>
 </head>
 <body onclick="handleClick()">
@@ -57,9 +94,23 @@
     <div class="continue-note" id="note">แตะหน้าจอเพื่อเข้าสู่คืนถัดไป...</div>
   </div>
 
+  <!-- ปุ่มปรับเสียง -->
+  <div class="volume-controls" onclick="event.stopPropagation()">
+    <button class="volume-button" id="vol-down">🔉</button>
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.01">
+    <button class="volume-button" id="vol-up">🔊</button>
+  </div>
+
+  <!-- เสียง background -->
+  <audio id="bg-music" src="sounds/early-morning-sound-in-village-345750.mp3" loop></audio>
+
   <script>
     const textBox = document.getElementById("text-box");
     const note = document.getElementById("note");
+    const bgMusic = document.getElementById("bg-music");
+    const volumeSlider = document.getElementById("volumeSlider");
+    const volUp = document.getElementById("vol-up");
+    const volDown = document.getElementById("vol-down");
 
     const texts = [
       "การทำงานคืนนี้ผ่านไปได้ด้วยดี",
@@ -70,17 +121,21 @@
     let index = 0;
     let isTransitioning = false;
     let isDone = false;
+    let started = false;
 
     function handleClick() {
-      if (isDone) {
-        window.location.href = "Night2-Start-f-customer.html";
-        return;
+      // เริ่มเพลงครั้งแรกเมื่อคลิก
+      if (!started) {
+        bgMusic.volume = 0.5;
+        bgMusic.play().catch(e => console.log("bg-music play error:", e));
+        volumeSlider.value = bgMusic.volume;
+        started = true;
       }
 
       if (isTransitioning) return;
-      isTransitioning = true;
 
       if (index < texts.length) {
+        isTransitioning = true;
         textBox.style.opacity = 0;
         setTimeout(() => {
           textBox.textContent = texts[index++];
@@ -91,13 +146,30 @@
             setTimeout(() => {
               note.classList.add("visible");
               isDone = true;
-            }, 800);
+            }, 500);
           }
         }, 200);
+      } else if (isDone) {
+        window.location.href = "Night2-Start-f-customer.html";
       }
     }
 
-    window.onload = handleClick;
+    // ปุ่มปรับเสียง
+    volUp.addEventListener("click", e => {
+      e.stopPropagation();
+      bgMusic.volume = Math.min(bgMusic.volume + 0.1, 1);
+      volumeSlider.value = bgMusic.volume;
+    });
+
+    volDown.addEventListener("click", e => {
+      e.stopPropagation();
+      bgMusic.volume = Math.max(bgMusic.volume - 0.1, 0);
+      volumeSlider.value = bgMusic.volume;
+    });
+
+    volumeSlider.addEventListener("input", e => {
+      bgMusic.volume = e.target.value;
+    });
   </script>
 </body>
 </html>

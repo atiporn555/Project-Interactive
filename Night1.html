@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>5 คืนสยอง - เริ่มเดินทาง</title>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="Night1.css"> <!-- เชื่อม CSS -->
+  <link rel="stylesheet" href="Night1.css">
   <style>
     body {
       margin: 0;
@@ -45,11 +45,12 @@
       margin-bottom: 40px;
     }
 
+    /* ปรับปุ่มตัวเลือกเป็นใส และเอฟเฟกต์ hover */
     .choice-button {
       padding: 14px 22px;
       font-size: 1rem;
-      background-color: #222;
-      border: 1px solid #555;
+      background-color: rgba(255, 255, 255, 0.05); /* ใสๆ */
+      border: 1px solid rgba(255, 255, 255, 0.3);
       border-radius: 10px;
       color: white;
       cursor: pointer;
@@ -57,8 +58,8 @@
     }
 
     .choice-button:hover {
-      background-color: #444;
-      transform: scale(1.03);
+      background-color: rgba(255, 0, 0, 0.6); /* สีแดงเวลา hover */
+      transform: scale(1.05);
     }
 
     @media screen and (max-width: 640px) {
@@ -84,7 +85,6 @@
 
   <audio autoplay loop>
     <source src="night_ambience.mp3" type="audio/mpeg">
-    <!-- เสียงพื้นหลัง: จิ้งหรีด / เดิน -->
   </audio>
 
   <script>

@@ -1,81 +1,144 @@
 <!DOCTYPE html> 
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <title>5 คืนสยอง - ฟังเพลง</title>
-  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="Night1-Choice1.css"> <!-- เชื่อม CSS -->
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Kanit', sans-serif;
-    }
-
-    body {
-      background-color: #111;
-      color: white;
-      height: 100vh;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .scene-container {
-      position: absolute;
-      bottom: 40px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      max-width: 500px;
-      text-align: center;
-      padding: 0 20px;
-    }
-
-    .caption {
-      font-size: 1.1rem;
-      opacity: 0;
-      transition: opacity 1.8s ease-in-out;
-      min-height: 80px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>5 คืนสยอง - ฟังเพลง</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Night1-Choice1.css">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Kanit',sans-serif; }
+        body {
+            background-color:#111;
+            color:white;
+            height:100vh;
+            position:relative;
+            overflow:hidden;
+            cursor:pointer;
+        }
+        .scene-container {
+            position:absolute;
+            bottom:40px;
+            left:50%;
+            transform:translateX(-50%);
+            width:100%;
+            max-width:500px;
+            text-align:center;
+            padding:0 20px;
+        }
+        .caption {
+            font-size:1.1rem;
+            opacity:0;
+            transition:opacity 1.8s ease-in-out;
+            min-height:80px;
+        }
+        .volume-controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1000;
+            background: rgba(0,0,0,0.3);
+            padding: 6px 10px;
+            border-radius: 8px;
+        }
+        .volume-controls input[type="range"] {
+            width: 120px;
+            accent-color: red;
+        }
+        .volume-button {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            padding: 6px 10px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .volume-button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            color: #ff5555;
+            transform: scale(1.05);
+        }
+    </style>
 </head>
 <body>
-  <div class="scene-container">
-    <div class="caption" id="caption-text"></div>
-  </div>
 
-  <script>
-    const texts = [
-      "ฉันเลือกที่จะฟังเพลงเพื่อคลายความเหงา",
-      "หรือความจริงแล้วสาเหตุที่ฉันเลือกฟังเพลง...อาจเป็นเพราะว่าฉันกลัวว่าจะได้ยินสิ่งที่ไม่ควรได้ยิน...",
-      "บรรยากาศตอนกลางคืนนี่เงียบจริงๆ จะว่าไปแล้วช่วงนี้ฉันเห็นข่าวโรคจิตชอบแอบตามผู้หญิงอยู่บ่อยๆ",
-      "หวังว่าฉันจะไม่ใช่ผู้หญิงที่โชคร้ายหรอกนะ...แต่จริงๆแล้วถ้าโรคจิตพวกนั้นมันอยากจะทำไม่ว่าผู้หญิงหรือผู้ชาย ก็เสี่ยงเหมือนกัน..",
-      "ใช้เวลาไม่นานฉันก็เดินมาถึงร้านที่ฉันประจำอยู่...ได้เวลาเริ่มงานแล้วล่ะ"
-    ];
+    <div class="scene-container">
+        <div class="caption" id="caption-text"></div>
+    </div>
 
-    let index = 0;
-    const captionBox = document.getElementById('caption-text');
+    <div class="volume-controls" onclick="event.stopPropagation()">
+        <button class="volume-button" id="vol-down">🔉</button>
+        <input type="range" id="volumeSlider" min="0" max="1" step="0.01">
+        <button class="volume-button" id="vol-up">🔊</button>
+    </div>
 
-    function showNextText() {
-      captionBox.style.opacity = 0;
+    <audio id="bg-music" src="sounds/cottagecore-17463.mp3" loop></audio>
+    
+    <script>
+        const texts = [
+            "ฉันเลือกที่จะฟังเพลงเพื่อคลายความเหงา",
+            "หรือความจริงแล้วสาเหตุที่ฉันเลือกฟังเพลง...อาจเป็นเพราะว่าฉันกลัวว่าจะได้ยินสิ่งที่ไม่ควรได้ยิน...",
+            "บรรยากาศตอนกลางคืนนี่เงียบจริงๆ จะว่าไปแล้วช่วงนี้ฉันเห็นข่าวโรคจิตชอบแอบตามผู้หญิงอยู่บ่อยๆ",
+            "หวังว่าฉันจะไม่ใช่ผู้หญิงที่โชคร้ายหรอกนะ...แต่จริงๆแล้วถ้าโรคจิตพวกนั้นมันอยากจะทำไม่ว่าผู้หญิงหรือผู้ชาย ก็เสี่ยงเหมือนกัน..",
+            "ใช้เวลาไม่นานฉันก็เดินมาถึงร้านที่ฉันประจำอยู่...ได้เวลาเริ่มงานแล้วล่ะ"
+        ];
 
-      setTimeout(() => {
-        if (index < texts.length) {
-          captionBox.textContent = texts[index++];
-          captionBox.style.opacity = 1;
-        } else {
-          window.location.href = "Night1-Store.html";
+        let index = 0;
+        const captionBox = document.getElementById('caption-text');
+        const bgMusic = document.getElementById('bg-music');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const sceneContainer = document.querySelector('.scene-container');
+        const volumeControls = document.querySelector('.volume-controls');
+
+        let started = false;
+
+        function startStory() {
+            if (!started) {
+                // เริ่มเพลงและแสดงฉาก
+                bgMusic.volume = 0.5;
+                bgMusic.play().catch(e => console.error("Error playing audio:", e));
+                volumeSlider.value = bgMusic.volume;
+
+                captionBox.textContent = texts[index++];
+                captionBox.style.opacity = 1;
+
+                started = true;
+            } else {
+                // แสดงข้อความถัดไป
+                captionBox.style.opacity = 0;
+                setTimeout(() => {
+                    if (index < texts.length) {
+                        captionBox.textContent = texts[index++];
+                        captionBox.style.opacity = 1;
+                    } else {
+                        window.location.href = "Night1-Store.html";
+                    }
+                }, 500);
+            }
         }
-      }, 1000);
-    }
 
-    window.onload = () => {
-      captionBox.textContent = texts[index++];
-      captionBox.style.opacity = 1;
-    };
+        document.body.addEventListener('click', startStory);
 
-    document.body.addEventListener('click', showNextText);
-  </script>
+        // ปรับเสียง
+        document.getElementById('vol-up').addEventListener('click', (e) => {
+            e.stopPropagation();
+            bgMusic.volume = Math.min(bgMusic.volume + 0.1, 1);
+            volumeSlider.value = bgMusic.volume;
+        });
+
+        document.getElementById('vol-down').addEventListener('click', (e) => {
+            e.stopPropagation();
+            bgMusic.volume = Math.max(bgMusic.volume - 0.1, 0);
+            volumeSlider.value = bgMusic.volume;
+        });
+
+        volumeSlider.addEventListener('input', (e) => {
+            bgMusic.volume = e.target.value;
+        });
+    </script>
 </body>
 </html>

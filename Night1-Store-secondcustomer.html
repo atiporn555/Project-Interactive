@@ -4,46 +4,117 @@
   <meta charset="UTF-8" />
   <title>5 คืนสยอง - ลูกค้าคนที่ 2</title>
   <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="Night1-Store-secondcustomer.css" /> <!-- เชื่อม CSS -->
+  <link rel="stylesheet" href="Night1-Store-secondcustomer.css" />
+  <style>
+    body {
+      margin: 0;
+      background-color: #111;
+      color: #fff;
+      font-family: 'Prompt', sans-serif;
+      height: 100vh;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      padding-bottom: 40px;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .scene-container { width: 100%; text-align: center; }
+    .time-label { font-size: 1.2rem; color: #ccc; margin-bottom: 10px; }
+    #warning { margin-bottom: 10px; } 
+    .text-box { font-size: 1.05rem; margin-bottom: 10px; transition: opacity 0.5s ease-in-out; }
+
+    /* ตัวเลือก */
+    .choices {
+      display: none;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .choice-button {
+      padding: 12px 20px;
+      font-size: 1rem;
+      background-color: transparent;
+      border: 2px solid #fff;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .choice-button:hover {
+      background-color: rgba(255, 0, 0, 0.6);
+      border-color: rgba(255, 0, 0, 0.8);
+    }
+
+    /* ปุ่มปรับเสียง */
+    .volume-controls {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0,0,0,0.3);
+      padding: 6px 10px;
+      border-radius: 8px;
+      z-index: 1000;
+    }
+
+    .volume-controls input[type="range"] {
+      width: 120px;
+      accent-color: red;
+    }
+
+    .volume-button {
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 6px;
+      padding: 6px 10px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .volume-button:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+      color: #ff5555;
+      transform: scale(1.05);
+    }
+  </style>
 </head>
-<body onclick="nextText()">
+<body>
   <div class="scene-container">
     <div class="time-label">คืนที่ 1</div>
     <div id="warning">* ไม่สนับสนุนให้เยาวชนอายุต่ำกว่า 20 ปี สูบบุหรี่ *</div>
-    <div class="text-box" id="text-box">คลิกเพื่อเริ่มเรื่อง...</div>
+    <div class="text-box" id="text-box"></div>
 
     <div class="choices" id="choice-box">
-      <button
-        class="choice-button"
-        onclick="event.stopPropagation(); window.location.href='Night1-Store-second-Choice1.html'"
-      >
-        ยอมขายบุหรี่ให้
-      </button>
-      <button
-        class="choice-button"
-        onclick="event.stopPropagation(); window.location.href='Night1-Store-second-Choice2.html'"
-      >
-        ไม่ขาย
-      </button>
-      <button
-        class="choice-button"
-        onclick="event.stopPropagation(); window.location.href='Night1-Store-second-Choice3.html'"
-      >
-        ตอบแบบรำคาญ
-      </button>
-      <button
-        class="choice-button"
-        onclick="event.stopPropagation(); window.location.href='Night1-Store-second-Choice4.html'"
-      >
-        เรียกเงินเพิ่มขึ้น 2 เท่า
-      </button>
+      <button class="choice-button" onclick="event.stopPropagation(); window.location.href='Night1-Store-second-Choice1.html'">ยอมขายบุหรี่ให้</button>
+      <button class="choice-button" onclick="event.stopPropagation(); window.location.href='Night1-Store-second-Choice2.html'">ไม่ขาย</button>
+      <button class="choice-button" onclick="event.stopPropagation(); window.location.href='Night1-Store-second-Choice3.html'">ตอบแบบรำคาญ</button>
+      <button class="choice-button" onclick="event.stopPropagation(); window.location.href='Night1-Store-second-Choice4.html'">เรียกเงินเพิ่มขึ้น 2 เท่า</button>
     </div>
   </div>
+
+  <!-- ปุ่มปรับเสียง -->
+  <div class="volume-controls" onclick="event.stopPropagation()">
+    <button class="volume-button" id="vol-down">🔉</button>
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.01">
+    <button class="volume-button" id="vol-up">🔊</button>
+  </div>
+
+  <!-- เสียงพื้นหลัง -->
+  <audio id="bg-music" src="sounds/night-tone-370431.mp3" loop></audio>
 
   <script>
     const textBox = document.getElementById("text-box");
     const choiceBox = document.getElementById("choice-box");
     const warning = document.getElementById("warning");
+    const bgMusic = document.getElementById("bg-music");
+    const volumeSlider = document.getElementById("volumeSlider");
 
     const texts = [
       "ลุงคนเมื่อกี้แปลกจัง...เฮ้ออ ขอเจอลูกค้าดีๆบ้างไม่ได้หรือไงนะ",
@@ -56,15 +127,27 @@
 
     let index = 0;
     let isTransitioning = false;
+    let started = false;
 
     function nextText() {
       if (isTransitioning) return;
       isTransitioning = true;
 
+      if (!started) {
+        // เริ่มเพลงและข้อความแรก
+        bgMusic.volume = 0.5;
+        bgMusic.play().catch(e => console.log("คลิกเพื่อเริ่มเสียง:", e));
+        volumeSlider.value = bgMusic.volume;
+
+        textBox.textContent = texts[index++];
+        started = true;
+        textBox.style.opacity = 1;
+        isTransitioning = false;
+        return;
+      }
+
       if (index < texts.length) {
-        if (index === 1) {
-          warning.style.display = "block";
-        }
+        if (index === 1) warning.style.display = "block";
 
         textBox.style.opacity = 0;
         setTimeout(() => {
@@ -79,12 +162,29 @@
       }
     }
 
-    window.onload = nextText;
+    document.body.addEventListener("click", nextText);
 
-    // สั่งเปลี่ยนภาพพื้นหลังหลัง 6 วินาที
+    // เปลี่ยนภาพพื้นหลัง
     setTimeout(() => {
       document.body.style.backgroundImage = "url('images/Second-customer.png')";
     }, 3000);
+
+    // ปุ่มปรับเสียง
+    document.getElementById('vol-up').addEventListener('click', e => {
+      e.stopPropagation();
+      bgMusic.volume = Math.min(bgMusic.volume + 0.1, 1);
+      volumeSlider.value = bgMusic.volume;
+    });
+
+    document.getElementById('vol-down').addEventListener('click', e => {
+      e.stopPropagation();
+      bgMusic.volume = Math.max(bgMusic.volume - 0.1, 0);
+      volumeSlider.value = bgMusic.volume;
+    });
+
+    volumeSlider.addEventListener('input', e => {
+      bgMusic.volume = e.target.value;
+    });
   </script>
 </body>
 </html>

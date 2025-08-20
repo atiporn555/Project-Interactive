@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>5 คืนสยอง - มองบรรยากาศรอบๆ</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="Night1-Choice3.css"> <!-- เชื่อม CSS -->
+  <link rel="stylesheet" href="Night1-Choice3.css">
   <style>
     body {
       margin: 0;
@@ -15,7 +15,8 @@
       padding: 20px;
       display: flex;
       justify-content: center;
-      align-items: flex-end; /* จัดข้อความไว้ล่างสุด */
+      align-items: flex-end;
+      cursor: pointer;
     }
 
     .caption {
@@ -27,12 +28,58 @@
       padding: 10px 20px;
       max-width: 700px;
       text-align: center;
-      margin-bottom: 40px; /* เพิ่มระยะห่างจากขอบล่าง */
+      margin-bottom: 40px;
+    }
+
+    .volume-controls {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0,0,0,0.3);
+      padding: 6px 10px;
+      border-radius: 8px;
+      z-index: 1000;
+    }
+
+    .volume-controls input[type="range"] {
+      width: 120px;
+      accent-color: red;
+    }
+
+    .volume-button {
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 6px;
+      padding: 6px 10px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .volume-button:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+      color: #ff5555;
+      transform: scale(1.05);
     }
   </style>
 </head>
 <body>
   <div class="caption" id="caption-text"></div>
+
+  <!-- ปุ่มปรับเสียง bg-music -->
+  <div class="volume-controls" onclick="event.stopPropagation()">
+    <button class="volume-button" id="vol-down">🔉</button>
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.01">
+    <button class="volume-button" id="vol-up">🔊</button>
+  </div>
+
+  <!-- เสียง bg-music และ cat-sound -->
+  <audio id="bg-music" src="sounds/walking-on-concrete-ver-2-268513.mp3" loop></audio>
+  <audio id="cat-sound" src="sounds/cat-98721.mp3"></audio>
 
   <script>
     const captions = [
@@ -47,23 +94,58 @@
     ];
 
     const captionBox = document.getElementById('caption-text');
+    const bgMusic = document.getElementById('bg-music');
+    const catSound = document.getElementById('cat-sound');
+    const volumeSlider = document.getElementById('volumeSlider');
     let index = 0;
+    let started = false;
 
     function showNextCaption() {
-      captionBox.style.opacity = 0;
+      if (!started) {
+        bgMusic.volume = 0.5;
+        bgMusic.play().catch(e => console.error("Error playing audio:", e));
+        volumeSlider.value = bgMusic.volume;
 
-      setTimeout(() => {
-        if (index < captions.length) {
-          captionBox.textContent = captions[index++];
-          captionBox.style.opacity = 1;
-        } else {
-          window.location.href = "Night1-Store.html";
-        }
-      }, 600);
+        captionBox.textContent = captions[index++];
+        captionBox.style.opacity = 1;
+        started = true;
+      } else {
+        captionBox.style.opacity = 0;
+        setTimeout(() => {
+          if (index < captions.length) {
+            captionBox.textContent = captions[index++];
+            captionBox.style.opacity = 1;
+
+            // ถ้าถึงข้อความ "แมวดำ?" ให้หยุด bg-music และเล่น cat-sound
+            if (captionBox.textContent === "แมวดำ?") {
+              bgMusic.pause();
+              catSound.currentTime = 0;
+              catSound.play().catch(e => console.error("Error playing cat sound:", e));
+            }
+
+          } else {
+            window.location.href = "Night1-Store.html";
+          }
+        }, 600);
+      }
     }
 
-    window.onload = showNextCaption;
     document.body.addEventListener('click', showNextCaption);
+
+    // ปรับเสียง bg-music
+    document.getElementById('vol-up').addEventListener('click', e => {
+      e.stopPropagation();
+      bgMusic.volume = Math.min(bgMusic.volume + 0.1, 1);
+      volumeSlider.value = bgMusic.volume;
+    });
+    document.getElementById('vol-down').addEventListener('click', e => {
+      e.stopPropagation();
+      bgMusic.volume = Math.max(bgMusic.volume - 0.1, 0);
+      volumeSlider.value = bgMusic.volume;
+    });
+    volumeSlider.addEventListener('input', e => {
+      bgMusic.volume = e.target.value;
+    });
   </script>
 </body>
 </html>
