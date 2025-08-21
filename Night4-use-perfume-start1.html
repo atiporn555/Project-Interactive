@@ -1,62 +1,175 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8" />
-  <title>5 คืนสยอง - น้ำหอม</title>
-  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="Night4-use-perfume-start1.css">
+<meta charset="UTF-8" />
+<title>5 คืนสยอง - น้ำหอม</title>
+<link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
+<style>
+body {
+  margin: 0;
+  background-image: url('images/Run-away2.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+  font-family: 'Kanit', sans-serif;
+  height: 100vh;
+  user-select: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 40px 20px;
+  box-sizing: border-box;
+  transition: background-image 1s ease-in-out;
+}
+
+.scene-container {
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+}
+
+.caption {
+  font-size: 1.3rem;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+  line-height: 1.6;
+  white-space: pre-line;
+  text-shadow:
+    2px 2px 4px rgba(0,0,0,0.8),
+    -2px 2px 4px rgba(0,0,0,0.8),
+    2px -2px 4px rgba(0,0,0,0.8),
+    -2px -2px 4px rgba(0,0,0,0.8),
+    0 0 6px rgba(0,0,0,0.9),
+    0 0 8px rgba(0,0,0,0.85);
+}
+
+.volume-controls {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0,0,0,0.3);
+  padding: 6px 10px;
+  border-radius: 8px;
+  z-index: 1000;
+}
+
+.volume-controls input[type="range"] {
+  width: 120px;
+  accent-color: red;
+}
+
+.volume-button {
+  background-color: rgba(50,50,50,0.6);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 6px;
+  padding: 6px 10px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.volume-button:hover {
+  background-color: rgba(255,0,0,0.6);
+  transform: scale(1.05);
+}
+</style>
 </head>
-<body onclick="nextLine()">
-  <div class="scene-container">
-    <div class="text-box" id="caption-text"></div>
-  </div>
+<body id="body">
 
-  <script>
-    const lines = [
-      'ไทม์: โอ้ยย !!!',
-      'ฝน: ฉันฉีดน้ำหอมใส่ตาของเขา ดูเหมือนมันจะได้ผล เขาทรุดตัวลงไปและร้องด้วยความเจ็บปวด',
-      'ฝน: ช่วยด้วยค่ะ!! มีใครได้ยินมั้ย!',
-      'ฉันรีบตั้งสติและวิ่งหนีให้เร็วที่สุด เมื่อตั้งสติได้ฉันจึงรีบหยิบมือถือขึ้นมาและทักหาเพื่อนทันที'
-    ];
+<audio id="bg-sound" src="sounds/bass-horror-movie-pad-391595.mp3" loop muted></audio>
 
-    const captionEl = document.getElementById('caption-text');
-    let index = 0;
+<!-- เพิ่มเสียง effect -->
+<audio id="scream-sound" src="sounds/man-death-scream-186763.mp3"></audio>
+<audio id="running-sound" src="sounds/running-on-concrete-268478.mp3"></audio>
 
-    function nextLine() {
-      if (index >= lines.length) {
-        window.location.href = 'Night4-chat-choice-perfume-start1.html';
-        return;
-      }
+<div class="volume-controls" onclick="event.stopPropagation()">
+  <button class="volume-button" id="vol-down">🔉</button>
+  <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
+  <button class="volume-button" id="vol-up">🔊</button>
+</div>
 
-      const text = lines[index];
-      let html = '';
+<div class="scene-container">
+  <div class="caption" id="caption-text"></div>
+</div>
 
-      if (text.includes(':')) {
-        const speaker = text.split(':')[0].trim();
-        const content = text.split(':').slice(1).join(':').trim();
-        let className = speaker === 'ฝน' ? 'fon' : speaker === 'ไทม์' ? 'time' : 'name';
-        html = `<span class="name ${className}">${speaker}:</span> ${content}`;
-      } else {
-        html = `<span class="narration">${text}</span>`;
-      }
+<script>
+const lines = [
+  {text:'<span class="name">ไทม์:</span> "โอ้ยย !!!"', sound:'scream-sound'},
+  {text:'<span class="name">ฝน:</span> "ฉันฉีดน้ำหอมใส่ตาของเขา ดูเหมือนมันจะได้ผล เขาทรุดตัวลงไปและร้องด้วยความเจ็บปวด"', sound:null},
+  {text:'<span class="name">ฝน:</span> "ช่วยด้วยค่ะ!! มีใครได้ยินมั้ย!"', sound:'running-sound'},
+  {text:'<span class="inner-thought">(ฉันรีบตั้งสติและวิ่งหนีให้เร็วที่สุด เมื่อตั้งสติได้ฉันจึงรีบหยิบมือถือขึ้นมาและทักหาเพื่อนทันที)</span>', sound:null}
+];
 
-      captionEl.style.opacity = 0;
-      setTimeout(() => {
-        captionEl.innerHTML = `<div class="fade-in">${html}</div>`;
-        captionEl.style.opacity = 1;
-      }, 100);
+const captionEl = document.getElementById('caption-text');
+const bgSound = document.getElementById('bg-sound');
+const volumeSlider = document.getElementById('volumeSlider');
+const screamSound = document.getElementById('scream-sound');
+const runningSound = document.getElementById('running-sound');
 
-      index++;
+let index = 0;
+let soundStarted = false;
+
+function nextLine() {
+  if(!soundStarted){
+    bgSound.muted = false;
+    bgSound.volume = volumeSlider.value;
+    bgSound.play().catch(()=>console.log("คลิกเพื่อเล่นเพลง"));
+    soundStarted = true;
+  }
+
+  if(index >= lines.length){
+    window.location.href = "Night4-chat-choice-perfume-start1.html";
+    return;
+  }
+
+  captionEl.style.opacity = 0;
+  setTimeout(() => {
+    const line = lines[index];
+    captionEl.innerHTML = line.text;
+    captionEl.style.opacity = 1;
+
+    // เล่นเสียง effect ถ้ามี
+    if(line.sound){
+      const audioEl = document.getElementById(line.sound);
+      audioEl.currentTime = 0;
+      audioEl.volume = volumeSlider.value;
+      audioEl.play();
     }
 
-    window.onload = () => {
-      nextLine();
+    index++;
+  }, 100);
+}
 
-      // เปลี่ยนภาพพื้นหลังหลังจาก 6 วิ
-      setTimeout(() => {
-        document.body.style.backgroundImage = "url('images/Run-away2.png')";
-      }, 6000);
-    };
-  </script>
+// Volume controls
+volumeSlider.addEventListener('input', () => { 
+  bgSound.volume = volumeSlider.value; 
+  screamSound.volume = volumeSlider.value;
+  runningSound.volume = volumeSlider.value;
+});
+document.getElementById('vol-down').addEventListener('click', e => { 
+  e.stopPropagation(); 
+  bgSound.volume = Math.max(0,bgSound.volume-0.05);
+  screamSound.volume = bgSound.volume;
+  runningSound.volume = bgSound.volume;
+  volumeSlider.value = bgSound.volume; 
+});
+document.getElementById('vol-up').addEventListener('click', e => { 
+  e.stopPropagation(); 
+  bgSound.volume = Math.min(1,bgSound.volume+0.05);
+  screamSound.volume = bgSound.volume;
+  runningSound.volume = bgSound.volume;
+  volumeSlider.value = bgSound.volume; 
+});
+
+// กด anywhere เพื่อเปลี่ยนข้อความ + เริ่มเพลง
+document.body.addEventListener('click', nextLine);
+</script>
+
 </body>
 </html>

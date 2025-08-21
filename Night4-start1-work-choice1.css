@@ -1,5 +1,3 @@
-/* Night4-start1-work-choice1.css */
-
 * {
   margin: 0;
   padding: 0;
@@ -8,29 +6,21 @@
 }
 
 body {
-  /* ตั้งค่าพื้นหลัง */
   background: url('images/Strangr-Woman2.png') center/cover no-repeat fixed;
   color: white;
   display: flex;
   justify-content: center;
-  align-items: flex-end; /* เน้นให้อยู่ด้านล่าง */
+  align-items: flex-end;
   height: 100vh;
   padding: 40px 20px;
   text-align: center;
   cursor: pointer;
-  transition: background 1s ease-in-out; /* เฟดนุ่มๆ */
+  transition: background 1s ease-in-out;
 }
 
 .scene-container {
   max-width: 700px;
   width: 100%;
-}
-
-.time-label {
-  font-size: 1.3rem;
-  color: #ccc;
-  margin-bottom: 20px;
-  text-shadow: 1px 1px 4px rgba(0,0,0,0.7); /* อ่านง่ายขึ้น */
 }
 
 .caption {
@@ -40,30 +30,61 @@ body {
   white-space: pre-line;
   margin-bottom: 20px;
   min-height: 90px;
-  text-shadow: 1px 1px 6px rgba(0,0,0,0.8); /* ทำให้ข้อความอ่านง่ายบนภาพ */
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.85);
 }
 
 .choices {
   display: none;
   flex-direction: column;
   gap: 16px;
+  justify-content: center;
 }
 
 .choice-button {
   padding: 14px 22px;
   font-size: 1rem;
-  background-color: rgba(34, 34, 34, 0.8);
-  border: 1px solid #555;
+  font-weight: 600;
+  background-color: rgba(50,50,50,0.5); /* สี  แบบใสโปร่ง */
+  border: 1px solid rgba(255,255,255,0.2);
   border-radius: 10px;
   color: white;
   cursor: pointer;
   transition: all 0.3s ease;
-  text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+  min-width: 240px;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
 }
 
 .choice-button:hover {
-  background-color: rgba(68, 68, 68, 0.9);
+  background-color: rgba(255, 0, 0, 0.6); /* แดงโปร่งเมื่อ hover */
   transform: scale(1.03);
+}
+
+.volume-controls {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0,0,0,0.3);
+  padding: 6px 10px;
+  border-radius: 8px;
+  z-index: 1000;
+}
+
+.volume-controls input[type="range"] {
+  width: 120px;
+  accent-color: red;
+}
+
+.volume-button {
+  background-color: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 6px;
+  padding: 6px 10px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 640px) {

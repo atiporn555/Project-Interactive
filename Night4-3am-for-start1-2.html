@@ -5,8 +5,45 @@
   <title>5 คืนสยอง - คืนที่ 2</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="Night4-3am-for-start1-2.css">
+  <style>
+    .volume-controls {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0,0,0,0.3);
+      padding: 6px 10px;
+      border-radius: 8px;
+      z-index: 1000;
+    }
+
+    .volume-controls input[type="range"] {
+      width: 120px;
+      accent-color: red;
+    }
+
+    .volume-button {
+      background-color: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 6px;
+      padding: 6px 10px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body onclick="nextText()">
+  <audio id="bg-sound" src="sounds/dark-horror-soundscape-345814.mp3" loop></audio>
+
+  <div class="volume-controls" onclick="event.stopPropagation()">
+    <button class="volume-button" id="vol-down">🔉</button>
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
+    <button class="volume-button" id="vol-up">🔊</button>
+  </div>
+
   <div class="scene-container">
     <div id="night-label">03:00 a.m</div>
     <div class="text-box" id="text-box"></div>
@@ -15,6 +52,7 @@
   <script>
     const textBox = document.getElementById("text-box");
     const nightLabel = document.getElementById("night-label");
+    const bgSound = document.getElementById("bg-sound");
 
     const texts = [
       "น้ำฝน: เฮ้ออ... วันนี้พอแค่นี้ดีกว่า เหนื่อยจนอยากกลับไปพักเต็มที",
@@ -32,6 +70,12 @@
       "น้ำฝน: (เขาเป็นคนแถวนี้เหรอ...? หรือว่าเพิ่งเลิกงานเหมือนฉัน?)",
       "(ฉันพยายามไม่คิดมาก แล้วรีบเร่งฝีเท้าต่อไป)"
     ];
+
+    // Mapping ข้อความ → background
+    const backgroundMap = {
+      "ซอยที่ฉันใช้กลับบ้านประจำกำลังซ่อมแซมอยู่ ทำให้ต้องอ้อมไปทางลัดที่ไม่ค่อยอยากใช้เท่าไหร่": "images/road-dark.png",
+      "(ฉันหันกลับไปมองอย่างระแวง...)": "images/stalker.png"
+    };
 
     let index = 0;
     let isTransitioning = false;
@@ -54,8 +98,15 @@
       if (index < texts.length) {
         textBox.style.opacity = 0;
         setTimeout(() => {
-          textBox.textContent = texts[index++];
+          const currentText = texts[index++];
+          textBox.textContent = currentText;
           textBox.style.opacity = 1;
+
+          // เปลี่ยน background ถ้าข้อความตรงกับ mapping
+          if (backgroundMap[currentText]) {
+            document.body.style.backgroundImage = `url('${backgroundMap[currentText]}')`;
+          }
+
           isTransitioning = false;
         }, 400);
       } else {
@@ -63,17 +114,35 @@
       }
     }
 
-    // ✅ เปลี่ยนภาพพื้นหลังตามเวลา
     window.onload = () => {
       nightLabel.style.opacity = 1;
 
-      setTimeout(() => {
-        document.body.style.backgroundImage = 'url("images/road-dark.png")';
-      }, 5000); // หลัง 5 วิ → เปลี่ยนเป็นภาพที่ 2
+      // เริ่มเล่นซาวด์ background
+      bgSound.volume = 0.5;
+      window.addEventListener('click', () => {
+        if (bgSound.paused) bgSound.play().catch(() => console.log('คลิกเพื่อเล่นเพลง'));
+      }, { once: true });
 
-      setTimeout(() => {
-        document.body.style.backgroundImage = 'url("images/stalker.png")';
-      }, 20000); // หลังจากภาพที่ 2 ขึ้น 10 วิ (รวมเป็น 15 วิ) → เปลี่ยนเป็นภาพที่ 3
+      // ปุ่ม volume
+      const volumeSlider = document.getElementById('volumeSlider');
+      const volDown = document.getElementById('vol-down');
+      const volUp = document.getElementById('vol-up');
+
+      volumeSlider.addEventListener('input', () => {
+        bgSound.volume = parseFloat(volumeSlider.value);
+      });
+
+      volDown.addEventListener('click', (e) => {
+        e.stopPropagation();
+        bgSound.volume = Math.max(0, bgSound.volume - 0.05);
+        volumeSlider.value = bgSound.volume.toFixed(2);
+      });
+
+      volUp.addEventListener('click', (e) => {
+        e.stopPropagation();
+        bgSound.volume = Math.min(1, bgSound.volume + 0.05);
+        volumeSlider.value = bgSound.volume.toFixed(2);
+      });
     };
   </script>
 </body>

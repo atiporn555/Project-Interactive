@@ -5,8 +5,133 @@
   <title>5 คืนสยอง - คืนที่ 2</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="Night4-3am-choice-refuse.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Kanit', sans-serif;
+    }
+
+    body {
+      background: url("images/Wanted2.png") no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 20px;
+      overflow: hidden;
+      text-align: center;
+      transition: background-image 1s ease-in-out;
+    }
+
+    .scene-container {
+      width: 100%;
+      max-width: 700px;
+    }
+
+    .text-box {
+      font-size: 1.05rem;
+      min-height: 60px;
+      opacity: 0;
+      transition: opacity 0.6s ease-in-out;
+      margin-bottom: 20px;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.8);
+    }
+
+    .name {
+      color: #ffffff;
+      font-weight: bold;
+    }
+
+    .inner-thought {
+      font-style: italic;
+      color: #ffffff;
+    }
+
+    .danger {
+      color: #ff6464;
+    }
+
+    .choice-box {
+      margin-top: 20px;
+    }
+
+    /* ปุ่มตัวเลือก */
+    .choice-button {
+      display: block;
+      background-color: rgba(50,50,50,0.6);
+      color: white;
+      padding: 18px 24px;
+      margin: 16px auto;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.1s ease;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .choice-button:hover {
+      background-color: rgba(255,0,0,0.6);
+      transform: scale(1.02);
+    }
+
+    /* ปุ่มและ slider ของเสียง */
+    .volume-controls {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0,0,0,0.3);
+      padding: 6px 10px;
+      border-radius: 8px;
+      z-index: 1000;
+    }
+
+    .volume-controls input[type="range"] {
+      width: 120px;
+      accent-color: red;
+      background: rgba(255,255,255,0.2);
+    }
+
+    .volume-button {
+      background-color: rgba(50,50,50,0.6);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 6px;
+      padding: 6px 10px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.1s ease;
+    }
+
+    .volume-button:hover {
+      background-color: rgba(255,0,0,0.6);
+      transform: scale(1.05);
+    }
+  </style>
 </head>
 <body onclick="nextText()">
+
+  <!-- ✅ ซาวด์ background horror -->
+  <audio id="bg-sound" src="sounds/dark-horror-soundscape-345814.mp3" loop></audio>
+  <!-- ✅ ซาวด์ heart-beat -->
+  <audio id="heart-beat" src="sounds/heart-beat-jonnah-302104.mp3"></audio>
+
+  <!-- ปุ่มปรับเสียง -->
+  <div class="volume-controls" onclick="event.stopPropagation()">
+    <button class="volume-button" id="vol-down">🔉</button>
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
+    <button class="volume-button" id="vol-up">🔊</button>
+  </div>
+
   <div class="scene-container">
     <div class="text-box" id="text-box"></div>
     <div class="choice-box" id="choice-box" style="display: none;">
@@ -18,8 +143,9 @@
     const body = document.body;
     const textBox = document.getElementById("text-box");
     const choiceBox = document.getElementById("choice-box");
+    const bgSound = document.getElementById("bg-sound");
+    const heartBeat = document.getElementById("heart-beat");
 
-    // ข้อความ
     const texts = [
       "<strong class='danger'>[เตือนภัย]</strong> ขณะนี้มีโรคจิตที่ชอบล่วงละเมิดกำลังหลบหนีการจับกุมอยู่ ตำรวจคาดว่าผู้ต้องสงสัยอยู่บริเวณย่าน <strong>xxx</strong>",
       "<span class='name'>น้ำฝน:</span> โรคจิตเหรอ? แล้วทำไมต้องเบลอหน้าคนร้ายด้วยเนี่ย แบบนี้ฉันจะรู้ได้ยังไงว่าหน้าตาไอบ้านี่เป็นแบบไหน",
@@ -48,11 +174,30 @@
       if (isTransitioning || choiceBox.style.display === "block") return;
       isTransitioning = true;
 
+      if (bgSound.paused) {
+        bgSound.play().catch(() => console.log('คลิกเพื่อเริ่มเสียง'));
+      }
+
       textBox.style.opacity = 0;
       setTimeout(() => {
         if (index < texts.length) {
-          textBox.innerHTML = texts[index++];
+          const text = texts[index++];
+          textBox.innerHTML = text;
           textBox.style.opacity = 1;
+
+          // เปลี่ยน background ตามข้อความ
+          if (text.includes("<span class='danger'>คนแปลกหน้า:</span> คนสวย")) {
+            body.style.backgroundImage = 'url("images/creepy-guy.png")';
+          } else if (text.includes("<span class='name'>ไทม์:</span> อ่าวฝน")) {
+            body.style.backgroundImage = 'url("images/meet-time.png")';
+          }
+
+          // เล่นเสียง heart-beat
+          if (text.includes("<span class='inner-thought'>บ้าน? จะบ้ารึไง ตรงนี้มีบ้านคนที่ไหนกัน!</span>")) {
+            heartBeat.currentTime = 0;
+            heartBeat.play().catch(() => console.log('คลิกเพื่อเริ่มเสียง heart-beat'));
+          }
+
           isTransitioning = false;
         } else {
           textBox.style.display = "none";
@@ -68,21 +213,30 @@
       }
     }
 
-    // เปลี่ยน background อัตโนมัติ
     window.onload = () => {
-      // ภาพแรก: Wanted.png (โหลดแล้วแสดงทันที)
+      bgSound.volume = 0.5;
+
+      const volumeSlider = document.getElementById('volumeSlider');
+      const volDown = document.getElementById('vol-down');
+      const volUp = document.getElementById('vol-up');
+
+      volumeSlider.addEventListener('input', () => {
+        bgSound.volume = parseFloat(volumeSlider.value);
+      });
+
+      volDown.addEventListener('click', (e) => {
+        e.stopPropagation();
+        bgSound.volume = Math.max(0, bgSound.volume - 0.05);
+        volumeSlider.value = bgSound.volume.toFixed(2);
+      });
+
+      volUp.addEventListener('click', (e) => {
+        e.stopPropagation();
+        bgSound.volume = Math.min(1, bgSound.volume + 0.05);
+        volumeSlider.value = bgSound.volume.toFixed(2);
+      });
+
       body.style.backgroundImage = 'url("images/Wanted2.png")';
-
-      // ภาพที่สอง: creepy-guy.png หลัง 6 วินาที
-      setTimeout(() => {
-        body.style.backgroundImage = 'url("images/creepy-guy.png")';
-      }, 12000);
-
-      // ภาพที่สาม: meet-time.png หลัง 6+10 = 16 วินาที
-      setTimeout(() => {
-        body.style.backgroundImage = 'url("images/meet-time.png")';
-      }, 22000);
-
       nextText();
     };
   </script>

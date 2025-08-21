@@ -5,80 +5,21 @@
   <title>5 คืนสยอง - ตัวเลือกที่ 1</title>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="Night4-start1-work-choice1.css">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Prompt', sans-serif;
-    }
-
-    body {
-      background-image: url("images/Strangr-Woman2.png"); /* ภาพพื้นหลังแรก */
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      transition: background-image 1s ease-in-out;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      height: 100vh;
-      padding: 40px 20px;
-      text-align: center;
-      cursor: pointer;
-    }
-
-    .scene-container {
-      max-width: 700px;
-      width: 100%;
-    }
-
-    .time-label {
-      font-size: 1.3rem;
-      color: #ccc;
-      margin-bottom: 20px;
-    }
-
-    .caption {
-      font-size: 1.1rem;
-      opacity: 0;
-      transition: opacity 0.5s ease;
-      white-space: pre-line;
-      margin-bottom: 20px;
-      min-height: 90px;
-    }
-
-    .choices {
-      display: none;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .choice-button {
-      padding: 14px 22px;
-      font-size: 1rem;
-      background-color: #222;
-      border: 1px solid #555;
-      border-radius: 10px;
-      color: white;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .choice-button:hover {
-      background-color: #444;
-      transform: scale(1.03);
-    }
-
-    @media screen and (max-width: 640px) {
-      .scene-container {
-        max-width: 95%;
-      }
-    }
-  </style>
 </head>
 <body>
+  <!-- เพลงพื้นหลัง -->
+  <audio id="bg-music" src="sounds/intense-horror-music-01-14890.mp3" loop></audio>
+
+  <!-- เสียง bell -->
+  <audio id="bell-sound" src="sounds/bell-98033.mp3"></audio>
+
+  <!-- ปุ่มปรับเสียง -->
+  <div class="volume-controls" onclick="event.stopPropagation()">
+    <button class="volume-button" id="vol-down">🔉</button>
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
+    <button class="volume-button" id="vol-up">🔊</button>
+  </div>
+
   <div class="scene-container">
     <div class="caption" id="caption-text"></div>
 
@@ -88,6 +29,33 @@
   </div>
 
   <script>
+    const bgMusic = document.getElementById('bg-music');
+    const bellSound = document.getElementById('bell-sound');
+    bgMusic.volume = 0.5;
+
+    window.addEventListener('click', () => {
+      if (bgMusic.paused) {
+        bgMusic.play().catch(() => console.log('รอการคลิกก่อนเล่นเพลง'));
+      }
+    }, { once: true });
+
+    const volumeSlider = document.getElementById('volumeSlider');
+    volumeSlider.addEventListener('input', () => {
+      bgMusic.volume = volumeSlider.value;
+    });
+
+    document.getElementById('vol-down').addEventListener('click', (e) => {
+      e.stopPropagation();
+      bgMusic.volume = Math.max(0, bgMusic.volume - 0.05);
+      volumeSlider.value = bgMusic.volume;
+    });
+
+    document.getElementById('vol-up').addEventListener('click', (e) => {
+      e.stopPropagation();
+      bgMusic.volume = Math.min(1, bgMusic.volume + 0.05);
+      volumeSlider.value = bgMusic.volume;
+    });
+
     const captions = [
       "น้ำฝน: ลูกค้าคะ...ถ้าไม่ได้จะซื้ออะไร รบกวนรอที่หน้าร้านก่อนนะคะ ด้านหลังมีคนต่อแถวรออยู่ค่ะ...",
       "(หญิงคนนั้นยืนนิ่ง ไม่สบตา น้ำเสียงแผ่วเบา)",
@@ -119,7 +87,6 @@
 
     const captionElem = document.getElementById('caption-text');
     const choiceBox = document.getElementById('choice-box');
-
     let index = 0;
 
     function showNextCaption() {
@@ -127,6 +94,18 @@
         captionElem.style.opacity = 0;
         setTimeout(() => {
           captionElem.textContent = captions[index];
+
+          // เล่น bell sound ตอนประตูเปิด
+          if (captions[index].includes("(เสียงประตูเลื่อนเปิด")) {
+            bellSound.currentTime = 0;
+            bellSound.play();
+          }
+
+          // เปลี่ยนภาพพร้อมกับคำพูดไทม์
+          if (captions[index].startsWith("ไทม์: มีอะไรหรือเปล่า")) {
+            document.body.style.backgroundImage = 'url("images/time-night4.png")';
+          }
+
           captionElem.style.opacity = 1;
           index++;
         }, 500);
@@ -138,11 +117,6 @@
         }, 500);
       }
     }
-
-    // --- ให้ภาพพื้นหลังเปลี่ยนหลัง 7 วิ ---
-    setTimeout(() => {
-      document.body.style.backgroundImage = 'url("images/time-night4.png")';
-    }, 18000);
 
     window.onload = () => {
       showNextCaption();

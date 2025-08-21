@@ -22,7 +22,7 @@ body {
   color: #fff; /* สีข้อความ */
 }
 
-/* กล่องข้อความธรรมดา ไม่มีไฟนีออนหรือ shadow */
+/* กล่องข้อความ */
 .scene-container {
   width: 100%;
   max-width: 600px;
@@ -41,6 +41,8 @@ body {
   opacity: 1;
   transition: opacity 0.5s ease;
 
-  /* เพิ่มเงาให้ข้อความอ่านง่ายบนพื้นหลัง */
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+  /* เงาเข้มและเด่น อ่านง่ายบนพื้นหลังทุกแบบ */
+  text-shadow: 4px 4px 8px rgba(0,0,0,0.95),
+               0 0 12px rgba(0,0,0,0.8),
+               1px 1px 5px rgba(0,0,0,0.85);
 }

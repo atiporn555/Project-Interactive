@@ -16,9 +16,9 @@
       justify-content: center;
       align-items: flex-end;
       overflow: hidden;
+      background: #000;
     }
 
-    /* Container สำหรับภาพ background */
     .bg-container {
       position: fixed;
       top: 0; left: 0;
@@ -54,16 +54,38 @@
       text-shadow: 2px 2px 6px rgba(0,0,0,0.9);
     }
 
-    .caption-line {
-      margin: 1em 0;
-    }
-
+    .caption-line { margin: 1em 0; }
     .narration { font-style: italic; color: #f0f0f0; }
 
     .speaker { font-weight: 600; margin-right: 0.4em; }
     .fon { color: #ffffff; }
     .time { color: #ffffff; }
     .teen { color: #ffffff; }
+
+    .volume-controls {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0,0,0,0.6);
+      padding: 6px 10px;
+      border-radius: 8px;
+      z-index: 9999;
+    }
+    .volume-button {
+      background: transparent;
+      border: none;
+      color: red;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    #volumeSlider {
+      width: 100px;
+      cursor: pointer;
+      accent-color: red;
+    }
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
@@ -73,18 +95,28 @@
 
   </style>
 </head>
-<body onclick="nextLine()">
+<body>
   <div class="bg-container">
-    <img src="images/Run-away2.png" class="active" />
-    <img src="images/male-teenager.png" />
-    <img src="images/time-run-aways.png" />
-    <img src="images/cry.png" />
-    <img src="images/police-station.png" />
+    <img src="images/Run-away2.png" class="active" id="bg0" />
+    <img src="images/male-teenager.png" id="bg1" />
+    <img src="images/time-run-aways.png" id="bg2" />
+    <img src="images/cry.png" id="bg3" />
+    <img src="images/police-station.png" id="bg4" />
   </div>
 
   <div class="scene-container">
     <div id="caption-text"></div>
   </div>
+
+  <div class="volume-controls" onclick="event.stopPropagation()">
+    <button class="volume-button" id="vol-down">🔉</button>
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
+    <button class="volume-button" id="vol-up">🔊</button>
+  </div>
+
+  <audio id="bgSound" loop>
+    <source src="sounds/bass-horror-movie-pad-391595.mp3" type="audio/mpeg">
+  </audio>
 
   <script>
     const lines = [
@@ -113,17 +145,45 @@
     ];
 
     const captionEl = document.getElementById('caption-text');
+    const bgImgs = document.querySelectorAll('.bg-container img');
     let index = 0;
+    let soundStarted = false;
+
+    const bgSound = document.getElementById('bgSound');
+    const slider = document.getElementById("volumeSlider");
+    const volDown = document.getElementById("vol-down");
+    const volUp = document.getElementById("vol-up");
+
+    slider.addEventListener("input", () => { bgSound.volume = parseFloat(slider.value); });
+    volDown.addEventListener("click", () => { let v = Math.max(0, bgSound.volume-0.1); bgSound.volume=v; slider.value=v.toFixed(2); });
+    volUp.addEventListener("click", () => { let v = Math.min(1, bgSound.volume+0.1); bgSound.volume=v; slider.value=v.toFixed(2); });
+
+    function updateBackground(lineIndex) {
+      bgImgs.forEach(img => img.classList.remove('active'));
+
+      if (lineIndex >= 2 && lineIndex <= 6) bgImgs[1].classList.add('active'); // male-teenager
+      else if (lineIndex === 7) bgImgs[2].classList.add('active'); // time-run-aways
+      else if (lineIndex === 8) bgImgs[3].classList.add('active'); // cry
+      else if (lineIndex >= 9) bgImgs[4].classList.add('active'); // police-station
+      else bgImgs[0].classList.add('active'); // default run-away2
+    }
 
     function nextLine() {
+      if (!soundStarted) {
+        bgSound.volume = parseFloat(slider.value);
+        bgSound.play().catch(e => console.log("Autoplay blocked:", e));
+        soundStarted = true;
+      }
+
       if (index >= lines.length) {
         window.location.href = "Night5-last-night.html";
         return;
       }
 
+      updateBackground(index);
+
       const text = lines[index];
       let html = '';
-
       if (text.includes(':')) {
         const speaker = text.split(':')[0].trim();
         const content = text.split(':').slice(1).join(':').trim();
@@ -146,20 +206,9 @@
       index++;
     }
 
-    window.onload = () => {
-      nextLine();
-
-      // เปลี่ยนภาพแบบสมูท
-      const bgImgs = document.querySelectorAll('.bg-container img');
-      const timings = [0, 5000, 10000, 16000, 26000];
-
-      timings.forEach((time, i) => {
-        setTimeout(() => {
-          bgImgs.forEach(img => img.classList.remove('active'));
-          bgImgs[i].classList.add('active');
-        }, time);
-      });
-    };
+    window.addEventListener('DOMContentLoaded', () => {
+      document.body.addEventListener('click', nextLine);
+    });
   </script>
 </body>
 </html>

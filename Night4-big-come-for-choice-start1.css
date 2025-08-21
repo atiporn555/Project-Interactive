@@ -35,6 +35,44 @@ body {
   transition: opacity 0.5s ease;
   line-height: 1.6;
   white-space: pre-line;
-  /* เพิ่มเงาตัวหนังสือให้อ่านง่าย */
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+
+  /* เพิ่มเงาตัวหนังสือหลายชั้น อ่านง่ายและเด่นชัด */
+  text-shadow:
+    2px 2px 4px rgba(0,0,0,0.8),
+    -2px 2px 4px rgba(0,0,0,0.8),
+    2px -2px 4px rgba(0,0,0,0.8),
+    -2px -2px 4px rgba(0,0,0,0.8),
+    0 0 6px rgba(0,0,0,0.9),
+    0 0 8px rgba(0,0,0,0.85);
+}
+
+/* ถ้ามีปุ่ม Choice ในอนาคต */
+.choices {
+  display: none;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.choice-button {
+  padding: 14px 22px;
+  font-size: 1rem;
+  background-color: rgba(50,50,50,0.3); /* ปุ่มใสๆ */
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+}
+
+.choice-button:hover {
+  background-color: rgba(255, 0, 0, 0.6); /* สีแดงโปร่งเมื่อ hover */
+  transform: scale(1.03);
+}
+
+/* ปรับ responsive */
+@media screen and (max-width: 640px) {
+  .scene-container {
+    max-width: 95%;
+  }
 }

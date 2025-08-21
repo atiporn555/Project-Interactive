@@ -46,7 +46,7 @@ body {
 
 .fon { color: white; } 
 .time { color: white; }
-.narration { font-style: italic; color: #ccc; }
+.narration { font-style: italic; color: white; }
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }

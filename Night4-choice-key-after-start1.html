@@ -5,10 +5,59 @@
   <title>เรื่องเล่าฝน</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="Night4-choice-key-after-start1.css">
+  <style>
+    body {
+      margin: 0;
+      background: #000;
+      color: #fff;
+      font-family: 'Kanit', sans-serif;
+    }
+
+    .volume-controls {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0,0,0,0.6);
+      padding: 6px 10px;
+      border-radius: 8px;
+      z-index: 9999;
+    }
+    .volume-button {
+      background: transparent;
+      border: none;
+      color: red;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    #volumeSlider {
+      width: 100px;
+      cursor: pointer;
+      accent-color: red;
+    }
+
+    .caption-line { margin: 10px; line-height: 1.6; }
+    .speaker { font-weight: bold; }
+    .fon { color: white; }
+    .time { color: white; }
+    .teen { color: white; }
+    .narration { font-style: italic; }
+    #caption-text { transition: opacity 0.3s ease; }
+    #bg-container { position: fixed; inset: 0; overflow: hidden; }
+    .bg-image {
+      position: absolute; inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+    .bg-image.show { opacity: 1; }
+  </style>
 </head>
 <body>
 
-  <!-- Background overlay -->
   <div id="bg-container">
     <div class="bg-image show" style="background-image:url('images/hand.png');"></div>
   </div>
@@ -17,19 +66,30 @@
     <div id="caption-text"></div>
   </div>
 
+  <div class="volume-controls" onclick="event.stopPropagation()">
+    <button class="volume-button" id="vol-down">🔉</button>
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
+    <button class="volume-button" id="vol-up">🔊</button>
+  </div>
+
+  <audio id="bgSound" loop>
+    <source src="sounds/bass-horror-movie-pad-391595.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- เสียงประกอบเฉพาะฉาก -->
+  <audio id="runningSound">
+    <source src="sounds/running-on-concrete-268478.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="sobbingSound">
+    <source src="sounds/woman-sobbing-372482.mp3" type="audio/mpeg">
+  </audio>
+
   <script>
     const captionEl = document.getElementById('caption-text');
     const bgContainer = document.getElementById('bg-container');
-
-    // Timeline ของ background
-    const bgTimeline = [
-      {time: 5000, img:'images/car-forest.png'},
-      {time: 10000, img:'images/big-help.png'},
-      {time: 15000, img:'images/Time-catch-Fon.png'},
-      {time: 23000, img:'images/time-run.png'},
-      {time: 30000, img:'images/big-hug-fon.png'},
-      {time: 35000, img:'images/police-station.png'}
-    ];
+    const bgSound = document.getElementById('bgSound');
+    const runningSound = document.getElementById('runningSound');
+    const sobbingSound = document.getElementById('sobbingSound');
 
     function changeBackgroundSmooth(imagePath) {
       const newDiv = document.createElement('div');
@@ -41,9 +101,16 @@
       if (oldDivs.length > 1) setTimeout(() => oldDivs[0].remove(), 800);
     }
 
-    bgTimeline.forEach(item => setTimeout(() => changeBackgroundSmooth(item.img), item.time));
+    // volume controls
+    const slider = document.getElementById("volumeSlider");
+    const volDown = document.getElementById("vol-down");
+    const volUp = document.getElementById("vol-up");
 
-    // ----------- เนื้อหาคำพูด -----------
+    slider.addEventListener("input", () => { bgSound.volume = parseFloat(slider.value); });
+    volDown.addEventListener("click", () => { let v = Math.max(0, bgSound.volume-0.1); bgSound.volume=v; slider.value=v.toFixed(2); });
+    volUp.addEventListener("click", () => { let v = Math.min(1, bgSound.volume+0.1); bgSound.volume=v; slider.value=v.toFixed(2); });
+
+    // ----------- เนื้อหาคำพูด ----------- (เหมือนเดิม)
     const lines = [
       'ฝน: พี่ ปล่อยฝนเถอะ! ฝนไม่มีอะไรจะให้แล้ว พี่อยากได้อะไรก็เอาไปเลย! แต่อย่าทำอะไรฝนเลยนะ...',
       'ฉันยกมือขึ้นพนมไหว้ ร้องขอชีวิตทั้งน้ำตา แต่ดูเหมือนเขาไม่รับฟังอะไรเลย ดวงตาของเขาเต็มไปด้วยความคลุ้มคลั่งราวกับขาดสติ ฉันพยายามดิ้นสุดแรง ทุบตีเพื่อผลักเขาออก แต่แรงของฉันไม่อาจต้านเขาได้',
@@ -73,6 +140,15 @@
       'มันสอนให้ฉันรู้ว่า...\nเหตุการณ์เลวร้ายแบบนี้ ไม่ใช่เรื่องไกลตัวเลย\nมันสามารถเกิดขึ้นกับใครก็ได้ — แม้แต่คุณที่กำลังฟังเรื่องของฉันในตอนนี้...'
     ];
 
+    const bgMap = {
+      'แต่แล้วเหมือนโชคชะตาจะเข้าข้างฉัน แสงจากรถยนต์คันหนึ่งสาดเข้ามาในความมืด ฉันเห็นโอกาสจึงรีบเปล่งเสียงร้องขอความช่วยเหลือ': 'images/car-forest.png',
+      'บิ๊ก: "เฮ้ย! ทำไรวะ!"': 'images/big-help.png',
+      'ไทม์: "ผัวเมียทะเลาะกันเอง อย่าเสือก!"': 'images/Time-catch-Fon.png',
+      'ไทม์: "แม่ง!"': 'images/time-run.png',
+      'หลังพูดจบ เขาก็รีบหนีไปทันที ฉันยังคงตัวสั่น น้ำตาไหลด้วยความหวาดกลัว บิ๊กพยายามจะตามเขาไปแต่ฉันรั้งไว้ ขอให้พาไปส่งที่โรงพักก่อน เพราะไม่กล้าอยู่ตรงนี้ตามลำพัง': 'images/big-hug-fon.png',
+      'เมื่อเรื่องถึงโรงพัก คนรอบตัวฉันต่างตกใจมากเพื่อนทุกคนก็รีบตามมาสมทบในเวลาไม่นาน โชคดีที่บิ๊กรู้สึกเป็นห่วงฉันเขาจึงขับรถกลับมา': 'images/police-station.png'
+    };
+
     let index = 0;
 
     function nextLine() {
@@ -82,8 +158,25 @@
       }
 
       const text = lines[index];
-      let html = '';
 
+      // เปลี่ยนภาพตาม bgMap
+      for (const key in bgMap) {
+        if (text.includes(key)) {
+          changeBackgroundSmooth(bgMap[key]);
+        }
+      }
+
+      // เล่นเสียงประกอบเฉพาะฉาก
+      if (text.includes('เมื่อเขาเห็นว่าบิ๊กมีปืน เขาก็รีบปล่อยฉันและวิ่งหนีไปทันที')) {
+        runningSound.currentTime = 0;
+        runningSound.play();
+      }
+      if (text.includes('หลังพูดจบ เขาก็รีบหนีไปทันที ฉันยังคงตัวสั่น น้ำตาไหลด้วยความหวาดกลัว บิ๊กพยายามจะตามเขาไปแต่ฉันรั้งไว้')) {
+        sobbingSound.currentTime = 0;
+        sobbingSound.play();
+      }
+
+      let html = '';
       if (text.includes(':')) {
         const speaker = text.split(':')[0].trim();
         const content = text.split(':').slice(1).join(':').trim();
@@ -98,19 +191,19 @@
       }
 
       captionEl.style.opacity = 0;
-      setTimeout(() => {
-        captionEl.innerHTML = html;
-        captionEl.style.opacity = 1;
-      }, 150);
-
+      setTimeout(() => { captionEl.innerHTML = html; captionEl.style.opacity = 1; }, 150);
       index++;
     }
 
-    // เริ่มแรกเมื่อโหลดหน้า
-    window.onload = nextLine;
-
-    // กด anywhere บน body เพื่อเปลี่ยนข้อความ
-    document.body.addEventListener('click', nextLine);
+    let soundStarted = false;
+    document.body.addEventListener('click', () => {
+      if (!soundStarted) {
+        bgSound.volume = parseFloat(slider.value);
+        bgSound.play().catch(e => console.log("Autoplay blocked:", e));
+        soundStarted = true;
+      }
+      nextLine();
+    });
   </script>
 </body>
 </html>

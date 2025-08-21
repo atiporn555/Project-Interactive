@@ -4,128 +4,161 @@
   <meta charset="UTF-8" />
   <title>เรื่องเล่าฝน - ใช้ปากกัดมือไทม์</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="Night4-use-bite.css">
   <style>
     body {
-      background-image: url('images/blood-hand.png'); /* ภาพแรก */
+      margin: 0;
+      background-image: url('images/blood-hand.png');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
-      transition: background-image 1s ease-in-out; /* ทำให้เปลี่ยนภาพสมูท */
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;   /* ชิดขอบล่าง */
-      align-items: center;
-      padding: 20px;
-      overflow: hidden;
-      text-align: center;
-      user-select: none;
-      cursor: pointer;
       color: white;
       font-family: 'Kanit', sans-serif;
-      text-shadow: 2px 2px 6px rgba(0,0,0,0.9);
+      height: 100vh;
+      user-select: none;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      padding: 40px 20px;
       box-sizing: border-box;
+      transition: background-image 1s ease-in-out;
     }
 
     .scene-container {
       width: 100%;
-      max-width: 700px;
+      max-width: 600px;
+      text-align: center;
     }
 
-    .text-box {
-      font-size: 1.05rem;
-      min-height: 60px;
-      opacity: 0;
-      transition: opacity 0.6s ease-in-out;
-      margin-bottom: 20px;
+    .caption {
+      font-size: 1.3rem;
       line-height: 1.6;
       white-space: pre-line;
+      text-shadow:
+        2px 2px 4px rgba(0,0,0,0.8),
+        -2px 2px 4px rgba(0,0,0,0.8),
+        2px -2px 4px rgba(0,0,0,0.8),
+        -2px -2px 4px rgba(0,0,0,0.8),
+        0 0 6px rgba(0,0,0,0.9),
+        0 0 8px rgba(0,0,0,0.85);
+      opacity: 1;
+      transition: opacity 0.5s ease;
+      min-height: 80px;
     }
 
-    .name {
-      font-weight: 600;
-      margin-right: 0.4em;
-    }
+    .name, .fon, .time, .narration { color: white; }
+    .name { font-weight: 700; margin-right: 0.4em; }
+    .narration { font-style: italic; }
 
-    .fon { color: white; }
-    .time { color: white; }
-    .narration { font-style: italic; color: #ccc; }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+    .volume-controls {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0,0,0,0.3);
+      padding: 6px 10px;
+      border-radius: 8px;
+      z-index: 1000;
     }
-
-    .fade-in {
-      animation: fadeIn 0.6s ease-out both;
+    .volume-controls input[type="range"] { width: 120px; accent-color: red; }
+    .volume-button {
+      background-color: rgba(50,50,50,0.6);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 6px;
+      padding: 6px 10px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.1s ease;
     }
+    .volume-button:hover { background-color: rgba(255,0,0,0.6); transform: scale(1.05); }
+
+    @keyframes fadeIn { from { opacity:0; transform:translateY(10px);} to {opacity:1; transform:translateY(0);} }
+    .fade-in { animation: fadeIn 0.6s ease-out both; }
   </style>
 </head>
-<body onclick="nextLine()">
-  <div class="scene-container">
-    <div class="text-box" id="caption-text"></div>
+<body id="body">
+
+  <div class="volume-controls" onclick="event.stopPropagation()">
+    <button class="volume-button" id="vol-down">🔉</button>
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
+    <button class="volume-button" id="vol-up">🔊</button>
   </div>
+
+  <div class="scene-container">
+    <div class="caption" id="caption-text"></div>
+  </div>
+
+  <audio id="bg-sound" src="sounds/bass-horror-movie-pad-391595.mp3" loop></audio>
+  <audio id="sfx-laugh" src="sounds/evil-man-laughing-107079.mp3"></audio>
+  <audio id="sfx-punch" src="sounds/punch-03-352040.mp3"></audio>
+  <audio id="sfx-cry" src="sounds/woman-crying-softly-268484.mp3"></audio>
 
   <script>
     const lines = [
-      'ไทม์: คิดว่ากัดกูแล้วมึงจะรอดหรอ!!!?',
-      'ฝน: พี่…ปล่อยฝนไปเถอะ ขอร้องนะ… ฝนกลัว…',
-      'แต่มันไม่ได้ผล... เขาโกรธจัด ราวกับสัตว์ป่าที่ถูกขัดขืน เขากระชากตัวฉันกลับมาอย่างแรง แล้วเหวี่ยงฉันลงกับพื้น',
-      'หมัดหนัก ๆ กระแทกเข้าที่หลังและท้องซ้ำแล้วซ้ำเล่า —',
-      'แรงเจ็บแสบทุกจุด เหมือนร่างจะแตกเป็นเสี่ยง',
-      'ฉันพยายามดิ้น แต่เรี่ยวแรงในร่างค่อย ๆ หายไป สายตาเริ่มพร่ามัว เสียงรอบตัวกลายเป็นเหมือนเสียงในน้ำ',
-      'เจ็บ...กลัว...เหนื่อย...',
-      'ฉันได้ยินเสียงตัวเองพูดออกมาเบา ๆ ราวกับกระซิบ'
+      { text: 'ไทม์: คิดว่ากัดกูแล้วมึงจะรอดหรอ!!!?', sfx: 'sfx-laugh' },
+      { text: 'ฝน: พี่…ปล่อยฝนไปเถอะ ขอร้องนะ… ฝนกลัว…', sfx: null },
+      { text: 'แต่มันไม่ได้ผล... เขาโกรธจัด ราวกับสัตว์ป่าที่ถูกขัดขืน เขากระชากตัวฉันกลับมาอย่างแรง แล้วเหวี่ยงฉันลงกับพื้น', sfx: null },
+      { text: 'หมัดหนัก ๆ กระแทกเข้าที่หลังและท้องซ้ำแล้วซ้ำเล่า —', sfx: 'sfx-punch' },
+      { text: 'แรงเจ็บแสบทุกจุด เหมือนร่างจะแตกเป็นเสี่ยง', sfx: null },
+      { text: 'ฉันพยายามดิ้น แต่เรี่ยวแรงในร่างค่อย ๆ หายไป สายตาเริ่มพร่ามัว เสียงรอบตัวกลายเป็นเหมือนเสียงในน้ำ', sfx: 'sfx-cry' },
+      { text: 'เจ็บ...กลัว...เหนื่อย...', sfx: null },
+      { text: 'ฉันได้ยินเสียงตัวเองพูดออกมาเบา ๆ ราวกับกระซิบ', sfx: null }
     ];
 
     const captionEl = document.getElementById('caption-text');
+    const bgSound = document.getElementById('bg-sound');
+    const volumeSlider = document.getElementById('volumeSlider');
+
     let index = 0;
-    let isTransitioning = false;
+    let soundStarted = false;
 
     function nextLine() {
-      if (isTransitioning) return;
-
-      if (index >= lines.length) {
-        window.location.href = 'Die.html';  // ไปหน้าต่อไปเมื่อจบ
+      // ถ้าเป็นบรรทัดสุดท้าย จะไปหน้า Die.html
+      if(index === lines.length - 1){
+        window.location.href = "Die.html";
         return;
       }
 
-      isTransitioning = true;
-      const text = lines[index];
+      const line = lines[index];
+
+      if(!soundStarted){
+        bgSound.volume = volumeSlider.value;
+        bgSound.play().catch(()=>console.log("คลิกเพื่อเล่นเพลง"));
+        soundStarted = true;
+      }
+
       let html = '';
 
-      if (text.includes(':')) {
-        const speaker = text.split(':')[0].trim();
-        const content = text.split(':').slice(1).join(':').trim();
-        let className = '';
-
-        if (speaker === 'ฝน') className = 'fon';
-        else if (speaker === 'ไทม์') className = 'time';
-        else className = 'name';
-
-        html = `<span class="name ${className}">${speaker}:</span> ${content}`;
+      if(line.text.includes(':')){
+        const speaker = line.text.split(':')[0].trim();
+        const content = line.text.split(':').slice(1).join(':').trim();
+        html = `<span class="name">${speaker}:</span> ${content}`;
       } else {
-        html = `<span class="narration">${text}</span>`;
+        html = `<span class="narration">${line.text}</span>`;
+      }
+
+      if(line.sfx){
+        const sfx = document.getElementById(line.sfx);
+        if(sfx){ sfx.currentTime = 0; sfx.play(); }
       }
 
       captionEl.style.opacity = 0;
-      setTimeout(() => {
+      setTimeout(()=>{
         captionEl.innerHTML = `<div class="fade-in">${html}</div>`;
         captionEl.style.opacity = 1;
         index++;
-        isTransitioning = false;
       }, 300);
     }
 
-    window.onload = () => {
-      nextLine();
+    volumeSlider.addEventListener('input', ()=>{ bgSound.volume = volumeSlider.value; });
+    document.getElementById('vol-down').addEventListener('click', e=>{ e.stopPropagation(); bgSound.volume=Math.max(0,bgSound.volume-0.05); volumeSlider.value=bgSound.volume; });
+    document.getElementById('vol-up').addEventListener('click', e=>{ e.stopPropagation(); bgSound.volume=Math.min(1,bgSound.volume+0.05); volumeSlider.value=bgSound.volume; });
 
-      // เปลี่ยนภาพพื้นหลังหลัง 10 วินาที
-      setTimeout(() => {
-        document.body.style.backgroundImage = "url('images/hurt.png')";
-      }, 10000);
-    };
+    document.body.addEventListener('click', nextLine);
   </script>
+
 </body>
 </html>

@@ -101,6 +101,9 @@
     <div class="click-hint">แตะหน้าจอเพื่ออ่านข้อความถัดไป</div>
   </div>
 
+  <!-- เสียงแจ้งเตือน -->
+  <audio id="chat-sound" src="sounds/new-notification-07-210334.mp3"></audio>
+
   <script>
     const chatMessages = [
       { text: "ช่วยด้วย พวกแกฉันโดนโรคจิตทำร้าย", from: "user" },
@@ -123,12 +126,14 @@
 
     let index = 0;
     const chatBox = document.getElementById('chat-box');
+    const chatSound = document.getElementById('chat-sound');
 
     function showNextMessage() {
       if (index < chatMessages.length) {
         const msgData = chatMessages[index];
         const msg = document.createElement('div');
         msg.classList.add('message');
+
         switch (msgData.from) {
           case "user":
             msg.classList.add('from-user');
@@ -140,7 +145,8 @@
             msg.classList.add('from-amy');
             break;
         }
-        // ใส่ชื่อผู้ส่ง
+
+        // ชื่อผู้ส่ง
         const nameElem = document.createElement('div');
         nameElem.classList.add('sender-name');
         nameElem.textContent = senderNames[msgData.from];
@@ -153,9 +159,17 @@
 
         chatBox.appendChild(msg);
         chatBox.scrollTop = chatBox.scrollHeight;
+
+        // เล่นเสียงถ้าเป็นเพื่อนส่ง (meaw, amy)
+        if (msgData.from === "meaw" || msgData.from === "amy") {
+          chatSound.currentTime = 0;
+          chatSound.play().catch(() => {
+            console.log("ต้องมีการโต้ตอบจากผู้ใช้ก่อนถึงจะเล่นเสียงได้");
+          });
+        }
+
         index++;
       } else {
-        // สามารถเพิ่ม logic ไปหน้าถัดไปได้ เช่น
         window.location.href = "Night4-choice-perfume-after-start1.html";
       }
     }

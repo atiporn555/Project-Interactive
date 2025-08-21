@@ -23,6 +23,7 @@
       text-align: center;
       padding: 40px 20px;
       cursor: pointer;
+      position: relative;
     }
 
     .scene-container {
@@ -56,6 +57,33 @@
     .next-hint.visible {
       opacity: 1;
     }
+
+    /* 🎵 ปุ่มปรับเสียง */
+    .volume-controls {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0,0,0,0.3);
+      padding: 6px 10px;
+      border-radius: 8px;
+      z-index: 1000;
+    }
+    .volume-controls input[type="range"] {
+      width: 120px;
+      accent-color: red;
+    }
+    .volume-button {
+      background-color: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 6px;
+      padding: 6px 10px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body onclick="nextText()">
@@ -63,6 +91,16 @@
     <div id="night-label">คืนที่ 4</div>
     <div class="text-box" id="text-box"></div>
     <div class="next-hint" id="next-hint">แตะหน้าจอเพื่อไปหน้าถัดไป...</div>
+  </div>
+
+  <!-- 🎵 เพลง background -->
+  <audio id="bgMusic" src="sounds/intense-horror-music-01-14890.mp3" preload="auto" loop></audio>
+
+  <!-- 🔉 ปุ่มปรับเสียง -->
+  <div class="volume-controls" onclick="event.stopPropagation()">
+    <button class="volume-button" id="vol-down">🔉</button>
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.01">
+    <button class="volume-button" id="vol-up">🔊</button>
   </div>
 
   <script>
@@ -75,14 +113,30 @@
     const textBox = document.getElementById("text-box");
     const nextHint = document.getElementById("next-hint");
 
+    const bgMusic = document.getElementById("bgMusic");
+    const volumeSlider = document.getElementById("volumeSlider");
+    const volUp = document.getElementById("vol-up");
+    const volDown = document.getElementById("vol-down");
+
     let index = 0;
     let hasShownTitle = false;
     let finished = false;
     let isTransitioning = false;
+    let startedMusic = false;
+
+    // 🔊 ตั้งค่าเริ่มต้นของเสียง
+    bgMusic.volume = 0.5;
+    volumeSlider.value = bgMusic.volume;
 
     function nextText() {
       if (isTransitioning) return;
       isTransitioning = true;
+
+      // 🎵 เล่นเพลงครั้งแรกหลังจากคลิก
+      if (!startedMusic) {
+        bgMusic.play().catch(()=>{});
+        startedMusic = true;
+      }
 
       if (!hasShownTitle) {
         nightLabel.style.opacity = 1;
@@ -110,6 +164,21 @@
         window.location.href = "Night4-start2-work-have-choice.html";
       }
     }
+
+    // 🔉 ปุ่มเพิ่ม/ลดเสียง
+    volUp.addEventListener("click", e => {
+      e.stopPropagation();
+      bgMusic.volume = Math.min(bgMusic.volume + 0.1, 1);
+      volumeSlider.value = bgMusic.volume;
+    });
+    volDown.addEventListener("click", e => {
+      e.stopPropagation();
+      bgMusic.volume = Math.max(bgMusic.volume - 0.1, 0);
+      volumeSlider.value = bgMusic.volume;
+    });
+    volumeSlider.addEventListener("input", e => {
+      bgMusic.volume = e.target.value;
+    });
 
     window.onload = () => {
       nightLabel.style.opacity = 1;

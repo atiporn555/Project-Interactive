@@ -5,25 +5,78 @@
   <title>5 คืนสยอง - ใช้กุญแจแทง</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="Night4-use-key-start1.css">
+  <style>
+    .volume-controls {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0,0,0,0.3);
+      padding: 6px 10px;
+      border-radius: 8px;
+      z-index: 1000;
+    }
+
+    .volume-controls input[type="range"] {
+      width: 120px;
+      accent-color: red;
+    }
+
+    .volume-button {
+      background-color: rgba(50,50,50,0.6);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 6px;
+      padding: 6px 10px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.1s ease;
+    }
+
+    .volume-button:hover {
+      background-color: rgba(255,0,0,0.6);
+      transform: scale(1.05);
+    }
+  </style>
 </head>
-<body onclick="nextText()">
+<body>
+
   <div class="scene-container">
     <div class="text-box" id="text-box"></div>
   </div>
 
+  <!-- ปุ่มปรับเสียง -->
+  <div class="volume-controls" onclick="event.stopPropagation()">
+    <button class="volume-button" id="vol-down">🔉</button>
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
+    <button class="volume-button" id="vol-up">🔊</button>
+  </div>
+
+  <!-- เสียงพื้นหลัง, เสียงวิ่ง, และเสียงกรีดร้อง -->
+  <audio id="bg-sound" src="sounds/bass-horror-movie-pad-391595.mp3" loop></audio>
+  <audio id="run-sound" src="sounds/running-on-concrete-268478.mp3" loop></audio>
+  <audio id="scream-sound" src="sounds/man-death-scream-186763.mp3"></audio>
+
   <script>
     const textBox = document.getElementById("text-box");
+    const bgSound = document.getElementById("bg-sound");
+    const runSound = document.getElementById("run-sound");
+    const screamSound = document.getElementById("scream-sound");
+    const volumeSlider = document.getElementById('volumeSlider');
 
     const texts = [
       '<span class="name">ไทม์:</span> "โอ้ยยย!! แม่งเอ้ย อีฝน!!"',
       '<span class="inner-thought">(ในระหว่างที่เขาถอยไปเพราะความเจ็บปวด ฉันก็รีบวิ่งหนีอย่างสุดชีวิต ณ ตอนนั้นฉันภาวนาขอให้มีใครขับรถผ่านมาสักคน)</span>',
       '<span class="name">ไทม์:</span> "มึงจะหนีไปไหน!!"',
       '<span class="name">ฝน:</span> "ช่วยด้วยค่ะ!!"',
-      '<span class="inner-thought">(ฉันวิ่งหนีด้วยความสั่นกลัว พยายามร้องขอความช่วยเหลือระหว่างที่วิ่ง)</span>'
+      '<span class="inner-thought">(ฉันวิ่งหนีด้วยความสั่นกลัว พยายามร้องขอความช่วยเหลือระหว่างที่วิ่งก็ไม่ลืมที่จะส่งข้อความขอความช่วยเหลือ..)</span>'
     ];
 
     let index = 0;
     let isTransitioning = false;
+    let soundStarted = false;
 
     function nextText() {
       if (isTransitioning) return;
@@ -35,6 +88,29 @@
           textBox.innerHTML = texts[index++];
           textBox.style.opacity = 1;
           isTransitioning = false;
+
+          // เล่น bg sound ครั้งแรก
+          if (!soundStarted) {
+            bgSound.volume = volumeSlider.value;
+            bgSound.play().catch(()=>console.log("คลิกเพื่อเล่นเพลง"));
+            soundStarted = true;
+          }
+
+          // ตรวจสอบข้อความเพื่อเล่นเสียงวิ่ง
+          if (texts[index-1].includes('ในระหว่างที่เขาถอยไป')) {
+            runSound.volume = 0.5;
+            runSound.play().catch(()=>console.log("คลิกเพื่อเล่นเสียงวิ่ง"));
+          } else {
+            runSound.pause();
+            runSound.currentTime = 0;
+          }
+
+          // เล่นเสียงกรีดร้องตอนข้อความแรก
+          if (texts[index-1].includes('โอ้ยยย!! แม่งเอ้ย')) {
+            screamSound.volume = volumeSlider.value;
+            screamSound.play().catch(()=>console.log("คลิกเพื่อเล่นเสียงกรีดร้อง"));
+          }
+
         } else {
           window.location.href = "Night4-chat-choice-key-start1.html";
         }
@@ -42,17 +118,35 @@
     }
 
     window.onload = function() {
-      // เริ่มบทสนทนา
-      nextText();
-
-      // ตั้งค่าพื้นหลังเริ่มต้น
       document.body.style.backgroundImage = "url('images/key.png')";
-
-      // หลังจาก 5 วิ เปลี่ยนเป็นภาพ Run
       setTimeout(() => {
         document.body.style.backgroundImage = "url('images/Run.png')";
       }, 5000);
     };
+
+    // Volume controls
+    volumeSlider.addEventListener('input', () => { 
+      bgSound.volume = volumeSlider.value;
+      runSound.volume = volumeSlider.value;
+      screamSound.volume = volumeSlider.value;
+    });
+    document.getElementById('vol-down').addEventListener('click', e => { 
+      e.stopPropagation(); 
+      bgSound.volume = Math.max(0, bgSound.volume - 0.05); 
+      runSound.volume = bgSound.volume;
+      screamSound.volume = bgSound.volume;
+      volumeSlider.value = bgSound.volume; 
+    });
+    document.getElementById('vol-up').addEventListener('click', e => { 
+      e.stopPropagation(); 
+      bgSound.volume = Math.min(1, bgSound.volume + 0.05); 
+      runSound.volume = bgSound.volume;
+      screamSound.volume = bgSound.volume;
+      volumeSlider.value = bgSound.volume; 
+    });
+
+    // กด anywhere เพื่อเปลี่ยนข้อความ + เริ่มเพลง
+    document.body.addEventListener('click', nextText);
   </script>
 </body>
 </html>

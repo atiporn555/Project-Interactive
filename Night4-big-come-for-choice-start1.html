@@ -8,7 +8,7 @@
   <style>
     body {
       margin: 0;
-      background-image: url('images/Fon-Worried.png'); /* ภาพพื้นหลังแรก */
+      background-image: url('images/Fon-Worried.png');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -37,11 +37,58 @@
       transition: opacity 0.5s ease;
       line-height: 1.6;
       white-space: pre-line;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+      text-shadow:
+        2px 2px 4px rgba(0,0,0,0.8),
+        -2px 2px 4px rgba(0,0,0,0.8),
+        2px -2px 4px rgba(0,0,0,0.8),
+        -2px -2px 4px rgba(0,0,0,0.8),
+        0 0 6px rgba(0,0,0,0.9),
+        0 0 8px rgba(0,0,0,0.85);
+    }
+
+    .volume-controls {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0,0,0,0.3);
+      padding: 6px 10px;
+      border-radius: 8px;
+      z-index: 1000;
+    }
+
+    .volume-controls input[type="range"] {
+      width: 120px;
+      accent-color: red;
+    }
+
+    .volume-button {
+      background-color: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 6px;
+      padding: 6px 10px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
     }
   </style>
 </head>
 <body id="body" onclick="nextCaption()">
+
+  <!-- เพลงพื้นหลัง -->
+  <audio id="bg-music" src="sounds/intense-horror-music-01-14890.mp3" loop></audio>
+  <!-- เสียง bell -->
+  <audio id="bell-sound" src="sounds/bell-98033.mp3"></audio>
+
+  <!-- ปุ่มปรับเสียง -->
+  <div class="volume-controls" onclick="event.stopPropagation()">
+    <button class="volume-button" id="vol-down">🔉</button>
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
+    <button class="volume-button" id="vol-up">🔊</button>
+  </div>
+
   <div class="scene-container">
     <div class="caption" id="caption-text"></div>
   </div>
@@ -75,21 +122,35 @@
     const captionText = document.getElementById('caption-text');
     let currentIndex = 0;
 
+    const body = document.getElementById('body');
+    const bellSound = document.getElementById('bell-sound');
+    const bgMusic = document.getElementById('bg-music');
+
     function nextCaption() {
       if (currentIndex < captions.length) {
         captionText.style.opacity = 0;
         setTimeout(() => {
-          captionText.textContent = captions[currentIndex];
+          const caption = captions[currentIndex];
+          captionText.textContent = caption;
           captionText.style.opacity = 1;
+
+          // เปลี่ยนภาพตาม caption
+          if (caption.includes("บิ๊ก: ฝน")) {
+            body.style.backgroundImage = "url('images/Big-Come.png')";
+            bellSound.play();
+          } else if (caption.includes("บิ๊ก: หวัดดีครับ")) {
+            body.style.backgroundImage = "url('images/time-angry.png')";
+          } else if (caption.includes("บิ๊ก: คนรู้จักเหรอ?")) {
+            body.style.backgroundImage = "url('images/Big-Fon-night4.png')";
+          }
+
           currentIndex++;
 
-          // ถ้าเป็น caption สุดท้าย ให้แสดงข้อความคลิกเพื่อไปต่อ
           if (currentIndex === captions.length) {
             captionText.textContent += "\n\n(คลิกเพื่อไปต่อ)";
           }
         }, 400);
       } else {
-        // เมื่อคลิกหลัง caption สุดท้ายแล้ว
         window.location.href = 'Night4-3am-for-start1-2.html';
       }
     }
@@ -97,12 +158,27 @@
     window.onload = () => {
       nextCaption();
 
-      const body = document.getElementById('body');
+      // เล่นเพลงพื้นหลัง
+      bgMusic.volume = 0.5;
+      window.addEventListener('click', () => {
+        if (bgMusic.paused) bgMusic.play().catch(() => console.log('คลิกเพื่อเล่นเพลง'));
+      }, { once: true });
 
-      // เปลี่ยนภาพ timeline
-      setTimeout(() => { body.style.backgroundImage = "url('images/Big-Come.png')"; }, 10000);       // ภาพ 2 หลัง 10 วินาที
-      setTimeout(() => { body.style.backgroundImage = "url('images/time-angry.png')"; }, 16000);      // ภาพ 3 หลัง 6 วินาทีจากภาพ 2
-      setTimeout(() => { body.style.backgroundImage = "url('images/Big-Fon-night4.png')"; }, 23000);  // ภาพ 4 หลัง 7 วินาทีจากภาพ 3
+      // ปุ่มปรับเสียง
+      const volumeSlider = document.getElementById('volumeSlider');
+      volumeSlider.addEventListener('input', () => { bgMusic.volume = volumeSlider.value; });
+
+      document.getElementById('vol-down').addEventListener('click', (e) => {
+        e.stopPropagation();
+        bgMusic.volume = Math.max(0, bgMusic.volume - 0.05);
+        volumeSlider.value = bgMusic.volume;
+      });
+
+      document.getElementById('vol-up').addEventListener('click', (e) => {
+        e.stopPropagation();
+        bgMusic.volume = Math.min(1, bgMusic.volume + 0.05);
+        volumeSlider.value = bgMusic.volume;
+      });
     };
   </script>
 </body>
