@@ -5,15 +5,10 @@
   <title>5 คืนสยอง - คืนที่ 5</title>
   <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Kanit', sans-serif;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Kanit', sans-serif; }
     body {
-      background-color: #111;
+      background: url('images/can\'t-sleep.png') no-repeat center center fixed;
+      background-size: cover;
       color: white;
       height: 100vh;
       display: flex;
@@ -24,62 +19,139 @@
       overflow: hidden;
       text-align: center;
     }
-
-    .scene-container {
-      width: 100%;
-      max-width: 700px;
-    }
-
+    .scene-container { width: 100%; max-width: 700px; }
     .text-box {
       font-size: 1.05rem;
       min-height: 60px;
-      opacity: 0;
+      opacity: 1;
       transition: opacity 0.6s ease-in-out;
       margin-bottom: 20px;
+      text-shadow:
+        2px 2px 8px rgba(0,0,0,1),
+        -2px 2px 8px rgba(0,0,0,1),
+        2px -2px 8px rgba(0,0,0,1),
+        -2px -2px 8px rgba(0,0,0,1);
     }
-
-    .inner-thought {
-      font-style: italic;
-      color: #ccc;
+    .inner-thought { font-style: italic; color: #ddd; }
+    .volume-controls {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0,0,0,0.6);
+      padding: 6px 10px;
+      border-radius: 8px;
+      z-index: 9999;
     }
+    .volume-button { background: transparent; border: none; color: red; font-size: 18px; cursor: pointer; }
+    #volumeSlider { width: 100px; cursor: pointer; accent-color: red; }
   </style>
 </head>
-<body onclick="nextText()">
+<body>
   <div class="scene-container">
     <div class="text-box" id="text-box"></div>
   </div>
 
+  <div class="volume-controls" onclick="event.stopPropagation()">
+    <button class="volume-button" id="vol-down">🔉</button>
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
+    <button class="volume-button" id="vol-up">🔊</button>
+  </div>
+
+  <!-- เสียงพื้นหลัง -->
+  <audio id="bgSound" loop>
+    <source src="sounds/strange-thoughts-pad-258068.mp3" type="audio/mpeg">
+    <source src="sounds/strange-thoughts-pad-258068.ogg" type="audio/ogg">
+  </audio>
+
+  <!-- เสียงประกอบข้อความ -->
+  <audio id="footsteps">
+    <source src="sounds/walking-on-concrete-ver-2-268513.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="heartbeat">
+    <source src="sounds/thudding-heartbeat-372487.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="breathing">
+    <source src="sounds/breathing-fast-247449.mp3" type="audio/mpeg">
+  </audio>
+
   <script>
     const textBox = document.getElementById("text-box");
+    const bgSound = document.getElementById("bgSound");
+    const slider = document.getElementById("volumeSlider");
+    const volDown = document.getElementById("vol-down");
+    const volUp = document.getElementById("vol-up");
 
-    const texts = [
-      '<span class="inner-thought">“ตั้งแต่คืนนั้น... ฉันก็ไม่เคยหลับตาลงอย่างสบายใจได้อีกเลย<br>พอหลับตาเมื่อไหร่…ภาพตอนนั้นมันก็ย้อนกลับมาเต็มหัว เสียงฝีเท้าที่ใกล้เข้ามาเรื่อย ๆ… เสียงลมหายใจหนัก ๆ อยู่ด้านหลัง… ทุกอย่างมันยังชัดเหมือนเพิ่งเกิดขึ้นเมื่อวาน”</span>',
-      '<span class="inner-thought">“ฉันมักจะสะดุ้งตื่นกลางดึก เหงื่อออกจนตัวเปียก หัวใจเต้นแรงแทบจะหลุดออกจากอก พยายามบอกตัวเองว่า ‘มันจบไปแล้ว’ แต่ในหัวมันไม่เคยจบเลย มันยังวนเวียนอยู่ในนั้น...ไม่เคยหายไป”</span>',
-      '<span class="inner-thought">“แค่ได้ยินเสียงฝีเท้าจากข้างหลัง หรือเห็นแสงไฟกระพริบบนถนน ฉันก็เผลอตกใจจนขาแข็งไปหมด สมองมันตื้อ มือเย็นไปทั้งสองข้าง เหมือนร่างกายเตรียมจะหนีทันที ทั้ง ๆ ที่ไม่มีอะไรเกิดขึ้นเลยจริง ๆ”</span>',
-      '<span class="inner-thought">“มันเหมือนฉันยังติดอยู่ในคืนนั้น... ไม่ว่าจะผ่านมากี่วัน มันก็ยังตามฉันอยู่เสมอ”</span>'
-    ];
+    const footsteps = document.getElementById("footsteps");
+    const heartbeat = document.getElementById("heartbeat");
+    const breathing = document.getElementById("breathing");
 
+    let soundStarted = false;
     let index = 0;
     let isTransitioning = false;
 
+    const texts = [
+      {
+        html: '<span class="inner-thought">“ตั้งแต่คืนนั้น... ฉันก็ไม่เคยหลับตาลงอย่างสบายใจได้อีกเลย<br>พอหลับตาเมื่อไหร่…ภาพตอนนั้นมันก็ย้อนกลับมาเต็มหัว เสียงฝีเท้าที่ใกล้เข้ามาเรื่อย ๆ… เสียงลมหายใจหนัก ๆ อยู่ด้านหลัง… ทุกอย่างมันยังชัดเหมือนเพิ่งเกิดขึ้นเมื่อวาน”</span>',
+        sound: footsteps
+      },
+      {
+        html: '<span class="inner-thought">“ฉันมักจะสะดุ้งตื่นกลางดึก เหงื่อออกจนตัวเปียก หัวใจเต้นแรงแทบจะหลุดออกจากอก พยายามบอกตัวเองว่า ‘มันจบไปแล้ว’ แต่ในหัวมันไม่เคยจบเลย มันยังวนเวียนอยู่ในนั้น...ไม่เคยหายไป”</span>',
+        sound: [heartbeat, breathing]
+      },
+      {
+        html: '<span class="inner-thought">“แค่ได้ยินเสียงฝีเท้าจากข้างหลัง หรือเห็นแสงไฟกระพริบบนถนน ฉันก็เผลอตกใจจนขาแข็งไปหมด สมองมันตื้อ มือเย็นไปทั้งสองข้าง เหมือนร่างกายเตรียมจะหนีทันที ทั้ง ๆ ที่ไม่มีอะไรเกิดขึ้นเลยจริง ๆ”</span>',
+        sound: null
+      },
+      {
+        html: '<span class="inner-thought">“มันเหมือนฉันยังติดอยู่ในคืนนั้น... ไม่ว่าจะผ่านมากี่วัน มันก็ยังตามฉันอยู่เสมอ”</span>',
+        sound: null
+      }
+    ];
+
+    slider.addEventListener("input", () => { bgSound.volume = parseFloat(slider.value); });
+    volDown.addEventListener("click", () => { let v = Math.max(0, bgSound.volume-0.1); bgSound.volume=v; slider.value=v.toFixed(2); });
+    volUp.addEventListener("click", () => { let v = Math.min(1, bgSound.volume+0.1); bgSound.volume=v; slider.value=v.toFixed(2); });
+
+    function playSounds(s) {
+      if (!s) return;
+      if (Array.isArray(s)) {
+        s.forEach(a => { a.currentTime = 0; a.play(); });
+      } else {
+        s.currentTime = 0;
+        s.play();
+      }
+    }
+
     function nextText() {
+      if (!soundStarted) {
+        bgSound.volume = parseFloat(slider.value);
+        bgSound.play().catch(e => console.log("Autoplay blocked:", e));
+        soundStarted = true;
+      }
+
       if (isTransitioning) return;
       isTransitioning = true;
 
       textBox.style.opacity = 0;
+
       setTimeout(() => {
         if (index < texts.length) {
-          textBox.innerHTML = texts[index++];
+          textBox.innerHTML = texts[index].html;
+          playSounds(texts[index].sound);
+          index++;
           textBox.style.opacity = 1;
           isTransitioning = false;
         } else {
-          // เมื่อจบบท อาจเปลี่ยนหน้า หรือแสดงปุ่มได้ที่นี่
           window.location.href = "END-night5.html";
         }
-      }, 500);
+      }, 300);
     }
 
-    window.onload = nextText;
+    document.body.addEventListener("click", nextText);
+
   </script>
 </body>
 </html>
