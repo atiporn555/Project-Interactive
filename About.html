@@ -7,26 +7,54 @@
   <style>
     body {
       font-family: 'Sarabun', sans-serif;
-      background-color: #111;
+      background-image: url('images/Behind-Fon.png'); /* พื้นหลัง */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      margin: 0;
+      padding: 20px;
       color: #f1f1f1;
-      padding: 40px 20px;
-      max-width: 800px;
-      margin: auto;
-      line-height: 1.8;
     }
+
+    /* overlay สีเข้มเล็กน้อย */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.3);
+      z-index: -1;
+    }
+
+    /* กล่องเนื้อหา */
+    .content-block {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 30px;
+      background-color: rgba(0, 0, 0, 0.5); /* ใสโปร่งเล็กน้อย */
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    }
+
     h1 {
       color: #ff4d4d;
       text-align: center;
       margin-bottom: 30px;
     }
+
     p {
       margin-bottom: 20px;
+      line-height: 1.8;
     }
+
     .back-button {
       display: block;
-      margin: 40px auto 0;
+      margin: 30px auto 0;
       text-align: center;
     }
+
     .back-button a {
       background-color: #ff4d4d;
       color: #fff;
@@ -35,24 +63,27 @@
       border-radius: 8px;
       transition: background-color 0.3s;
     }
+
     .back-button a:hover {
       background-color: #e60000;
     }
   </style>
 </head>
 <body>
-  <h1>เกี่ยวกับเกม 5 คืนสยอง</h1>
+  <div class="content-block">
+    <h1>เกี่ยวกับเกม 5 คืนสยอง</h1>
 
-  <p><strong>5 คืนสยอง</strong> เป็นเกมเล่าเรื่องเชิงอินเทอร์แอคทีฟที่พาผู้เล่นเข้าสู่บทบาทของ “<strong>น้ำฝน</strong>” หญิงสาวที่ทำงานกะดึกในร้านสะดวกซื้อชานเมือง ซึ่งต้องเผชิญกับเหตุการณ์แปลกประหลาดในยามค่ำคืน</p>
+    <p><strong>5 คืนสยอง</strong> เป็นเกมเล่าเรื่องเชิงอินเทอร์แอคทีฟที่พาผู้เล่นเข้าสู่บทบาทของ “<strong>น้ำฝน</strong>” หญิงสาวที่ทำงานกะดึกในร้านสะดวกซื้อชานเมือง ซึ่งต้องเผชิญกับเหตุการณ์แปลกประหลาดในยามค่ำคืน</p>
 
-  <p>เกมนี้สร้างขึ้นเพื่อสื่อสารประเด็นเรื่อง <strong>ความปลอดภัยในชีวิตประจำวันของผู้หญิงและวัยรุ่น</strong> โดยเฉพาะในสถานการณ์ที่ต้องเดินทางคนเดียวหรือทำงานกลางคืน</p>
+    <p>เกมนี้สร้างขึ้นเพื่อสื่อสารประเด็นเรื่อง <strong>ความปลอดภัยในชีวิตประจำวันของผู้หญิงและวัยรุ่น</strong> โดยเฉพาะในสถานการณ์ที่ต้องเดินทางคนเดียวหรือทำงานกลางคืน</p>
 
-  <p>ผู้เล่นจะได้มีส่วนร่วมในการตัดสินใจ และเห็นผลลัพธ์ของการเลือกของตนเอง ซึ่งช่วยสะท้อนถึง <strong>ความสำคัญของสัญชาตญาณ การระวังตัว และการมีสติ</strong>ในสถานการณ์ไม่ปกติ</p>
+    <p>ผู้เล่นจะได้มีส่วนร่วมในการตัดสินใจ และเห็นผลลัพธ์ของการเลือกของตนเอง ซึ่งช่วยสะท้อนถึง <strong>ความสำคัญของสัญชาตญาณ การระวังตัว และการมีสติ</strong> ในสถานการณ์ไม่ปกติ</p>
 
-  <p>เกมนี้เหมาะสำหรับผู้ที่สนใจ <strong>เกมแนวเล่าเรื่อง สะท้อนสังคม</strong> และต้องการสัมผัสประสบการณ์เชิงจิตวิทยาผ่านเนื้อเรื่องที่เข้มข้นและน่าติดตาม</p>
+    <p>เกมนี้เหมาะสำหรับผู้ที่สนใจ <strong>เกมแนวเล่าเรื่อง สะท้อนสังคม</strong> และต้องการสัมผัสประสบการณ์เชิงจิตวิทยาผ่านเนื้อเรื่องที่เข้มข้นและน่าติดตาม</p>
 
-  <div class="back-button">
-    <a href="index.html">กลับสู่หน้าแรก</a>
+    <div class="back-button">
+      <a href="index.html">กลับสู่หน้าแรก</a>
+    </div>
   </div>
 </body>
 </html>

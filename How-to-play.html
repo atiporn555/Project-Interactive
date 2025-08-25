@@ -6,39 +6,52 @@
   <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
   <style>
     body {
-      background-color: #111;
-      color: white;
       font-family: 'Kanit', sans-serif;
+      margin: 0;
+      padding: 20px;
+      height: 100vh;
+      background-image: url('images/SOS.png'); /* พื้นหลัง */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      color: #eee;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      margin: 0;
-      padding: 20px;
-      text-align: center;
     }
+
+    /* overlay สีเข้มเล็กน้อย */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.3);
+      z-index: -1;
+    }
+
+    /* กล่องเนื้อหาโปร่งใส */
     .container {
       max-width: 600px;
-      font-size: 1.15rem;
-      line-height: 1.8;
-      /* เอา background ออก */
-      /* background-color: #222; */
-      /* เอา padding ออก หรือปรับตามต้องการ */
-      padding: 0;
-      /* เอา border-radius ออก */
-      /* border-radius: 12px; */
-      /* เอา box-shadow ออก */
-      /* box-shadow: 0 0 15px #ff7777aa; */
+      background-color: rgba(0,0,0,0.5); /* โปร่งเล็กน้อย */
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
       text-align: left;
-      color: #eee;
     }
+
     .container p {
       margin-bottom: 1.4em;
+      line-height: 1.8;
     }
+
     .highlight {
       color: #ff7777;
       font-weight: 600;
     }
+
     .back-button {
       display: block;
       margin: 30px auto 0;
@@ -54,6 +67,7 @@
       text-align: center;
       width: fit-content;
     }
+
     .back-button:hover {
       background-color: #ff5555;
     }

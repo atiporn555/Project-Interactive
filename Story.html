@@ -8,28 +8,41 @@
     body {
       margin: 0;
       padding: 20px;
-      background-color: #111;
-      color: #f0f0f0;
       font-family: 'Sarabun', sans-serif;
-
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
+      color: #f0f0f0;
       text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+
+      background-image: url('images/BG-Store.png'); /* พื้นหลัง */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+
+    /* overlay สีเข้มเล็กน้อย */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.3);
+      z-index: -1;
     }
 
     .container {
       max-width: 750px;
-      /* เอา background ออก */
-      /* background-color: #1c1c1c; */
-      /* เอา border-radius ออก */
-      /* border-radius: 12px; */
-      /* เอา box-shadow ออก */
-      /* box-shadow: 0 0 10px rgba(255, 255, 255, 0.08); */
-      padding: 0;
-      margin-bottom: 30px;
+      background-color: rgba(0,0,0,0.5); /* บล็อกโปร่งใส */
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+      text-align: justify;
+      display: flex;
+      flex-direction: column;
     }
 
     h1 {
@@ -43,11 +56,11 @@
       font-size: 17px;
       color: #e0e0e0;
       line-height: 1.45;
-      text-align: justify;
-      margin: 0;
+      margin-bottom: 20px;
     }
 
     .back-button {
+      display: inline-block;
       padding: 12px 30px;
       font-size: 16px;
       background-color: #ff7777;
@@ -57,7 +70,10 @@
       cursor: pointer;
       transition: background-color 0.3s ease;
       text-decoration: none;
+      text-align: center;
+      margin: 20px auto 0; /* ทำให้ปุ่มอยู่กึ่งกลางด้านล่างของ container */
     }
+
     .back-button:hover {
       background-color: #ff5555;
     }
@@ -78,7 +94,7 @@
     <p>
       น้ำฝนเป็นนักศึกษาจบใหม่ที่กำลังรอการตอบรับจากบริษัทที่เธอยื่นเรซูเม่ไว้ ระหว่างนี้ เธอเลือกทำงานพาร์ทไทม์ในร้านสะดวกซื้อเล็ก ๆ บริเวณชานเมืองเพื่อเลี้ยงตัวเอง แต่ในคืนที่เธอต้องทำงานคนเดียวกลับเริ่มเกิดเรื่องแปลกประหลาดขึ้น ทั้งเสียงที่ไม่มีที่มา และบรรยากาศที่ชวนอึดอัด นอกจากนี้ รุ่นพี่ที่เธอเคยรู้จักกลับมีพฤติกรรมประหลาดราวกับปกปิดอะไรบางอย่างไว้... น้ำฝนจะจัดการกับสิ่งที่เกิดขึ้นอย่างไร? ความจริงที่รออยู่ในความมืดคืออะไร?
     </p>
+    <a href="index.html" class="back-button">กลับสู่หน้าแรก</a>
   </div>
-  <a href="index.html" class="back-button">กลับสู่หน้าแรก</a>
 </body>
 </html>

@@ -1,57 +1,33 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8" />
-  <title>5 คืนสยอง - หน้าแรก</title>
-  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet" />
-  <style>
-    * {
-      margin: 0; padding: 0; box-sizing: border-box;
-      font-family: 'Kanit', sans-serif;
-    }
-    body {
-      background-color: #111;
-      color: #eee;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 20px;
-    }
-    h1 {
-      font-size: 3.5rem;
-      margin-bottom: 40px;
-      color: #ff5555;
-      text-shadow: 0 0 8px #ff4444;
-    }
-    .btn {
-      display: block;
-      width: 250px;
-      padding: 15px 0;
-      margin: 15px 0;
-      font-size: 1.3rem;
-      color: #fff;
-      background-color: #660000;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      box-shadow: 0 0 8px #aa2222;
-      transition: background-color 0.3s ease, box-shadow 0.3s ease;
-      user-select: none;
-    }
-    .btn:hover {
-      background-color: #ff4444;
-      box-shadow: 0 0 15px #ff6666;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เว็บตัวอย่าง</title>
+  <link rel="stylesheet" href="test.css">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Sriracha&display=swap" rel="stylesheet">
 </head>
 <body>
-  <h1>5 คืนสยอง</h1>
-  <button class="btn" onclick="window.location.href='5-night-start.html'">เริ่มเกม</button>
-  <button class="btn" onclick="window.location.href='How-to-play.html'">วิธีเล่น</button>
-  <button class="btn" onclick="window.location.href='Story.html'">เนื้อเรื่องเกมเบื้องต้น</button>
-  <button class="btn" onclick="window.location.href='About.html'">เกี่ยวกับ</button>
+
+  <!-- พื้นหลัง -->
+  <div class="background"></div>
+
+  <!-- คำเตือนด้านบนซ้าย -->
+  <div class="warning-text">⚠️ เกมนี้มีเสียงดังอาจทำให้ตกใจ แนะนำลดเสียงก่อนเล่น</div>
+
+  <!-- ปุ่ม START -->
+  <button class="main-button" onclick="window.location.href='5-night-start.html'">START</button>
+
+  <!-- กลุ่มปุ่มเมนูด้านซ้ายล่าง -->
+  <div class="button-group">
+    <button class="nav-button" onclick="window.location.href='How-to-play.html'">วิธีการเล่น</button>
+    <button class="nav-button" onclick="window.location.href='Story.html'">เนื้อเรื่องเกมเบื้องต้น</button>
+    <button class="nav-button" onclick="window.location.href='About.html'">เกี่ยวกับ</button>
+  </div>
+
 </body>
 </html>
